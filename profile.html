@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Project Lyra</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
+        </div>
+        <div class="nav-links">
+            <a href="challenges.html" class="nav-link">Challenges</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+            <a href="index.html" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-container">
+                    <div class="pixel-avatar">
+                        <div class="pixel-row">
+                            <div class="pixel"></div><div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div><div class="pixel"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div><div class="pixel active"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-info">
+                <h1 class="username">CyberExplorer_001</h1>
+                <div class="user-level">
+                    <span class="level-badge">LEVEL 3</span>
+                    <span class="title">SECURITY ANALYST</span>
+                </div>
+                <div class="user-stats">
+                    <div class="stat">
+                        <span class="stat-number">2</span>
+                        <span class="stat-label">Challenges Completed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">847</span>
+                        <span class="stat-label">XP Points</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">Days Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-section">
+                <h2 class="section-title">KNOWLEDGE PROGRESS</h2>
+                <div class="knowledge-bars">
+                    <div class="knowledge-item">
+                        <span class="knowledge-label">Cryptography</span>
+                        <div class="knowledge-bar">
+                            <div class="knowledge-fill" style="width: 75%"></div>
+                        </div>
+                        <span class="knowledge-percent">75%</span>
+                    </div>
+                    <div class="knowledge-item">
+                        <span class="knowledge-label">Network Security</span>
+                        <div class="knowledge-bar">
+                            <div class="knowledge-fill" style="width: 45%"></div>
+                        </div>
+                        <span class="knowledge-percent">45%</span>
+                    </div>
+                    <div class="knowledge-item">
+                        <span class="knowledge-label">Malware Analysis</span>
+                        <div class="knowledge-bar">
+                            <div class="knowledge-fill" style="width: 20%"></div>
+                        </div>
+                        <span class="knowledge-percent">20%</span>
+                    </div>
+                    <div class="knowledge-item">
+                        <span class="knowledge-label">Penetration Testing</span>
+                        <div class="knowledge-bar">
+                            <div class="knowledge-fill" style="width: 30%"></div>
+                        </div>
+                        <span class="knowledge-percent">30%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">RECENT ACTIVITY</h2>
+                <div class="activity-timeline">
+                    <div class="activity-item">
+                        <div class="activity-icon">🏆</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Completed "Password Cracking" Challenge</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">⚡</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Earned 150 XP Points</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🔓</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Unlocked "Network Penetration" Challenge</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">🎯</div>
+                        <div class="activity-content">
+                            <div class="activity-title">Completed "Basic Encryption" Challenge</div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">ACHIEVEMENTS</h2>
+                <div class="achievements-grid">
+                    <div class="achievement earned">
+                        <div class="achievement-icon">🥇</div>
+                        <div class="achievement-title">First Steps</div>
+                        <div class="achievement-desc">Complete your first challenge</div>
+                    </div>
+                    <div class="achievement earned">
+                        <div class="achievement-icon">🔐</div>
+                        <div class="achievement-title">Code Breaker</div>
+                        <div class="achievement-desc">Master basic encryption</div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">🛡️</div>
+                        <div class="achievement-title">Guardian</div>
+                        <div class="achievement-desc">Complete 5 challenges</div>
+                    </div>
+                    <div class="achievement locked">
+                        <div class="achievement-icon">👑</div>
+                        <div class="achievement-title">Cyber Master</div>
+                        <div class="achievement-desc">Reach level 10</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="matrix.js"></script>
+</body>
+</html>
