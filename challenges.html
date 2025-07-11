@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Challenges - Project Lyra</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <canvas id="matrix-canvas"></canvas>
@@ -14,6 +15,7 @@
             <a href="index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
         </div>
         <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
             <a href="challenges.html" class="nav-link active">Challenges</a>
             <a href="profile.html" class="nav-link">Profile</a>
             <a href="index.html" class="nav-link">Logout</a>
@@ -27,8 +29,21 @@
         </div>
 
         <div class="mission-path">
-            <div class="challenge-node unlocked" data-level="1">
-                <div class="challenge-icon">🔓</div>
+            <div class="challenge-node unlocked">
+                <div class="challenge-icon"><i class="fas fa-unlock"></i></div>
+                <div class="challenge-info">
+                    <h3>Phishing</h3>
+                    <div class="difficulty easy">EASY</div>
+                    <div class="challenge-description">
+                        <p>Learn the fundamentals of Phishing</p>
+                        <button class="start-btn" href="phishing-game.html">START MISSION</button>
+                    </div>
+                </div>
+                <div class="connection-line"></div>
+            </div>
+
+            <div class="challenge-node unlocked">
+                <div class="challenge-icon"><i class="fas fa-unlock"></i></div>
                 <div class="challenge-info">
                     <h3>Basic Encryption</h3>
                     <div class="difficulty easy">EASY</div>
@@ -40,8 +55,8 @@
                 <div class="connection-line"></div>
             </div>
 
-            <div class="challenge-node unlocked" data-level="2">
-                <div class="challenge-icon">🔐</div>
+            <div class="challenge-node unlocked">
+                <div class="challenge-icon"><i class="fas fa-lock-open"></i></div>
                 <div class="challenge-info">
                     <h3>Password Cracking</h3>
                     <div class="difficulty medium">MEDIUM</div>
@@ -53,8 +68,8 @@
                 <div class="connection-line"></div>
             </div>
 
-            <div class="challenge-node locked" data-level="3">
-                <div class="challenge-icon">🔒</div>
+            <div class="challenge-node locked">
+                <div class="challenge-icon"><i class="fas fa-lock"></i></div>
                 <div class="challenge-info">
                     <h3>Network Penetration</h3>
                     <div class="difficulty hard">HARD</div>
@@ -66,8 +81,8 @@
                 <div class="connection-line"></div>
             </div>
 
-            <div class="challenge-node locked" data-level="4">
-                <div class="challenge-icon">🛡️</div>
+            <div class="challenge-node locked">
+                <div class="challenge-icon"><i class="fas fa-shield-alt"></i></div>
                 <div class="challenge-info">
                     <h3>Malware Analysis</h3>
                     <div class="difficulty expert">EXPERT</div>
@@ -79,8 +94,8 @@
                 <div class="connection-line"></div>
             </div>
 
-            <div class="challenge-node locked" data-level="5">
-                <div class="challenge-icon">👑</div>
+            <div class="challenge-node locked">
+                <div class="challenge-icon"><i class="fas fa-crown"></i></div>
                 <div class="challenge-info">
                     <h3>Advanced Persistent Threats</h3>
                     <div class="difficulty master">MASTER</div>
