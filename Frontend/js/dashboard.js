@@ -35,7 +35,7 @@ function enterModule(moduleId) {
     // Add your module navigation logic here
     switch(moduleId) {
         case 'phishing':
-            window.location.href = 'phishing-game.html';
+            window.location.href = 'phishing-model.html';
             break;
         case 'malware':
             // Navigate to malware module
