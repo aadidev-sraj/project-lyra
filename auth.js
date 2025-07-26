@@ -58,7 +58,7 @@ function handleLogin() {
     setTimeout(() => {
         showTerminalMessage('ACCESS GRANTED', 'success');
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = 'Frontend/pages/dashboard.html';
         }, 1500);
     }, 2000);
 }
