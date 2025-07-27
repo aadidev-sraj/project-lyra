@@ -1,5 +1,5 @@
 /* Import base styles from main stylesheet */
-@import url('style.css');
+@import url('../../style.css');
 
 /* Game-specific styles */
 .game-container {
