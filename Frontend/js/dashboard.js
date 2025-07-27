@@ -38,13 +38,15 @@ function enterModule(moduleId) {
             window.location.href = 'phishing-model.html';
             break;
         case 'malware':
-            // Navigate to malware module
+            window.location.href = 'malware-module.html';
             break;
         case 'social-engineering':
             // Navigate to social engineering module
+            alert('Social Engineering module coming soon!');
             break;
         case 'network-security':
             // Navigate to network security module
+            alert('Network Security module coming soon!');
             break;
         default:
             console.log('Module not available yet');
@@ -57,6 +59,6 @@ function logout() {
         // Clear any stored user data
         localStorage.removeItem('currentUser');
         // Redirect to login page
-        window.location.href = 'index.html';
+        window.location.href = '../../index.html';
     }
 }
