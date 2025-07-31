@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Engineering Module - Project Lyra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/module-styles.css">
+  <link rel="stylesheet" href="../styles/phishing-module.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="main-container">
+        <div class="content-wrapper">
+            <!-- Navigation -->
+            
+
+            <header class="module-header">
+                <i class="fas fa-user-secret module-icon"></i>
+                <h1 class="glitch-text" data-text="Social Engineering">Social Engineering</h1>
+                <p class="module-description">Master the psychology of manipulation and learn to defend against human-based cyber attacks.</p>
+            </header>
+
+            <section id="introduction" class="lesson-section">
+                <h2><i class="fas fa-brain"></i> Understanding Social Engineering</h2>
+                <div class="intro-content">
+                    <div class="intro-text">
+                        <p>Social engineering is the art of manipulating people into performing actions or divulging confidential information. Unlike technical hacking, social engineering relies on human psychology and social interaction to gain unauthorized access to systems, networks, or physical locations. It's often considered the most dangerous form of cyber attack because it bypasses all technical security measures.</p>
+                    </div>
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <i class="fas fa-psychology"></i>
+                            <h3>Psychological Manipulation</h3>
+                            <p>Exploits human emotions, cognitive biases, and social dynamics to achieve malicious goals.</p>
+                        </div>
+                        <div class="concept-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Human Element</h3>
+                            <p>Targets the weakest link in any security system - human behavior and decision-making.</p>
+                        </div>
+                        <div class="concept-card">
+                            <i class="fas fa-shield-virus"></i>
+                            <h3>Bypasses Technical Defenses</h3>
+                            <p>Can circumvent even the most sophisticated technical security measures by targeting people directly.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="attack-techniques" class="lesson-section">
+                <h2><i class="fas fa-tools"></i> Common Social Engineering Techniques</h2>
+                <div class="vectors-grid">
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-phone"></i>
+                            <h3>Pretexting</h3>
+                            <span class="threat-level critical">Critical</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Creating a fabricated scenario to obtain information from a target. Attackers often impersonate authority figures, IT support, or trusted colleagues to gain trust and extract sensitive data.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>Unsolicited calls from "IT support"</li>
+                                    <li>Requests for password verification</li>
+                                    <li>Urgent requests for immediate action</li>
+                                    <li>Pressure to bypass normal procedures</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-gift"></i>
+                            <h3>Baiting</h3>
+                            <span class="threat-level high">High</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Using physical media like USB drives or CDs to spread malware. Attackers leave these devices in public places, hoping someone will pick them up and insert them into a computer.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>Unknown USB devices found in public</li>
+                                    <li>Free software or media from untrusted sources</li>
+                                    <li>Promises of free content or software</li>
+                                    <li>Devices with generic labels or no labels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-handshake"></i>
+                            <h3>Quid Pro Quo</h3>
+                            <span class="threat-level medium">Medium</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Offering a service in exchange for information or access. Attackers might offer free IT support, software, or other services while secretly gathering credentials or installing malware.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>Unsolicited offers of free services</li>
+                                    <li>Requests for login credentials during "support"</li>
+                                    <li>Promises of free software or tools</li>
+                                    <li>Pressure to accept immediate help</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Impersonation</h3>
+                            <span class="threat-level critical">Critical</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Pretending to be someone else to gain trust and access. This includes impersonating executives, IT staff, law enforcement, or other authority figures to manipulate targets.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>Requests from executives outside normal channels</li>
+                                    <li>Urgent financial transactions or wire transfers</li>
+                                    <li>Threats of legal action or account suspension</li>
+                                    <li>Requests to bypass security protocols</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-eye"></i>
+                            <h3>Shoulder Surfing</h3>
+                            <span class="threat-level medium">Medium</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Physically observing someone entering passwords, PINs, or other sensitive information. This can happen in public spaces, offices, or through surveillance cameras.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>People standing too close while you type</li>
+                                    <li>Reflections in windows or screens</li>
+                                    <li>Cameras positioned near workstations</li>
+                                    <li>Unusual attention while entering credentials</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vector-card">
+                        <div class="vector-header">
+                            <i class="fas fa-trash"></i>
+                            <h3>Dumpster Diving</h3>
+                            <span class="threat-level medium">Medium</span>
+                        </div>
+                        <div class="vector-content">
+                            <p>Searching through trash or recycling bins to find sensitive information like passwords, account numbers, or internal documents that weren't properly destroyed.</p>
+                            <div class="red-flags">
+                                <h4>Red Flags:</h4>
+                                <ul>
+                                    <li>Unsecured trash bins near offices</li>
+                                    <li>Documents with sensitive information</li>
+                                    <li>Post-it notes with passwords</li>
+                                    <li>Unshredded confidential documents</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="real-world-cases" class="lesson-section">
+                <h2><i class="fas fa-history"></i> Notable Social Engineering Attacks</h2>
+                <div class="cases-timeline">
+                    <div class="case-item">
+                        <span class="case-year">2016</span>
+                        <div class="case-header">
+                            <i class="fas fa-building"></i>
+                            <h3>Ubiquiti Networks Breach</h3>
+                            <span class="impact-badge severe">Severe</span>
+                        </div>
+                        <div class="case-content">
+                            <p>Attackers used social engineering to impersonate Ubiquiti executives and convinced employees to transfer $46.7 million to fraudulent accounts. The attackers sent emails that appeared to come from company executives, requesting urgent wire transfers for a secret acquisition.</p>
+                            <div class="case-lessons">
+                                <strong>Lessons Learned:</strong>
+                                <ul>
+                                    <li>Always verify financial requests through multiple channels.</li>
+                                    <li>Implement strict approval processes for large transactions.</li>
+                                    <li>Train employees to recognize executive impersonation.</li>
+                                </ul>
+                            </div>
+                            <a href="https://www.sec.gov/Archives/edgar/data/1511737/000119312517053580/d287954d8k.htm" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="case-item">
+                        <span class="case-year">2019</span>
+                        <div class="case-header">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>SIM Swapping Attacks</h3>
+                        <span class="impact-badge critical">Critical</span>
+                        </div>
+                        <div class="case-content">
+                            <p>Attackers used social engineering to convince mobile carriers to transfer phone numbers to new SIM cards. This allowed them to intercept SMS-based two-factor authentication codes and gain access to cryptocurrency wallets, social media accounts, and other sensitive services.</p>
+                            <div class="case-lessons">
+                                <strong>Lessons Learned:</strong>
+                                <ul>
+                                    <li>Use app-based 2FA instead of SMS when possible.</li>
+                                    <li>Implement additional security measures for high-value accounts.</li>
+                                    <li>Be aware of SIM swapping vulnerabilities.</li>
+                                </ul>
+                            </div>
+                            <a href="https://www.fbi.gov/news/press-releases/press-releases/fbi-warns-of-sim-swapping-scam" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                    <div class="case-item">
+                        <span class="case-year">2020</span>
+                        <div class="case-header">
+                            <i class="fas fa-twitter"></i>
+                            <h3>Twitter Bitcoin Scam</h3>
+                            <span class="impact-badge severe">Severe</span>
+                        </div>
+                        <div class="case-content">
+                            <p>Attackers used social engineering to gain access to Twitter's internal systems and took control of high-profile accounts including Barack Obama, Elon Musk, and Bill Gates. They posted fake Bitcoin giveaway messages, scamming users out of over $100,000.</p>
+                            <div class="case-lessons">
+                                <strong>Lessons Learned:</strong>
+                                <ul>
+                                    <li>Even major tech companies are vulnerable to social engineering.</li>
+                                    <li>Internal access controls are crucial for platform security.</li>
+                                    <li>Users should be skeptical of cryptocurrency giveaways.</li>
+                                </ul>
+                            </div>
+                            <a href="https://www.nytimes.com/2020/07/15/technology/twitter-hack-bitcoin.html" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="psychology-lab" class="lesson-section">
+                <h2><i class="fas fa-flask"></i> Psychology Analysis Lab</h2>
+                <p class="analysis-briefing">
+                    <strong>Mission Briefing:</strong> You've intercepted a series of social engineering attempts. Your task is to analyze the psychological techniques used and identify the manipulation tactics.
+                </p>
+                <div class="analysis-container">
+                    <div class="intercepted-email">
+                        <div class="email-metadata">
+                            <div class="metadata-row"><strong>Scenario:</strong> <span class="static-element">IT Support Call</span></div>
+                            <div class="metadata-row"><strong>Target:</strong> <span class="static-element">Office Employee</span></div>
+                            <div class="metadata-row"><strong>Method:</strong> <span class="static-element">Phone Call</span></div>
+                        </div>
+                        <hr class="email-hr-separator">
+                        <div class="email-body">
+                            <p><strong>Attacker:</strong> "Hi, this is Mike from IT Support. We've detected a virus on your computer that's spreading to the network. I need you to help me fix this immediately before it affects other systems."</p>
+                            <p><strong>Target:</strong> "Oh no, that sounds serious. What do I need to do?"</p>
+                            <p><strong>Attacker:</strong> "I need you to open your computer's command prompt and run some diagnostic commands. First, can you tell me your username and password so I can guide you through the process?"</p>
+                            <p><strong>Target:</strong> "My username is jsmith and my password is..."</p>
+                        </div>
+                        <div class="email-footer">
+                            <p>This conversation demonstrates several social engineering techniques.</p>
+                        </div>
+                    </div>
+                    <div class="threat-analysis">
+                        <h4>Psychological Analysis Log</h4>
+                        <div class="findings-list">
+                            <p class="no-findings">Key manipulation techniques identified:</p>
+                            <div class="finding-item severity-critical">
+                                <strong>🚩 Technique 1:</strong> Authority Impersonation - Pretending to be IT support to establish credibility.
+                            </div>
+                            <div class="finding-item severity-critical">
+                                <strong>🚩 Technique 2:</strong> Urgency Creation - Using time pressure to prevent rational thinking.
+                            </div>
+                            <div class="finding-item severity-high">
+                                <strong>🚩 Technique 3:</strong> Fear Appeal - Threatening network-wide virus spread to create panic.
+                            </div>
+                            <div class="finding-item severity-medium">
+                                <strong>🚩 Technique 4:</strong> Reciprocity - Offering to "help" the target, creating obligation.
+                            </div>
+                            <div class="finding-item severity-high">
+                                <strong>🚩 Technique 5:</strong> Social Proof - Implying others are at risk, creating herd mentality.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="defense-strategies" class="lesson-section">
+                <h2><i class="fas fa-shield-alt"></i> Defense Strategies</h2>
+                <div class="defense-grid">
+                    <div class="defense-category">
+                        <h3><i class="fas fa-brain"></i> Awareness & Training</h3>
+                        <div class="defense-items">
+                            <div class="defense-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <div class="defense-content">
+                                    <h4>Regular Security Training</h4>
+                                    <p>Conduct ongoing training sessions to educate employees about social engineering techniques, red flags, and proper response procedures. Include real-world examples and interactive scenarios.</p>
+                                </div>
+                            </div>
+                            <div class="defense-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div class="defense-content">
+                                    <h4>Recognize Red Flags</h4>
+                                    <p>Train employees to identify common social engineering red flags such as urgency, authority pressure, unusual requests, and attempts to bypass normal procedures.</p>
+                                </div>
+                            </div>
+                            <div class="defense-item">
+                                <i class="fas fa-question-circle"></i>
+                                <div class="defense-content">
+                                    <h4>Question Everything</h4>
+                                    <p>Encourage a culture of healthy skepticism. Employees should feel comfortable questioning unusual requests and verifying identities through multiple channels.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="defense-category">
+                        <h3><i class="fas fa-tools"></i> Technical Safeguards</h3>
+                        <div class="defense-items">
+                            <div class="defense-item">
+                                <i class="fas fa-key"></i>
+                                <div class="defense-content">
+                                    <h4>Multi-Factor Authentication</h4>
+                                    <p>Implement MFA on all accounts to prevent unauthorized access even if credentials are compromised through social engineering. Use app-based or hardware tokens instead of SMS.</p>
+                                </div>
+                            </div>
+                            <div class="defense-item">
+                                <i class="fas fa-user-check"></i>
+                                <div class="defense-content">
+                                    <h4>Identity Verification</h4>
+                                    <p>Establish strict procedures for verifying identities, especially for sensitive operations. Use multiple verification methods and require approval from supervisors.</p>
+                                </div>
+                            </div>
+                            <div class="defense-item">
+                                <i class="fas fa-lock"></i>
+                                <div class="defense-content">
+                                    <h4>Access Controls</h4>
+                                    <p>Implement principle of least privilege and regular access reviews. Limit administrative access and require approval for elevated privileges.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="training-redirect" class="lesson-section">
+                <h2><i class="fas fa-laptop-code"></i> Ready to Defend?</h2>
+                <p class="redirect-description">Test your social engineering awareness with practical exercises!</p>
+                <div class="redirect-actions">
+                    <a href="dashboard.html" class="redirect-btn">Start Social Engineering Training<i class="fas fa-arrow-right"></i></a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="../../matrix.js"></script>
+</body>
+</html> 

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Network Security Module - Project Lyra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/module-styles.css">
+  <link rel="stylesheet" href="../styles/phishing-module.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="main-container">
+      <div class="content-wrapper">
+
+          <!-- Navigation -->
+          
+
+          <header class="module-header">
+              <i class="fas fa-network-wired module-icon"></i>
+              <h1 class="glitch-text" data-text="Network Security">Network Security</h1>
+              <p class="module-description">Master the fundamentals of protecting network infrastructure and data transmission.</p>
+          </header>
+
+          <section id="introduction" class="lesson-section">
+              <h2><i class="fas fa-info-circle"></i> Understanding Network Security</h2>
+              <div class="intro-content">
+                  <div class="intro-text">
+                      <p>Network security encompasses the policies, practices, and technologies designed to protect network infrastructure, data, and communications from unauthorized access, misuse, malfunction, modification, destruction, or improper disclosure. It's the foundation of cybersecurity in our interconnected digital world.</p>
+                  </div>
+                  <div class="concept-grid">
+                      <div class="concept-card">
+                          <i class="fas fa-shield-alt"></i>
+                          <h3>Protection</h3>
+                          <p>Network security safeguards data, systems, and network infrastructure from various threats and attacks.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-eye"></i>
+                          <h3>Monitoring</h3>
+                          <p>Continuous surveillance and analysis of network traffic to detect and respond to security incidents.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-lock"></i>
+                          <h3>Access Control</h3>
+                          <p>Managing who can access network resources and what they can do with those resources.</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="attack-vectors" class="lesson-section">
+              <h2><i class="fas fa-bullseye"></i> Common Network Attack Vectors</h2>
+              <div class="vectors-grid">
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-broadcast-tower"></i>
+                          <h3>Man-in-the-Middle (MITM)</h3>
+                          <span class="threat-level critical">Critical</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Attackers intercept and potentially alter communication between two parties who believe they're communicating directly with each other.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Unexpected SSL certificate warnings</li>
+                                  <li>Unusual network behavior</li>
+                                  <li>Data transmission delays</li>
+                                  <li>Connection to unknown networks</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-bomb"></i>
+                          <h3>DDoS Attacks</h3>
+                          <span class="threat-level high">High</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Distributed Denial of Service attacks overwhelm network resources with excessive traffic, making services unavailable to legitimate users.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Unusually slow network performance</li>
+                                  <li>Service unavailability</li>
+                                  <li>High bandwidth usage</li>
+                                  <li>Multiple failed connection attempts</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-user-secret"></i>
+                          <h3>Packet Sniffing</h3>
+                          <span class="threat-level medium">Medium</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Intercepting and analyzing network packets to capture sensitive information like passwords, emails, or other data transmitted over the network.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Unencrypted data transmission</li>
+                                  <li>Public Wi-Fi usage</li>
+                                  <li>Unsecured network protocols</li>
+                                  <li>Missing SSL/TLS encryption</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-door-open"></i>
+                          <h3>Port Scanning</h3>
+                          <span class="threat-level medium">Medium</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Systematically scanning network ports to identify open ports and services, often as reconnaissance for potential attacks.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Multiple connection attempts</li>
+                                  <li>Unusual network activity</li>
+                                  <li>Open unnecessary ports</li>
+                                  <li>Default service configurations</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="real-world-cases" class="lesson-section">
+              <h2><i class="fas fa-history"></i> Real-World Case Studies</h2>
+              <div class="cases-timeline">
+                  <div class="case-item">
+                      <span class="case-year">2016</span>
+                      <div class="case-header">
+                          <i class="fas fa-satellite-dish"></i>
+                          <h3>Dyn DNS DDoS Attack</h3>
+                          <span class="impact-badge severe">Severe</span>
+                      </div>
+                      <div class="case-content">
+                          <p>A massive DDoS attack targeted Dyn, a major DNS provider, using a botnet of IoT devices infected with Mirai malware. The attack disrupted access to major websites including Twitter, Netflix, and Reddit for several hours.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>IoT devices can be weaponized for large-scale attacks.</li>
+                                  <li>DNS infrastructure is a critical vulnerability point.</li>
+                                  <li>DDoS attacks can have cascading effects across the internet.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/2016_Dyn_cyberattack" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2017</span>
+                      <div class="case-header">
+                          <i class="fas fa-hospital"></i>
+                          <h3>WannaCry Ransomware</h3>
+                          <span class="impact-badge critical">Critical</span>
+                      </div>
+                      <div class="case-content">
+                          <p>WannaCry ransomware exploited a Windows SMB vulnerability to spread rapidly across networks, affecting over 300,000 computers in 150 countries. It encrypted files and demanded ransom payments in Bitcoin.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Unpatched systems are prime targets for network-based attacks.</li>
+                                  <li>Network segmentation can limit the spread of malware.</li>
+                                  <li>Regular security updates are crucial for network defense.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/WannaCry_ransomware_attack" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2020</span>
+                      <div class="case-header">
+                          <i class="fas fa-building"></i>
+                          <h3>SolarWinds Supply Chain Attack</h3>
+                          <span class="impact-badge critical">Critical</span>
+                      </div>
+                      <div class="case-content">
+                          <p>Russian state-sponsored hackers compromised SolarWinds' software update system, allowing them to distribute malicious code to thousands of organizations worldwide, including government agencies and Fortune 500 companies.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Supply chain attacks can bypass traditional network defenses.</li>
+                                  <li>Trusted software updates can be malicious.</li>
+                                  <li>Network monitoring must include software update channels.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/2020_United_States_federal_government_data_breach" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+              </div>
+          </section>
+
+          <section id="analysis-lab" class="lesson-section">
+              <h2><i class="fas fa-flask"></i> Network Analysis Lab</h2>
+              <p class="analysis-briefing">
+                  <strong>Mission Briefing:</strong> A network administrator has detected unusual traffic patterns. Your task is to analyze the network logs and identify potential security threats.
+              </p>
+              <div class="analysis-container">
+                  <div class="intercepted-email">
+                      <div class="email-metadata">
+                          <div class="metadata-row"><strong>Source IP:</strong> <span class="static-element">192.168.1.100</span></div>
+                          <div class="metadata-row"><strong>Destination IP:</strong> <span class="static-element">10.0.0.50</span></div>
+                          <div class="metadata-row"><strong>Protocol:</strong> <span class="static-element">TCP</span></div>
+                          <div class="metadata-row"><strong>Port:</strong> <span class="static-element">22 (SSH)</span></div>
+                          <div class="metadata-row"><strong>Timestamp:</strong> <span class="static-element">2024-04-22 14:30:15</span></div>
+                      </div>
+                      <hr style="border-color: #00cc00; margin: 20px 0;">
+                      <div class="email-body">
+                          <p><strong>Connection Attempts:</strong></p>
+                          <p>• 14:30:15 - Connection attempt from 192.168.1.100:54321 to 10.0.0.50:22</p>
+                          <p>• 14:30:16 - Failed authentication (username: admin)</p>
+                          <p>• 14:30:17 - Connection attempt from 192.168.1.100:54322 to 10.0.0.50:22</p>
+                          <p>• 14:30:18 - Failed authentication (username: root)</p>
+                          <p>• 14:30:19 - Connection attempt from 192.168.1.100:54323 to 10.0.0.50:22</p>
+                          <p>• 14:30:20 - Failed authentication (username: administrator)</p>
+                          <p>• 14:30:21 - Connection attempt from 192.168.1.100:54324 to 10.0.0.50:22</p>
+                          <p>• 14:30:22 - Failed authentication (username: user)</p>
+                          <p>• 14:30:23 - Connection attempt from 192.168.1.100:54325 to 10.0.0.50:22</p>
+                          <p>• 14:30:24 - Failed authentication (username: guest)</p>
+                      </div>
+                      <div class="email-footer">
+                          <p>Total failed attempts: 5 in 9 seconds</p>
+                      </div>
+                  </div>
+                  <div class="threat-analysis">
+                      <h4>Threat Analysis Log</h4>
+                      <div class="findings-list">
+                          <p class="no-findings">Key security indicators:</p>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 1:</strong> Multiple rapid connection attempts from same source IP.
+                          </div>
+                          <div class="finding-item severity-high">
+                              <strong>🚩 Red Flag 2:</strong> Brute force attack targeting SSH service (port 22).
+                          </div>
+                          <div class="finding-item severity-medium">
+                              <strong>🚩 Red Flag 3:</strong> Common username attempts (admin, root, administrator).
+                          </div>
+                          <div class="finding-item severity-high">
+                              <strong>🚩 Red Flag 4:</strong> Sequential port usage suggests automated attack tool.
+                          </div>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 5:</strong> High frequency of failed authentication attempts.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="defense-strategies" class="lesson-section">
+              <h2><i class="fas fa-shield-alt"></i> Defense Strategies</h2>
+              <div class="defense-grid">
+                  <div class="defense-category">
+                      <h3><i class="fas fa-firewall"></i> Network Perimeter Defense</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-shield-virus"></i>
+                              <div class="defense-content">
+                                  <h4>Firewalls</h4>
+                                  <p>Implement network firewalls to control incoming and outgoing traffic based on predetermined security rules. Use both hardware and software firewalls for layered protection.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-network-wired"></i>
+                              <div class="defense-content">
+                                  <h4>Network Segmentation</h4>
+                                  <p>Divide networks into smaller, isolated segments to limit the spread of attacks and contain potential breaches within specific areas.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-eye"></i>
+                              <div class="defense-content">
+                                  <h4>Intrusion Detection/Prevention</h4>
+                                  <p>Deploy IDS/IPS systems to monitor network traffic for suspicious activity and automatically block or alert on potential threats.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="defense-category">
+                      <h3><i class="fas fa-lock"></i> Access Control & Encryption</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-key"></i>
+                              <div class="defense-content">
+                                  <h4>Strong Authentication</h4>
+                                  <p>Implement multi-factor authentication, strong password policies, and regular credential rotation to prevent unauthorized access.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-lock"></i>
+                              <div class="defense-content">
+                                  <h4>Data Encryption</h4>
+                                  <p>Encrypt sensitive data both in transit (using SSL/TLS) and at rest to protect against interception and unauthorized access.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-user-check"></i>
+                              <div class="defense-content">
+                                  <h4>VPN & Secure Connections</h4>
+                                  <p>Use Virtual Private Networks for remote access and ensure all sensitive communications are conducted over encrypted channels.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="defense-category">
+                      <h3><i class="fas fa-tools"></i> Monitoring & Response</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-chart-line"></i>
+                              <div class="defense-content">
+                                  <h4>Network Monitoring</h4>
+                                  <p>Continuously monitor network traffic, system logs, and user activity to detect anomalies and potential security incidents.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-sync-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Regular Updates</h4>
+                                  <p>Keep all network devices, software, and firmware updated with the latest security patches to address known vulnerabilities.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-file-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Incident Response Plan</h4>
+                                  <p>Develop and maintain a comprehensive incident response plan to quickly and effectively respond to security breaches.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="training-redirect" class="lesson-section">
+              <h2><i class="fas fa-gamepad"></i> Ready for Action?</h2>
+              <p class="redirect-description">Test your network security knowledge with our interactive challenges!</p>
+              <div class="redirect-actions">
+                  <a href="challenges.html" class="redirect-btn">Start Network Security Challenges <i class="fas fa-arrow-right"></i></a>
+              </div>
+          </section>
+      </div>
+  </div>
+<script src="../../matrix.js"></script>
+</body>
+</html> 

@@ -41,12 +41,10 @@ function enterModule(moduleId) {
             window.location.href = 'malware-module.html';
             break;
         case 'social-engineering':
-            // Navigate to social engineering module
-            alert('Social Engineering module coming soon!');
+            window.location.href = 'social-engineering-module.html';
             break;
         case 'network-security':
-            // Navigate to network security module
-            alert('Network Security module coming soon!');
+            window.location.href = 'network-security-module.html';
             break;
         default:
             console.log('Module not available yet');

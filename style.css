@@ -94,18 +94,19 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    opacity: 0.3;
 }
 
 .glitch-text::before {
-    animation: glitch-1 0.5s infinite;
-    color: #ff0000;
+    color: #00ff00;
     z-index: -1;
+    animation: glitch-1 4s infinite linear;
 }
 
 .glitch-text::after {
-    animation: glitch-2 0.5s infinite;
-    color: #0000ff;
+    color: #fff;
     z-index: -2;
+    animation: glitch-2 4s infinite linear;
 }
 
 /* Navigation */
@@ -138,16 +139,45 @@ body {
     color: #00ff00;
     text-decoration: none;
     padding: 0.5rem 1rem;
-    border: 1px solid transparent;
     transition: all 0.3s ease;
-    text-transform: uppercase;
+    background: transparent;
 }
 
-.nav-link:hover,
+.nav-link:hover {
+    color: #00ff00;
+    background: transparent;
+    box-shadow: none;
+    text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+}
+
 .nav-link.active {
-    border-color: #00ff00;
-    box-shadow: 0 0 10px #00ff00;
-    text-shadow: 0 0 5px #00ff00;
+    color: #00ff00 !important;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 6px;
+    font-weight: bold;
+    text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+    transition: all 0.3s ease;
+}
+
+/* Centered Heading for Index Page */
+.centered-heading {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-top: 2rem;
+}
+
+.centered-heading h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px #00ff00;
+}
+
+.centered-heading .subtitle {
+  font-size: 1.2rem;
+  color: #00aa00;
+  opacity: 0.8;
+  font-family: 'Courier New', monospace;
 }
 
 /* Container */
@@ -236,45 +266,75 @@ body {
     text-shadow: 0 0 10px #00ff00;
 }
 
+/* Improved input styling */
 .input-group {
-    margin-bottom: 1.5rem;
-    position: relative;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.8);
-    border: 1px solid #00ff00;
-    border-radius: 5px;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00ff00;
+  border-radius: 5px;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
 }
 
 .input-group input:focus {
-    outline: none;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
-    border-color: #00ff00;
+  outline: none;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  border-color: #00ff00;
+  background: rgba(0, 20, 0, 0.9);
+}
+
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:focus,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #000 inset !important;
+  box-shadow: 0 0 0 1000px #000 inset !important;
+  -webkit-text-fill-color: #00ff00 !important;
+  color: #00ff00 !important;
+  caret-color: #00ff00 !important;
+  border: 2px solid #00ff00 !important;
+}
+
+.input-group input:autofill {
+  box-shadow: 0 0 0 1000px #000 inset !important;
+  -webkit-text-fill-color: #00ff00 !important;
+  color: #00ff00 !important;
+  caret-color: #00ff00 !important;
+  border: 2px solid #00ff00 !important;
+}
+
+.input-group input::placeholder {
+  color: rgba(0, 255, 0, 0.6);
+  font-family: 'Courier New', monospace;
+  text-align: left;
 }
 
 .input-cursor {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 2px;
-    height: 20px;
-    background: #00ff00;
-    animation: blink 1s infinite;
+  position: absolute;
+  left: 10px;
+  top: 60%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 20px;
+  background: #00ff00;
+  animation: blink 1s infinite;
+  pointer-events: none;
 }
 
 .auth-btn {
@@ -755,19 +815,15 @@ body {
 }
 
 @keyframes glitch-1 {
-    0%, 100% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
+    0%, 100% { transform: none; }
+    5% { transform: translate(-0.5px, 0.5px); }
+    10% { transform: none; }
 }
 
 @keyframes glitch-2 {
-    0%, 100% { transform: translate(0); }
-    20% { transform: translate(2px, -2px); }
-    40% { transform: translate(2px, 2px); }
-    60% { transform: translate(-2px, -2px); }
-    80% { transform: translate(-2px, 2px); }
+    0%, 100% { transform: none; }
+    5% { transform: translate(0.5px, -0.5px); }
+    10% { transform: none; }
 }
 
 @keyframes blink {
