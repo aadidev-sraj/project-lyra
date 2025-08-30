@@ -1,0 +1,41 @@
+/* Notes Application Styles */
+.notes-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #ffffcc;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+.notes-content h3 {
+  color: #cc0000;
+  margin-bottom: 15px;
+  text-decoration: underline;
+}
+
+.notes-content ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 15px;
+}
+
+.notes-content ul li {
+  margin-bottom: 10px;
+}
+
+.notes-content ul ul {
+  margin-top: 5px;
+  margin-left: 20px;
+  margin-bottom: 0;
+}
+
+.notes-content .warning {
+  color: #cc0000;
+  font-weight: bold;
+  margin-top: 15px;
+  text-align: center;
+  border: 1px solid #cc0000;
+  padding: 10px;
+}

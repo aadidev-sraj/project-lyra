@@ -1,0 +1,171 @@
+/* Modern VPN app styles */
+#vpn-window {
+  width: 350px;
+  height: 450px;
+  left: 250px;
+  top: 150px;
+  background-color: #121212;
+  color: white;
+}
+
+.vpn-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #121212;
+}
+
+.vpn-connect-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #0091ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.vpn-connect-circle:hover {
+  transform: scale(1.05);
+}
+
+.vpn-power-icon {
+  font-size: 40px;
+  color: #ffffff;
+}
+
+.vpn-connect-text {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 15px;
+  color: white;
+}
+
+.vpn-status-text {
+  font-size: 16px;
+  color: #aaaaaa;
+  margin-bottom: 20px;
+}
+
+.vpn-connected .vpn-connect-circle {
+  border-color: #00c853;
+  box-shadow: 0 0 20px rgba(0, 200, 83, 0.4);
+}
+
+.vpn-connected .vpn-connect-text {
+  color: #00c853;
+}
+
+.vpn-locations {
+  width: 100%;
+  margin: 20px 0;
+  border-top: 1px solid #333333;
+  padding-top: 20px;
+}
+
+.vpn-location-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.vpn-location-header h4 {
+  color: #aaaaaa;
+  font-weight: 400;
+}
+
+.vpn-location-header span {
+  color: #aaaaaa;
+  font-size: 14px;
+}
+
+.vpn-location-select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.vpn-location-select .country {
+  display: flex;
+  align-items: center;
+}
+
+.vpn-location-select .country img {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  border-radius: 50%;
+}
+
+.vpn-location-select .country-name {
+  font-weight: 500;
+}
+
+.vpn-location-select .arrow {
+  color: #aaaaaa;
+}
+
+.vpn-data-usage {
+  width: 100%;
+  margin-top: 20px;
+  border-top: 1px solid #333333;
+  padding-top: 20px;
+}
+
+.vpn-data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+}
+
+.vpn-data-header h4 {
+  color: #aaaaaa;
+  font-weight: 400;
+}
+
+.vpn-data-value {
+  font-size: 20px;
+  font-weight: 500;
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Loading animation */
+.vpn-loading {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #0091ff;
+  animation: vpn-loading-animation 1s infinite linear;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.vpn-connecting .vpn-loading {
+  opacity: 1;
+}
+
+@keyframes vpn-loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

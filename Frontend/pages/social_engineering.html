@@ -1,0 +1,3131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Social Engineering Simulation - Project Lyra</title>
+    <style>
+      /* Reset and base styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Courier New", monospace;
+      }
+
+      #matrix-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      body {
+        background-color: transparent;
+        color: #00ff00;
+        line-height: 1.6;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* Navigation bar */
+      .navbar {
+        background-color: #000;
+        border-bottom: 2px solid #00ff00;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+      }
+
+      .nav-brand {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .nav-brand a {
+        color: #00ff00;
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+      }
+
+      .nav-link {
+        color: #00ff00;
+        text-decoration: none;
+        margin-left: 20px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover {
+        text-shadow: 0 0 10px #00ff00;
+      }
+
+      .nav-link.active {
+        border-bottom: 2px solid #00ff00;
+      }
+
+      /* Main container */
+      .main-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Simulator title */
+      .simulator-title {
+        text-align: center;
+        font-size: 36px;
+        margin: 30px 0;
+        text-shadow: 0 0 10px #00ff00;
+        letter-spacing: 2px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .simulator-subtitle {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 40px;
+        color: #00cc00;
+        position: relative;
+        z-index: 2;
+        text-shadow: 0 0 5px #00ff00;
+      }
+
+      /* Mission briefing container */
+      .mission-container {
+        border: 2px solid #00ff00;
+        margin: 20px auto;
+        max-width: 900px;
+        padding: 30px;
+        position: relative;
+        background: #000000;
+        z-index: 1;
+      }
+
+      .mission-heading {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 30px;
+        color: #00ff00;
+        letter-spacing: 2px;
+        text-shadow: 0 0 5px #00ff00;
+      }
+
+      .mission-text {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 16px;
+      }
+
+      /* Role container */
+      .role-container {
+        border: 1px solid #00ff00;
+        background-color: #000000;
+        margin: 30px auto;
+        max-width: 600px;
+        padding: 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .role-heading {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #00ff00;
+      }
+
+      .role-text {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      /* Start button */
+      .start-button-container {
+        text-align: center;
+        margin: 30px 0;
+      }
+
+      #start-simulation {
+        background-color: #00ff00;
+        color: #000;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 40px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        letter-spacing: 1px;
+      }
+
+      #start-simulation:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+      }
+
+      /* Terminal effect */
+      .terminal-effect {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.15),
+          rgba(0, 0, 0, 0.15) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+        z-index: 1000;
+      }
+
+      /* Simulation container */
+      #simulation-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      /* Control buttons */
+      #exit-simulation,
+      #toggle-fullscreen {
+        position: fixed;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 5px 15px;
+        cursor: pointer;
+        z-index: 1001;
+        display: none;
+        font-size: 12px;
+        transition: all 0.3s;
+      }
+
+      #exit-simulation {
+        bottom: 20px;
+        right: 20px;
+      }
+
+      #toggle-fullscreen {
+        top: 20px;
+        right: 20px;
+      }
+
+      #exit-simulation:hover,
+      #toggle-fullscreen:hover {
+        background-color: rgba(255, 0, 0, 0.3);
+      }
+
+      /* Notes styles */
+      .notes-section {
+        margin-bottom: 25px;
+      }
+
+      .notes-heading {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #ccc;
+        color: #333;
+      }
+
+      .notes-subheading {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px 0;
+        padding: 5px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        cursor: pointer;
+        color: #333;
+        transition: background-color 0.2s;
+      }
+
+      .notes-subheading:hover {
+        background-color: #e0e0e0;
+      }
+
+      .target-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+      }
+
+      .target-profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ccc;
+        margin-right: 15px;
+      }
+
+      .target-info {
+        flex-grow: 1;
+      }
+
+      .target-info h4 {
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .target-info-item {
+        display: flex;
+        font-size: 12px;
+        margin-bottom: 5px;
+        color: #555;
+      }
+
+      .info-label {
+        font-weight: bold;
+        width: 80px;
+      }
+
+      /* Success and error messages */
+      .error-message {
+        color: #ff4136;
+      }
+
+      .success-message {
+        color: #2ecc40;
+      }
+
+      /* Game specific styles */
+      /* These will be imported from your existing CSS files */
+    </style>
+
+    <!-- Game specific styles -->
+    <link rel="stylesheet" href="../css/desktop.css" />
+    <link rel="stylesheet" href="../css/browser.css" />
+    <link rel="stylesheet" href="../css/notes.css" />
+    <link rel="stylesheet" href="../css/apps.css" />
+    <link rel="stylesheet" href="../css/twitter.css" />
+  </head>
+  <body>
+    <!-- Matrix background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Terminal scan line effect -->
+    <div class="terminal-effect"></div>
+
+    <!-- Content container -->
+    <div class="content-wrapper" style="position: relative; z-index: 1;">
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-brand">
+        <a href="../../index.html">PROJECT LYRA</a>
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html" class="nav-link">DASHBOARD</a>
+        <a href="challenges.html" class="nav-link">CHALLENGES</a>
+        <a href="social_engineering.html" class="nav-link active">PROFILE</a>
+        <a href="../../index.html" class="nav-link">LOGOUT</a>
+      </div>
+    </nav>
+
+    <!-- Start Screen -->
+    <div class="main-container" id="start-screen">
+      <h1 class="simulator-title">CHATTRAP: SOCIAL ENGINEERING SIMULATOR</h1>
+      <h2 class="simulator-subtitle">
+        Can you identify the impostor before it's too late?
+      </h2>
+
+      <div class="mission-container">
+        <h2 class="mission-heading">MISSION BRIEFING</h2>
+
+        <p class="mission-text">Welcome, agent.</p>
+
+        <p class="mission-text">
+          Your mission is to gain access to the target's account.
+        </p>
+
+        <p class="mission-text">
+          You have the username, but not the password. The only way in is
+          through password recovery — and the answers to the security questions
+          are hidden somewhere in the target's online presence.
+        </p>
+
+        <p class="mission-text">Use your resources wisely.</p>
+
+        <p class="mission-text">
+          Fail, and the target will be alerted.<br />
+          Succeed, and you'll have full access.
+        </p>
+
+        <div class="role-container">
+          <h3 class="role-heading">YOUR ROLE</h3>
+          <p class="role-text">
+            You are an infiltrator assigned to investigate Bill Baits, an
+            employee at NeuroTech Solutions. Your objective: find the password
+            before the window of opportunity closes.
+          </p>
+          <p class="role-text">Be fast. Be subtle. Don't get caught.</p>
+        </div>
+
+        <div class="start-button-container">
+          <button id="start-simulation">START MISSION</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop Simulation (visible in both fullscreen and normal modes) -->
+    <div id="simulation-container">
+      <div class="desktop">
+        <div class="desktop-icons">
+          <div class="icon" id="chrome-icon">
+            <img src="../../assets/icons/chrome.png" alt="Chrome" />
+            <span>Chrome</span>
+          </div>
+          <div class="icon" id="notes-icon">
+            <img src="../../assets/icons/notes.png" alt="Notes" />
+            <span>Notes</span>
+          </div>
+          <div class="icon" id="vpn-icon">
+            <img src="../../assets/icons/vpn.png" alt="VPN" />
+            <span>VPN</span>
+          </div>
+          <div class="icon" id="stealth-icon">
+            <img src="../../assets/icons/stealth.png" alt="Stealth" />
+            <span>Stealth App</span>
+          </div>
+          <div class="icon" id="recycle-icon">
+            <img src="../../assets/icons/recycle.png" alt="Recycle Bin" />
+            <span>Recycle Bin</span>
+          </div>
+        </div>
+
+        <!-- Chrome Browser Window -->
+        <div class="window" id="chrome-window">
+          <div class="window-header">
+            <div class="window-title">Google - Google Chrome</div>
+            <div class="window-controls">
+              <span class="minimize">—</span>
+              <span class="maximize">□</span>
+              <span class="close">×</span>
+            </div>
+          </div>
+
+          <!-- Browser tabs with add new tab button - moved to top -->
+          <div class="browser-tabs">
+            <div class="tab active-tab" data-page="google">
+              <span>Google</span>
+              <span class="tab-close">×</span>
+            </div>
+            <div class="new-tab">
+              <span>+</span>
+            </div>
+          </div>
+
+          <div class="browser-toolbar">
+            <div class="browser-buttons">
+              <span class="browser-back">◀</span>
+              <span class="browser-forward">▶</span>
+              <span class="browser-refresh">↻</span>
+            </div>
+            <div class="address-bar">
+              <span class="https-lock">🔒</span>
+              <input
+                type="text"
+                id="address-input"
+                value="https://www.google.com/"
+                readonly
+              />
+            </div>
+          </div>
+
+          <!-- Google Navigation Bar -->
+          <div class="google-navbar">
+            <div class="google-nav-links">
+              <a href="#" class="google-nav-link active">Search</a>
+              <a href="#" class="google-nav-link">Images</a>
+              <a href="#" class="google-nav-link">Maps</a>
+              <a href="#" class="google-nav-link">Play</a>
+              <a href="#" class="google-nav-link">YouTube</a>
+              <a href="#" class="google-nav-link">News</a>
+              <a href="#" class="google-nav-link">Gmail</a>
+              <a href="#" class="google-nav-link">Drive</a>
+              <a href="#" class="google-nav-link">Calendar</a>
+              <a href="#" class="google-nav-link">More</a>
+            </div>
+          </div>
+          <div class="browser-content">
+            <!-- Google Homepage -->
+            <div class="browser-page" id="google-page">
+              <div class="google-homepage">
+                <img
+                  src="../../assets/images/google-logo.png"
+                  alt="Google"
+                  class="google-logo"
+                />
+                <div class="google-search-box">
+                  <input
+                    type="text"
+                    class="google-search-input"
+                    id="google-search-input"
+                    placeholder="Search Google or type a URL"
+                  />
+                </div>
+                <div class="google-search-buttons">
+                  <button class="google-search-btn">Google Search</button>
+                  <button class="google-search-btn">I'm Feeling Lucky</button>
+                </div>
+                <div class="site-shortcuts">
+                  <div class="shortcut-item">
+                    <a href="#" class="socialconnect-shortcut">
+                      <div class="shortcut-icon">
+                        <img
+                          src="../../assets/images/social-logo.png"
+                          alt="SocialConnect"
+                        />
+                      </div>
+                      <span>SocialConnect</span>
+                    </a>
+                  </div>
+                  <div class="shortcut-item">
+                    <a href="#" class="shortcut-link" data-site="twitter">
+                      <div class="shortcut-icon">
+                        <img
+                          src="../../assets/images/twitter-logo.png"
+                          alt="Twitter"
+                        />
+                      </div>
+                      <span>Twitter</span>
+                    </a>
+                  </div>
+                  <div class="shortcut-item">
+                    <a href="#" class="shortcut-link" data-site="instagram">
+                      <div class="shortcut-icon">
+                        <img
+                          src="../../assets/images/instagram-logo.png"
+                          alt="Instagram"
+                        />
+                      </div>
+                      <span>Instagram</span>
+                    </a>
+                  </div>
+                  <div class="shortcut-item">
+                    <a href="#" class="shortcut-link" data-site="facebook">
+                      <div class="shortcut-icon">
+                        <img
+                          src="../../assets/images/facebook-logo.png"
+                          alt="Facebook"
+                        />
+                      </div>
+                      <span>Facebook</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Login page (hidden initially) -->
+            <div class="browser-page hidden" id="login-page">
+              <div class="login-container">
+                <div class="login-logo">
+                  <img
+                    src="../../assets/images/social-logo.png"
+                    alt="SocialConnect"
+                  />
+                </div>
+                <h2>SocialConnect</h2>
+                <div class="login-form">
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" value="target_user" disabled />
+                  </div>
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password-input" />
+                  </div>
+                  <button id="login-button">Log In</button>
+                  <button
+                    id="forgot-password-button"
+                    class="forgot-password disabled"
+                  >
+                    Forgot Password?
+                  </button>
+                  <div id="login-message"></div>
+                </div>
+              </div>
+            </div>
+            <div class="browser-page hidden" id="twitter-page">
+              <div class="social-header twitter-header">
+                <h2>Twitter</h2>
+              </div>
+              <div class="profile-container">
+                <div class="profile-header">
+                  <div class="profile-avatar">
+                    <img
+                      src="../../assets/images/bill-baits.jpg"
+                      alt="Bill Baits"
+                    />
+                  </div>
+                  <div class="profile-info">
+                    <h3>Bill Baits</h3>
+                    <p>@target_user</p>
+                    <p>
+                      Just a regular person living in Lakeview. Love my dog Max
+                      and the color blue!
+                    </p>
+                  </div>
+                </div>
+                <div class="tweet">
+                  <p>
+                    Nothing beats going back to Lakeview, where it all began.
+                    #hometown #memories
+                  </p>
+                  <span class="timestamp">2 days ago</span>
+                </div>
+                <div class="tweet">
+                  <p>
+                    Had dinner with my childhood friend Sam yesterday. Some
+                    friendships never change! #BFFs
+                  </p>
+                  <span class="timestamp">1 week ago</span>
+                </div>
+                <div class="tweet">
+                  <p>Max loves his new toy! He's such a good boy. #DogLife</p>
+                  <span class="timestamp">2 weeks ago</span>
+                </div>
+              </div>
+            </div>
+            <div class="browser-page hidden" id="instagram-page">
+              <div class="social-header instagram-header">
+                <h2>Instagram</h2>
+              </div>
+              <div class="profile-container">
+                <div class="profile-header">
+                  <div class="profile-avatar">
+                    <img
+                      src="../../assets/images/bill-baits.jpg"
+                      alt="Bill Baits"
+                    />
+                  </div>
+                  <div class="profile-info">
+                    <h3>Bill Baits</h3>
+                    <p>@target_user</p>
+                    <p>Living my best life with Max 🐶</p>
+                  </div>
+                </div>
+                <div class="instagram-grid">
+                  <div class="instagram-post">
+                    <img
+                      src="../../assets/images/dog-photo.png"
+                      alt="Dog Photo"
+                    />
+                    <p>Max enjoying the sunset at Lakeview Park! #DogLife</p>
+                    <span class="location">Lakeview Park</span>
+                  </div>
+                  <div class="instagram-post">
+                    <img
+                      src="../../assets/images/suit-photo.png"
+                      alt="Blue Suit Photo"
+                    />
+                    <p>
+                      Wearing my favorite color for my best friend's wedding!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="browser-page hidden" id="facebook-page">
+              <div class="social-header facebook-header">
+                <h2>Facebook</h2>
+              </div>
+              <div class="profile-container">
+                <div class="profile-header">
+                  <div class="profile-avatar">
+                    <img
+                      src="../../assets/images/bill-baits.jpg"
+                      alt="Bill Baits"
+                    />
+                  </div>
+                  <div class="profile-info">
+                    <h3>Bill Baits</h3>
+                    <p>Lives in: Lakeview</p>
+                    <p>From: Lakeview</p>
+                  </div>
+                </div>
+                <div class="facebook-post">
+                  <p>Childhood friends forever: Me & Sam! #ThrowbackThursday</p>
+                  <img
+                    src="../../assets/images/friends-photo.png"
+                    alt="Friends Photo"
+                  />
+                  <div class="post-meta">
+                    <span>Tagged: Sam Johnson</span>
+                    <span class="timestamp">3 months ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="browser-page hidden" id="password-recovery-page">
+              <div class="recovery-container">
+                <h2>Password Recovery</h2>
+                <p>
+                  Please answer the security questions to recover your password.
+                </p>
+                <div id="security-questions">
+                  <!-- Security questions will be dynamically added here -->
+                </div>
+                <div class="recovery-actions">
+                  <button id="submit-answers-btn">Submit Answers</button>
+                  <div id="recovery-message"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes App Window -->
+        <div class="window" id="notes-window">
+          <div class="window-header">
+            <div class="window-title">Notes</div>
+            <div class="window-controls">
+              <span class="minimize">—</span>
+              <span class="maximize">□</span>
+              <span class="close">×</span>
+            </div>
+          </div>
+          <div class="notes-content">
+            <!-- Main Notes List -->
+            <div id="main-notes">
+              <!-- Mission Details Section -->
+              <div class="notes-section">
+                <h3 class="notes-heading">MY NOTES</h3>
+                <div class="notes-subheading" id="mission-note">
+                  MISSION DETAILS
+                </div>
+                <div class="notes-subheading" id="guide-note">
+                  OPERATION GUIDE
+                </div>
+              </div>
+            </div>
+
+            <!-- Mission Details Note (Hidden initially) -->
+            <div id="mission-details" class="note-content hidden">
+              <div class="note-header">
+                <h3>MISSION DETAILS</h3>
+                <button class="back-button">← Back</button>
+              </div>
+              <div class="note-body">
+                <div class="target-profile">
+                  <img
+                    src="../../assets/images/bill-baits.jpg"
+                    alt="Bill Baits"
+                  />
+                  <div class="target-info">
+                    <h4>Bill Baits</h4>
+                    <div class="target-info-item">
+                      <span class="info-label">Username:</span>
+                      <span>target_user</span>
+                    </div>
+                    <div class="target-info-item">
+                      <span class="info-label">Company:</span>
+                      <span>NeuroTech Solutions</span>
+                    </div>
+                    <div class="target-info-item">
+                      <span class="info-label">Position:</span>
+                      <span>Senior Developer</span>
+                    </div>
+                    <div class="target-info-item">
+                      <span class="info-label">Objective:</span>
+                      <span>Access SocialConnect account</span>
+                    </div>
+                  </div>
+                </div>
+                <ul>
+                  <li><strong>TARGET:</strong> Bill Baits (@target_user)</li>
+                  <li>
+                    <strong>OBJECTIVE:</strong> Access SocialConnect account
+                  </li>
+                  <li>
+                    <strong>INTELLIGENCE:</strong> Target has information about
+                    Project Neptune in private messages
+                  </li>
+                  <li>
+                    <strong>APPROACH:</strong> Use password recovery via
+                    security questions
+                  </li>
+                  <li>
+                    <strong>DEADLINE:</strong> Mission must be completed today
+                    (2025-08-09)
+                  </li>
+                  <li>
+                    <strong>STATUS:</strong> Authorization granted for
+                    infiltration
+                  </li>
+                </ul>
+                <p style="margin-top: 20px; font-style: italic">
+                  This target has valuable information about Project Neptune in
+                  their private messages. You need to access their SocialConnect
+                  account to retrieve this information. Use OSINT techniques to
+                  gather intelligence from their social media presence.
+                </p>
+              </div>
+            </div>
+
+            <!-- Guide Note (Hidden initially) -->
+            <div id="guide-details" class="note-content hidden">
+              <div class="note-header">
+                <h3>OPERATION GUIDE</h3>
+                <button class="back-button">← Back</button>
+              </div>
+              <div class="note-body">
+                <h4>SOCIAL ENGINEERING GUIDELINES</h4>
+                <ul>
+                  <li>
+                    <strong>ACTIVATE VPN BEFORE STARTING!</strong>
+                    <ul>
+                      <li>→ Double-click VPN icon to hide your IP</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>SEARCH TARGET'S SOCIAL MEDIA</strong>
+                    <ul>
+                      <li>→ Twitter</li>
+                      <li>→ Instagram</li>
+                      <li>→ Facebook</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>LOOK FOR:</strong>
+                    <ul>
+                      <li>→ Pet names in photos/captions</li>
+                      <li>→ Locations (hometown, travel spots)</li>
+                      <li>→ Favorite colors, foods, teams</li>
+                      <li>→ Friends mentioned frequently</li>
+                      <li>→ Important dates</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>BEFORE USING "FORGOT PASSWORD"</strong>
+                    <ul>
+                      <li>
+                        → Run Stealth App first! (prevents target notification)
+                      </li>
+                      <li>→ You only have 5 MINUTES after activation</li>
+                      <li>→ Must complete recovery before timer expires</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <strong>SECURITY QUESTIONS USUALLY ASK ABOUT:</strong>
+                    <ul>
+                      <li>→ Pets</li>
+                      <li>→ Childhood details</li>
+                      <li>→ Favorite things</li>
+                      <li>→ Birthplace</li>
+                    </ul>
+                  </li>
+                </ul>
+                <p
+                  class="warning"
+                  style="color: #ff4136; font-weight: bold; margin-top: 20px"
+                >
+                  WARNING: 3 wrong attempts = LOCKED OUT
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VPN App Window -->
+        <div class="window" id="vpn-window">
+          <div class="window-header">
+            <div class="window-title">🛡️ SecureVPN Pro</div>
+            <div class="window-controls">
+              <span class="minimize">—</span>
+              <span class="maximize">□</span>
+              <span class="close">×</span>
+            </div>
+          </div>
+          <div class="vpn-content">
+            <div class="vpn-header">
+              <div class="vpn-logo">
+                <div class="shield-icon">🛡️</div>
+                <h3>SecureVPN Pro</h3>
+              </div>
+              <div class="vpn-premium-badge">PREMIUM</div>
+            </div>
+
+            <div class="vpn-main-status">
+              <div class="connection-circle" id="connection-circle">
+                <div class="pulse-ring" id="pulse-ring"></div>
+                <div class="connection-icon" id="connection-icon">🔒</div>
+              </div>
+              <div class="vpn-status-info">
+                <h4 id="vpn-main-status-text">Disconnected</h4>
+                <p id="vpn-status-description">Your connection is not secure</p>
+              </div>
+            </div>
+
+            <div class="vpn-stats" id="vpn-stats">
+              <div class="stat-item">
+                <span class="stat-label">Connection Status:</span>
+                <span class="stat-value" id="connection-status"
+                  >Not Protected</span
+                >
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">IP Address:</span>
+                <span class="stat-value" id="current-ip">192.168.1.1</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Encryption:</span>
+                <span class="stat-value" id="encryption-type">AES-256</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Protocol:</span>
+                <span class="stat-value" id="protocol-type">OpenVPN</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Speed:</span>
+                <span class="stat-value" id="connection-speed">--</span>
+              </div>
+            </div>
+            <input type="hidden" id="vpn-location" value="secure-server-1" />
+
+            <div class="vpn-actions">
+              <button id="vpn-connect-button" class="vpn-main-button">
+                <span class="button-text">Connect</span>
+                <span class="button-icon">⚡</span>
+              </button>
+              <div class="vpn-quick-actions">
+                <button class="quick-action-btn" id="kill-switch-btn">
+                  <span>🛑</span> Kill Switch
+                </button>
+                <button class="quick-action-btn" id="auto-connect-btn">
+                  <span>🔄</span> Auto-Connect
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stealth App Window -->
+        <div class="window" id="stealth-window">
+          <div class="window-header">
+            <div class="window-title">🕵️ Stealth Guard Pro</div>
+            <div class="window-controls">
+              <span class="minimize">—</span>
+              <span class="maximize">□</span>
+              <span class="close">×</span>
+            </div>
+          </div>
+          <div class="stealth-content">
+            <div class="stealth-header">
+              <div class="stealth-logo">
+                <div class="shield-icon">🕵️</div>
+                <h3>Stealth Guard Pro</h3>
+              </div>
+              <div class="stealth-badge">ADVANCED</div>
+            </div>
+
+            <div class="stealth-main-status">
+              <div class="stealth-circle" id="stealth-circle">
+                <div class="stealth-pulse-ring" id="stealth-pulse-ring"></div>
+                <div class="stealth-icon" id="stealth-main-icon">🔔</div>
+              </div>
+              <div class="stealth-status-info">
+                <h4 id="stealth-main-status-text">Notifications Enabled</h4>
+                <p id="stealth-description-text">
+                  System notifications are currently active
+                </p>
+              </div>
+            </div>
+
+            <div class="stealth-features">
+              <div class="feature-item">
+                <span class="feature-icon">🔕</span>
+                <div class="feature-info">
+                  <span class="feature-label">Notification Blocking</span>
+                  <span class="feature-status" id="blocking-status"
+                    >Disabled</span
+                  >
+                </div>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">⏱️</span>
+                <div class="feature-info">
+                  <span class="feature-label">Duration</span>
+                  <span class="feature-status">5 Minutes</span>
+                </div>
+              </div>
+              <div class="feature-item">
+                <span class="feature-icon">🛡️</span>
+                <div class="feature-info">
+                  <span class="feature-label">Protection</span>
+                  <span class="feature-status">System-wide</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="stealth-description">
+              <div class="description-header">
+                <span class="description-icon">ℹ️</span>
+                <h4>How It Works</h4>
+              </div>
+              <p>
+                When activated, Stealth Guard Pro temporarily disables all
+                system notifications, ensuring complete privacy during sensitive
+                operations.
+              </p>
+              <div class="warning-box">
+                <span class="warning-icon">⚠️</span>
+                <p>Active for 5 minutes to maintain system security</p>
+              </div>
+            </div>
+
+            <div class="stealth-timer hidden" id="stealth-timer">
+              <div class="timer-wrapper">
+                <div class="timer-bar-container">
+                  <div class="timer-bar" id="timer-bar"></div>
+                </div>
+                <div class="timer-text">
+                  <span class="timer-label">Remaining:</span>
+                  <span id="timer-value">5:00</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="stealth-actions">
+              <button id="stealth-activate-button" class="stealth-main-button">
+                <span class="button-text">Enable Stealth Mode</span>
+                <span class="button-icon">🔒</span>
+              </button>
+              <div class="action-info" id="action-info">
+                Click to temporarily disable system notifications
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recycle Bin App Window -->
+        <div class="window" id="recycle-window">
+          <div class="window-header">
+            <div class="window-title">Recycle Bin</div>
+            <div class="window-controls">
+              <span class="minimize">—</span>
+              <span class="maximize">□</span>
+              <span class="close">×</span>
+            </div>
+          </div>
+          <div class="recycle-content">
+            <h3>Recycle Bin</h3>
+            <div class="recycle-items">
+              <div class="recycle-item">
+                <span class="recycle-item-name">old_notes.txt</span>
+                <span class="recycle-item-date">Deleted: 2 days ago</span>
+              </div>
+              <div class="recycle-item">
+                <span class="recycle-item-name">passwords.docx</span>
+                <span class="recycle-item-date">Deleted: 1 week ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div class="modal" id="success-modal">
+          <div class="modal-content">
+            <h2>Mission Successful!</h2>
+            <p>
+              You've gained access to the account through careful OSINT and
+              social engineering techniques.
+            </p>
+            <p>
+              Remember: In real life, protect your personal information and use
+              strong, unique passwords with multi-factor authentication.
+            </p>
+            <button id="success-close">Close</button>
+          </div>
+        </div>
+
+        <!-- Failure Modal -->
+        <div class="modal" id="failure-modal">
+          <div class="modal-content">
+            <h2>Mission Failed!</h2>
+            <p id="failure-reason">
+              The target has been alerted to your activities and has secured
+              their accounts.
+            </p>
+            <button id="failure-close">Try Again</button>
+          </div>
+        </div>
+
+        <!-- Desktop Taskbar -->
+        <div class="taskbar">
+          <div class="start-button">
+            <img src="../../assets/icons/start.png" alt="Start" />
+          </div>
+          <div class="task-items">
+            <!-- Active window indicators will appear here -->
+          </div>
+          <div class="taskbar-right">
+            <div class="user-info">donlj</div>
+            <div class="clock" id="desktop-clock">19:02:41</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control buttons -->
+    <button id="exit-simulation" class="exit-btn">EXIT SIMULATION</button>
+    <button id="toggle-fullscreen">TOGGLE FULLSCREEN</button>
+
+    <!-- Click sound -->
+    <audio
+      id="click-sound"
+      src="../../assets/sounds/click.mp3"
+      preload="auto"
+    ></audio>
+
+    <!-- Game scripts -->
+    <script src="../../matrix.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="../js/desktop.js"></script>
+    <script src="../js/browser.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/security.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Elements
+        const startButton = document.getElementById("start-simulation");
+        const exitButton = document.getElementById("exit-simulation");
+        const toggleFullscreenButton =
+          document.getElementById("toggle-fullscreen");
+        const startScreen = document.getElementById("start-screen");
+        const simulationContainer = document.getElementById(
+          "simulation-container"
+        );
+        const navbar = document.querySelector(".navbar");
+        const googleSearchInput = document.getElementById(
+          "google-search-input"
+        );
+        const googleSearchButtons =
+          document.querySelectorAll(".google-search-btn");
+        const socialConnectShortcut = document.querySelector(
+          ".socialconnect-shortcut"
+        );
+        const shortcutLinks = document.querySelectorAll(".shortcut-link");
+        const newTabButton = document.querySelector(".new-tab");
+        const tabCloseButtons = document.querySelectorAll(".tab-close");
+        const clickSound = document.getElementById("click-sound");
+
+        // Current date
+        const currentDate = new Date("2025-08-09T19:02:41Z");
+
+        // Tab counter for unique IDs
+        let tabCounter = 1;
+
+        // State
+        let isFullscreen = false;
+        let simulationActive = false;
+
+        // Game state object
+        const gameState = {
+          vpnActive: false,
+          stealthActive: false,
+          stealthTimer: null,
+          stealthTimeLeft: 300, // 5 minutes in seconds
+          attempts: 0,
+          maxAttempts: 3,
+          username: "donlj", // Current user's login
+          currentDate: currentDate,
+        };
+
+        // Play click sound function
+        function playClickSound() {
+          if (clickSound) {
+            clickSound.currentTime = 0; // Reset sound to beginning
+            clickSound.play().catch((e) => {
+              // Catch and ignore errors related to browser autoplay policies
+              console.log("Sound play prevented by browser policy:", e);
+            });
+          }
+        }
+
+        // Add click sounds to all interactive elements
+        function addClickSoundsToElements() {
+          // Desktop icons
+          document.querySelectorAll(".icon").forEach((icon) => {
+            icon.addEventListener("click", playClickSound);
+          });
+
+          // Window controls
+          document
+            .querySelectorAll(".window-controls span")
+            .forEach((control) => {
+              control.addEventListener("click", playClickSound);
+            });
+
+          // Tabs
+          document
+            .querySelector(".browser-tabs")
+            .addEventListener("click", function (e) {
+              if (e.target.closest(".tab") || e.target.closest(".new-tab")) {
+                playClickSound();
+              }
+            });
+
+          // Buttons
+          document.querySelectorAll("button").forEach((button) => {
+            button.addEventListener("click", playClickSound);
+          });
+
+          // Browser navigation
+          document
+            .querySelectorAll(".browser-buttons span")
+            .forEach((button) => {
+              button.addEventListener("click", playClickSound);
+            });
+
+          // Shortcuts
+          document.querySelectorAll(".shortcut-item a").forEach((link) => {
+            link.addEventListener("click", playClickSound);
+          });
+
+          // Notes subheadings
+          document.querySelectorAll(".notes-subheading").forEach((heading) => {
+            heading.addEventListener("click", playClickSound);
+          });
+        }
+
+        // Initialize notes functionality
+        function initializeNotes() {
+          const missionNote = document.getElementById("mission-note");
+          const guideNote = document.getElementById("guide-note");
+          const mainNotes = document.getElementById("main-notes");
+          const missionDetails = document.getElementById("mission-details");
+          const guideDetails = document.getElementById("guide-details");
+          const backButtons = document.querySelectorAll(".back-button");
+
+          // Mission note click
+          if (missionNote) {
+            missionNote.addEventListener("click", function () {
+              playClickSound();
+              mainNotes.classList.add("hidden");
+              missionDetails.classList.remove("hidden");
+            });
+          }
+
+          // Guide note click
+          if (guideNote) {
+            guideNote.addEventListener("click", function () {
+              playClickSound();
+              mainNotes.classList.add("hidden");
+              guideDetails.classList.remove("hidden");
+            });
+          }
+
+          // Back buttons
+          backButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              playClickSound();
+              missionDetails.classList.add("hidden");
+              guideDetails.classList.add("hidden");
+              mainNotes.classList.remove("hidden");
+            });
+          });
+        }
+
+        // Initialize all event listeners
+        initializeTabs();
+        initializeShortcuts();
+        initializeNotes();
+
+        // Add click sounds
+        addClickSoundsToElements();
+
+        // Start simulation button
+        startButton.addEventListener("click", function () {
+          playClickSound();
+          startSimulation(true); // Start in fullscreen
+        });
+
+        // Exit simulation button
+        exitButton.addEventListener("click", function () {
+          playClickSound();
+          if (
+            confirm(
+              "Are you sure you want to exit the simulation? Your progress will be lost."
+            )
+          ) {
+            exitSimulation();
+          }
+        });
+
+        // Toggle fullscreen button
+        toggleFullscreenButton.addEventListener("click", function () {
+          playClickSound();
+          toggleFullscreen();
+        });
+
+        // Initialize tab close functionality
+        function initializeTabs() {
+          // Handle existing tabs
+          tabCloseButtons.forEach((button) => {
+            button.addEventListener("click", function (e) {
+              e.stopPropagation();
+              playClickSound();
+              const tab = this.closest(".tab");
+              if (tab) {
+                closeTab(tab);
+              }
+            });
+          });
+
+          // Handle tab clicks for switching
+          document.querySelectorAll(".tab").forEach((tab) => {
+            tab.addEventListener("click", function (e) {
+              if (!e.target.classList.contains("tab-close")) {
+                playClickSound();
+                switchToTab(tab);
+              }
+            });
+          });
+
+          // New tab button
+          if (newTabButton) {
+            newTabButton.addEventListener("click", function () {
+              playClickSound();
+              createNewTab();
+            });
+          }
+        }
+
+        // Initialize shortcuts
+        function initializeShortcuts() {
+          // SocialConnect shortcut
+          if (socialConnectShortcut) {
+            socialConnectShortcut.addEventListener("click", function (e) {
+              e.preventDefault();
+              playClickSound();
+              navigateToSocialConnect();
+            });
+          }
+
+          // Other shortcuts (Twitter, Instagram, Facebook)
+          shortcutLinks.forEach((link) => {
+            link.addEventListener("click", function (e) {
+              e.preventDefault();
+              playClickSound();
+              const site = this.getAttribute("data-site");
+
+              if (site === "twitter") {
+                if (gameState.vpnActive) {
+                  navigateToTwitter();
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              } else if (site === "instagram") {
+                if (gameState.vpnActive) {
+                  navigateToInstagram();
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              } else if (site === "facebook") {
+                if (gameState.vpnActive) {
+                  navigateToFacebook();
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              }
+            });
+          });
+        }
+
+        // Function to create a new browser tab
+        function createNewTab() {
+          tabCounter++;
+          const tabId = `tab-${tabCounter}`;
+
+          // Create new tab
+          const newTab = document.createElement("div");
+          newTab.className = "tab";
+          newTab.dataset.page = "google";
+          newTab.dataset.id = tabId;
+          newTab.innerHTML = `
+                    <span>New Tab</span>
+                    <span class="tab-close">×</span>
+                `;
+
+          // Insert before the + button
+          document.querySelector(".new-tab").before(newTab);
+
+          // Create new page
+          const newPage = document.createElement("div");
+          newPage.className = "browser-page";
+          newPage.id = tabId;
+          newPage.innerHTML = `
+                    <div class="google-homepage">
+                        <img src="../../assets/images/google-logo.png" alt="Google" class="google-logo">
+                        <div class="google-search-box">
+                            <input type="text" class="google-search-input tab-search-input" placeholder="Search Google or type a URL">
+                        </div>
+                        <div class="google-search-buttons">
+                            <button class="google-search-btn tab-search-btn">Google Search</button>
+                            <button class="google-search-btn">I'm Feeling Lucky</button>
+                        </div>
+                        <div class="site-shortcuts">
+                            <div class="shortcut-item">
+                                <a href="#" class="tab-socialconnect-shortcut">
+                                    <div class="shortcut-icon">
+                                        <img src="../../assets/images/social-logo.png" alt="SocialConnect">
+                                    </div>
+                                    <span>SocialConnect</span>
+                                </a>
+                            </div>
+                            <div class="shortcut-item">
+                                <a href="#" class="tab-shortcut-link" data-site="twitter">
+                                    <div class="shortcut-icon">
+                                        <img src="../../assets/images/twitter-logo.png" alt="Twitter">
+                                    </div>
+                                    <span>Twitter</span>
+                                </a>
+                            </div>
+                            <div class="shortcut-item">
+                                <a href="#" class="tab-shortcut-link" data-site="instagram">
+                                    <div class="shortcut-icon">
+                                        <img src="../../assets/images/instagram-logo.png" alt="Instagram">
+                                    </div>
+                                    <span>Instagram</span>
+                                </a>
+                            </div>
+                            <div class="shortcut-item">
+                                <a href="#" class="tab-shortcut-link" data-site="facebook">
+                                    <div class="shortcut-icon">
+                                        <img src="../../assets/images/facebook-logo.png" alt="Facebook">
+                                    </div>
+                                    <span>Facebook</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+          // Add to browser content
+          document.querySelector(".browser-content").appendChild(newPage);
+
+          // Hide all pages and deactivate all tabs
+          hideAllBrowserPages();
+          deactivateAllTabs();
+
+          // Show this page and activate this tab
+          newPage.classList.remove("hidden");
+          newTab.classList.add("active-tab");
+
+          // Add event listeners
+          newTab.addEventListener("click", function (e) {
+            if (!e.target.classList.contains("tab-close")) {
+              playClickSound();
+              switchToTab(newTab);
+            }
+          });
+
+          const closeBtn = newTab.querySelector(".tab-close");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function (e) {
+              e.stopPropagation();
+              playClickSound();
+              closeTab(newTab);
+            });
+          }
+
+          // Add search functionality to new tab
+          const searchInput = newPage.querySelector(".tab-search-input");
+          const searchBtn = newPage.querySelector(".tab-search-btn");
+          const socialConnectLink = newPage.querySelector(
+            ".tab-socialconnect-shortcut"
+          );
+          const tabShortcuts = newPage.querySelectorAll(".tab-shortcut-link");
+
+          if (searchInput) {
+            searchInput.addEventListener("keypress", function (e) {
+              if (e.key === "Enter") {
+                playClickSound();
+                handleTabSearch(searchInput.value, tabId);
+              }
+            });
+          }
+
+          if (searchBtn) {
+            searchBtn.addEventListener("click", function () {
+              playClickSound();
+              handleTabSearch(searchInput.value, tabId);
+            });
+          }
+
+          if (socialConnectLink) {
+            socialConnectLink.addEventListener("click", function (e) {
+              e.preventDefault();
+              playClickSound();
+              navigateToTabContent(
+                "login-page",
+                tabId,
+                "https://socialconnect.com/login",
+                "SocialConnect"
+              );
+            });
+          }
+
+          // Add event listeners to tab shortcuts
+          tabShortcuts.forEach((link) => {
+            link.addEventListener("click", function (e) {
+              e.preventDefault();
+              playClickSound();
+              const site = this.getAttribute("data-site");
+
+              if (site === "twitter") {
+                if (gameState.vpnActive) {
+                  navigateToTabContent(
+                    "twitter-page",
+                    tabId,
+                    "https://twitter.com/target_user",
+                    "Twitter"
+                  );
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              } else if (site === "instagram") {
+                if (gameState.vpnActive) {
+                  navigateToTabContent(
+                    "instagram-page",
+                    tabId,
+                    "https://instagram.com/target_user",
+                    "Instagram"
+                  );
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              } else if (site === "facebook") {
+                if (gameState.vpnActive) {
+                  navigateToTabContent(
+                    "facebook-page",
+                    tabId,
+                    "https://facebook.com/target_user",
+                    "Facebook"
+                  );
+                } else {
+                  showBrowserNotification(
+                    "Error: VPN must be activated to access social media sites"
+                  );
+                }
+              }
+            });
+          });
+
+          // Add click sounds to new buttons
+          newPage.querySelectorAll("button").forEach((button) => {
+            button.addEventListener("click", playClickSound);
+          });
+
+          // Update window title and address
+          document.querySelector(".window-title").textContent =
+            "New Tab - Google Chrome";
+          document.getElementById("address-input").value =
+            "https://www.google.com/";
+        }
+
+        // Add window to taskbar
+        function addToTaskbar(title, iconPath) {
+          // Play click sound
+          playClickSound();
+
+          // Check if already in taskbar
+          const existingItems = document.querySelectorAll(
+            ".task-items .task-item"
+          );
+          for (let item of existingItems) {
+            if (item.getAttribute("data-title") === title) {
+              // Already exists, just highlight it
+              existingItems.forEach((i) => i.classList.remove("active"));
+              item.classList.add("active");
+              return;
+            }
+          }
+
+          // Create new task item
+          const taskItem = document.createElement("div");
+          taskItem.className = "task-item active";
+          taskItem.setAttribute("data-title", title);
+
+          // Use icon if provided
+          if (iconPath) {
+            taskItem.innerHTML = `
+                        <img src="${iconPath}" alt="${title}" style="width:16px;height:16px;margin-right:5px;">
+                        <span>${title}</span>
+                    `;
+          } else {
+            taskItem.textContent = title;
+          }
+
+          // Add to taskbar
+          document.querySelector(".task-items").appendChild(taskItem);
+
+          // Deactivate other items
+          existingItems.forEach((item) => item.classList.remove("active"));
+
+          // Add click event
+          taskItem.addEventListener("click", function () {
+            playClickSound();
+            // Find corresponding window
+            const windowElement =
+              document.querySelector(`.window[data-title="${title}"]`) ||
+              document.getElementById(title.toLowerCase() + "-window") ||
+              document.getElementById("chrome-window"); // Default to chrome if not found
+
+            if (windowElement) {
+              // If window is active, minimize it
+              if (windowElement.classList.contains("active")) {
+                windowElement.classList.remove("active");
+                taskItem.classList.remove("active");
+              } else {
+                // Otherwise bring it to front
+                document
+                  .querySelectorAll(".window")
+                  .forEach((w) => w.classList.remove("active"));
+                windowElement.classList.add("active");
+
+                // Update taskbar
+                document
+                  .querySelectorAll(".task-item")
+                  .forEach((i) => i.classList.remove("active"));
+                taskItem.classList.add("active");
+              }
+            }
+          });
+        }
+
+        // Function to switch to a tab
+        function switchToTab(tab) {
+          // Deactivate all tabs
+          deactivateAllTabs();
+
+          // Hide all pages
+          hideAllBrowserPages();
+
+          // Activate this tab
+          tab.classList.add("active-tab");
+
+          // Show the corresponding page
+          const pageId = tab.dataset.id || tab.dataset.page + "-page";
+          const page = document.getElementById(pageId);
+          if (page) {
+            page.classList.remove("hidden");
+          }
+
+          // Update address bar
+          updateAddressBar(tab);
+
+          // Update window title
+          updateWindowTitle(tab);
+        }
+
+        // Function to close a tab
+        function closeTab(tab) {
+          const tabId = tab.dataset.id;
+          const page = document.getElementById(tabId);
+
+          // If this is the active tab, switch to the first tab
+          if (tab.classList.contains("active-tab")) {
+            const firstTab = document.querySelector(
+              ".browser-tabs .tab:not(.new-tab)"
+            );
+            if (firstTab && firstTab !== tab) {
+              switchToTab(firstTab);
+            }
+          }
+
+          // Remove tab and page
+          if (tab.parentNode) {
+            tab.parentNode.removeChild(tab);
+          }
+
+          if (page && page.parentNode) {
+            page.parentNode.removeChild(page);
+          }
+        }
+
+        // Function to deactivate all tabs
+        function deactivateAllTabs() {
+          const tabs = document.querySelectorAll(".browser-tabs .tab");
+          tabs.forEach((tab) => {
+            tab.classList.remove("active-tab");
+          });
+        }
+
+        // Function to hide all browser pages
+        function hideAllBrowserPages() {
+          const pages = document.querySelectorAll(
+            ".browser-content .browser-page"
+          );
+          pages.forEach((page) => {
+            page.classList.add("hidden");
+          });
+        }
+
+        // Function to update address bar based on active tab
+        function updateAddressBar(tab) {
+          const addressInput = document.getElementById("address-input");
+          if (!addressInput) return;
+
+          // Default to Google
+          let url = "https://www.google.com/";
+
+          // Check tab data
+          if (tab.dataset.url) {
+            url = tab.dataset.url;
+          } else if (tab.dataset.page === "google") {
+            url = "https://www.google.com/";
+          } else if (tab.dataset.page === "twitter") {
+            url = "https://twitter.com/target_user";
+          } else if (tab.dataset.page === "instagram") {
+            url = "https://instagram.com/target_user";
+          } else if (tab.dataset.page === "facebook") {
+            url = "https://facebook.com/target_user";
+          } else if (tab.dataset.page === "login") {
+            url = "https://socialconnect.com/login";
+          }
+
+          addressInput.value = url;
+        }
+
+        // Function to update window title based on active tab
+        function updateWindowTitle(tab) {
+          const titleElement = document.querySelector(".window-title");
+          if (!titleElement) return;
+
+          let title = "Google";
+
+          // Check tab data
+          if (tab.querySelector("span:first-child")) {
+            title = tab.querySelector("span:first-child").textContent;
+          } else if (tab.dataset.page === "google") {
+            title = "Google";
+          } else if (tab.dataset.page === "twitter") {
+            title = "Twitter";
+          } else if (tab.dataset.page === "instagram") {
+            title = "Instagram";
+          } else if (tab.dataset.page === "facebook") {
+            title = "Facebook";
+          } else if (tab.dataset.page === "login") {
+            title = "SocialConnect";
+          }
+
+          titleElement.textContent = title + " - Google Chrome";
+        }
+
+        // Function to handle search in a specific tab
+        function handleTabSearch(query, tabId) {
+          query = query.trim().toLowerCase();
+
+          if (
+            query.includes("socialconnect") ||
+            query.includes("social connect")
+          ) {
+            navigateToTabContent(
+              "login-page",
+              tabId,
+              "https://socialconnect.com/login",
+              "SocialConnect"
+            );
+          } else if (query.includes("twitter")) {
+            if (gameState.vpnActive) {
+              navigateToTabContent(
+                "twitter-page",
+                tabId,
+                "https://twitter.com/target_user",
+                "Twitter"
+              );
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else if (query.includes("instagram")) {
+            if (gameState.vpnActive) {
+              navigateToTabContent(
+                "instagram-page",
+                tabId,
+                "https://instagram.com/target_user",
+                "Instagram"
+              );
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else if (query.includes("facebook")) {
+            if (gameState.vpnActive) {
+              navigateToTabContent(
+                "facebook-page",
+                tabId,
+                "https://facebook.com/target_user",
+                "Facebook"
+              );
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else {
+            showBrowserNotification(
+              "No useful results found for this search query."
+            );
+          }
+        }
+
+        // Navigate to specific content in a tab
+        function navigateToTabContent(contentId, tabId, url, title) {
+          // Find the tab
+          const tab =
+            document.querySelector(`.tab[data-id="${tabId}"]`) ||
+            document.querySelector(
+              `.tab[data-page="${contentId.replace("-page", "")}"]`
+            );
+
+          if (!tab) return;
+
+          // Clone the content to the tab's page
+          const originalContent = document.getElementById(contentId);
+          const tabPage = document.getElementById(tabId);
+
+          if (originalContent && tabPage) {
+            tabPage.innerHTML = originalContent.innerHTML;
+
+            // Set tab data
+            tab.dataset.url = url;
+            tab.querySelector("span:first-child").textContent = title;
+
+            // Update address bar
+            document.getElementById("address-input").value = url;
+
+            // Update window title
+            document.querySelector(
+              ".window-title"
+            ).textContent = `${title} - Google Chrome`;
+
+            // Add event listeners if needed (for socialconnect login)
+            if (contentId === "login-page") {
+              const loginButton = tabPage.querySelector("#login-button");
+              const forgotPasswordButton = tabPage.querySelector(
+                "#forgot-password-button"
+              );
+
+              if (loginButton) {
+                loginButton.addEventListener("click", function () {
+                  playClickSound();
+                  document.getElementById("login-message").textContent =
+                    "Incorrect password. Please try again or use password recovery.";
+                  tabPage.querySelector("#password-input").value = "";
+                });
+              }
+
+              if (forgotPasswordButton) {
+                forgotPasswordButton.addEventListener("click", function () {
+                  playClickSound();
+                  if (!gameState.stealthActive) {
+                    showFailure(
+                      "You attempted password recovery without activating Stealth Mode. The target received an SMS notification and locked their account."
+                    );
+                    return;
+                  }
+
+                  // Navigate to recovery page
+                  navigateToTabContent(
+                    "password-recovery-page",
+                    tabId,
+                    "https://socialconnect.com/account-recovery",
+                    "Account Recovery"
+                  );
+
+                  // Generate security questions
+                  generateSecurityQuestions(tabPage);
+                });
+              }
+            }
+
+            // Add click sounds to all new buttons
+            tabPage.querySelectorAll("button").forEach((button) => {
+              button.addEventListener("click", playClickSound);
+            });
+          }
+        }
+
+        // Function to generate security questions
+        function generateSecurityQuestions(container) {
+          const securityQuestionsContainer =
+            container.querySelector("#security-questions") ||
+            document.getElementById("security-questions");
+
+          if (!securityQuestionsContainer) return;
+
+          const questionsData = [
+            {
+              id: "pet",
+              question: "What is the name of your pet?",
+              correctAnswer: "max",
+            },
+            {
+              id: "hometown",
+              question: "What is your hometown?",
+              correctAnswer: "lakeview",
+            },
+            {
+              id: "color",
+              question: "What is your favorite color?",
+              correctAnswer: "blue",
+            },
+            {
+              id: "friend",
+              question: "What is the name of your childhood best friend?",
+              correctAnswer: "sam",
+            },
+          ];
+
+          // Select 3 random questions
+          const selectedQuestions = shuffleArray(questionsData).slice(0, 3);
+
+          // Clear previous questions
+          securityQuestionsContainer.innerHTML = "";
+
+          // Add questions to the form
+          selectedQuestions.forEach((q) => {
+            const questionElement = document.createElement("div");
+            questionElement.className = "security-question";
+            questionElement.innerHTML = `
+                        <label for="${q.id}">${q.question}</label>
+                        <input type="text" id="${
+                          q.id
+                        }" data-correct="${q.correctAnswer.toLowerCase()}">
+                    `;
+            securityQuestionsContainer.appendChild(questionElement);
+          });
+
+          // Add submit button event listener
+          const submitButton =
+            container.querySelector("#submit-answers-btn") ||
+            document.getElementById("submit-answers-btn");
+
+          if (submitButton) {
+            submitButton.addEventListener("click", function () {
+              playClickSound();
+              checkSecurityAnswers(container);
+            });
+          }
+        }
+
+        // Check security question answers
+        function checkSecurityAnswers(container) {
+          const inputs =
+            container.querySelectorAll("#security-questions input") ||
+            document.querySelectorAll("#security-questions input");
+
+          const recoveryMessage =
+            container.querySelector("#recovery-message") ||
+            document.getElementById("recovery-message");
+
+          let allCorrect = true;
+
+          // Check each answer
+          inputs.forEach((input) => {
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = input.dataset.correct;
+
+            if (userAnswer !== correctAnswer) {
+              allCorrect = false;
+            }
+          });
+
+          gameState.attempts++;
+
+          if (allCorrect) {
+            recoveryMessage.textContent =
+              "Verification successful! Account access granted.";
+            recoveryMessage.className = "success-message";
+
+            // Show success after a brief delay
+            setTimeout(() => {
+              showSuccess();
+            }, 2000);
+          } else {
+            if (gameState.attempts >= gameState.maxAttempts) {
+              showFailure(
+                "You exceeded the maximum number of allowed password recovery attempts. The account has been locked."
+              );
+            } else {
+              recoveryMessage.textContent = `Incorrect answers. ${
+                gameState.maxAttempts - gameState.attempts
+              } attempts remaining.`;
+              recoveryMessage.className = "error-message";
+            }
+          }
+        }
+
+        // Shuffle array (Fisher-Yates algorithm)
+        function shuffleArray(array) {
+          const newArray = [...array];
+          for (let i = newArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+          }
+          return newArray;
+        }
+
+        // Function to navigate to SocialConnect
+        function navigateToSocialConnect() {
+          document.getElementById("address-input").value =
+            "https://socialconnect.com/login";
+          hideAllBrowserPages();
+          document.getElementById("login-page").classList.remove("hidden");
+          document.querySelector(".window-title").textContent =
+            "SocialConnect - Google Chrome";
+
+          // Update active tab
+          deactivateAllTabs();
+          const activeTab = document.querySelector('.tab[data-page="login"]');
+          if (!activeTab) {
+            // Create tab if it doesn't exist
+            const newTab = document.createElement("div");
+            newTab.className = "tab active-tab";
+            newTab.dataset.page = "login";
+            newTab.dataset.url = "https://socialconnect.com/login";
+            newTab.innerHTML =
+              '<span>SocialConnect</span><span class="tab-close">×</span>';
+            document.querySelector(".new-tab").before(newTab);
+
+            // Add event listeners
+            newTab.addEventListener("click", function (e) {
+              if (!e.target.classList.contains("tab-close")) {
+                playClickSound();
+                switchToTab(newTab);
+              }
+            });
+
+            const closeBtn = newTab.querySelector(".tab-close");
+            if (closeBtn) {
+              closeBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                playClickSound();
+                closeTab(newTab);
+              });
+            }
+          } else {
+            activeTab.classList.add("active-tab");
+          }
+
+          // Add to taskbar only if it doesn't exist
+          const taskbarItem = document.querySelector(
+            '.task-item[data-title="SocialConnect"]'
+          );
+          if (!taskbarItem) {
+            addToTaskbar(
+              "SocialConnect",
+              "../../assets/images/social-logo.png"
+            );
+          }
+        }
+
+        // Function to navigate to Twitter
+        function navigateToTwitter() {
+          document.getElementById("address-input").value =
+            "https://twitter.com/target_user";
+          hideAllBrowserPages();
+          document.getElementById("twitter-page").classList.remove("hidden");
+          document.querySelector(".window-title").textContent =
+            "Twitter - Google Chrome";
+
+          // Update active tab
+          deactivateAllTabs();
+          const activeTab = document.querySelector('.tab[data-page="twitter"]');
+          if (!activeTab) {
+            // Create tab if it doesn't exist
+            const newTab = document.createElement("div");
+            newTab.className = "tab active-tab";
+            newTab.dataset.page = "twitter";
+            newTab.dataset.url = "https://twitter.com/target_user";
+            newTab.innerHTML =
+              '<span>Twitter</span><span class="tab-close">×</span>';
+            document.querySelector(".new-tab").before(newTab);
+
+            // Add event listeners
+            newTab.addEventListener("click", function (e) {
+              if (!e.target.classList.contains("tab-close")) {
+                playClickSound();
+                switchToTab(newTab);
+              }
+            });
+
+            const closeBtn = newTab.querySelector(".tab-close");
+            if (closeBtn) {
+              closeBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                playClickSound();
+                closeTab(newTab);
+              });
+            }
+          } else {
+            activeTab.classList.add("active-tab");
+          }
+
+          // Add to taskbar only if it doesn't exist
+          const taskbarItem = document.querySelector(
+            '.task-item[data-title="Twitter"]'
+          );
+          if (!taskbarItem) {
+            addToTaskbar("Twitter", "../../assets/images/twitter-logo.png");
+          }
+        }
+
+        // Function to navigate to Instagram
+        function navigateToInstagram() {
+          document.getElementById("address-input").value =
+            "https://instagram.com/target_user";
+          hideAllBrowserPages();
+          document.getElementById("instagram-page").classList.remove("hidden");
+          document.querySelector(".window-title").textContent =
+            "Instagram - Google Chrome";
+
+          // Update active tab
+          deactivateAllTabs();
+          const activeTab = document.querySelector(
+            '.tab[data-page="instagram"]'
+          );
+          if (!activeTab) {
+            // Create tab if it doesn't exist
+            const newTab = document.createElement("div");
+            newTab.className = "tab active-tab";
+            newTab.dataset.page = "instagram";
+            newTab.dataset.url = "https://instagram.com/target_user";
+            newTab.innerHTML =
+              '<span>Instagram</span><span class="tab-close">×</span>';
+            document.querySelector(".new-tab").before(newTab);
+
+            // Add event listeners
+            newTab.addEventListener("click", function (e) {
+              if (!e.target.classList.contains("tab-close")) {
+                playClickSound();
+                switchToTab(newTab);
+              }
+            });
+
+            const closeBtn = newTab.querySelector(".tab-close");
+            if (closeBtn) {
+              closeBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                playClickSound();
+                closeTab(newTab);
+              });
+            }
+          } else {
+            activeTab.classList.add("active-tab");
+          }
+
+          // Add to taskbar only if it doesn't exist
+          const taskbarItem = document.querySelector(
+            '.task-item[data-title="Instagram"]'
+          );
+          if (!taskbarItem) {
+            addToTaskbar("Instagram", "../../assets/images/instagram-logo.png");
+          }
+        }
+
+        // Function to navigate to Facebook
+        function navigateToFacebook() {
+          document.getElementById("address-input").value =
+            "https://facebook.com/target_user";
+          hideAllBrowserPages();
+          document.getElementById("facebook-page").classList.remove("hidden");
+          document.querySelector(".window-title").textContent =
+            "Facebook - Google Chrome";
+
+          // Update active tab
+          deactivateAllTabs();
+          const activeTab = document.querySelector(
+            '.tab[data-page="facebook"]'
+          );
+          if (!activeTab) {
+            // Create tab if it doesn't exist
+            const newTab = document.createElement("div");
+            newTab.className = "tab active-tab";
+            newTab.dataset.page = "facebook";
+            newTab.dataset.url = "https://facebook.com/target_user";
+            newTab.innerHTML =
+              '<span>Facebook</span><span class="tab-close">×</span>';
+            document.querySelector(".new-tab").before(newTab);
+
+            // Add event listeners
+            newTab.addEventListener("click", function (e) {
+              if (!e.target.classList.contains("tab-close")) {
+                playClickSound();
+                switchToTab(newTab);
+              }
+            });
+
+            const closeBtn = newTab.querySelector(".tab-close");
+            if (closeBtn) {
+              closeBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                playClickSound();
+                closeTab(newTab);
+              });
+            }
+          } else {
+            activeTab.classList.add("active-tab");
+          }
+
+          // Add to taskbar only if it doesn't exist
+          const taskbarItem = document.querySelector(
+            '.task-item[data-title="Facebook"]'
+          );
+          if (!taskbarItem) {
+            addToTaskbar("Facebook", "../../assets/images/facebook-logo.png");
+          }
+        }
+
+        // Function to start simulation
+        function startSimulation(useFullscreen = true) {
+          // Mark simulation as active
+          simulationActive = true;
+
+          // Hide start screen, show simulation
+          startScreen.style.display = "none";
+          simulationContainer.style.display = "block";
+
+          // Hide navbar
+          navbar.style.display = "none";
+
+          // Show exit button
+          exitButton.style.display = "block";
+          toggleFullscreenButton.style.display = "block";
+
+          // Open Chrome window by default but don't add to taskbar yet
+          openWindow("chrome-window");
+
+          // Enter fullscreen if requested
+          if (useFullscreen) {
+            enterFullscreen();
+          }
+
+          // Initialize VPN and Stealth functionality
+          initVPN();
+          initStealth();
+
+          // Start clock with updated time
+          startClock();
+        }
+
+        // Function to exit simulation
+        function exitSimulation() {
+          // Mark simulation as inactive
+          simulationActive = false;
+
+          // Exit fullscreen
+          if (isFullscreen) {
+            exitFullscreenMode();
+          }
+
+          // Hide simulation, show start screen
+          simulationContainer.style.display = "none";
+          startScreen.style.display = "block";
+
+          // Show navbar
+          navbar.style.display = "flex";
+
+          // Hide control buttons
+          exitButton.style.display = "none";
+          toggleFullscreenButton.style.display = "none";
+
+          // Reset game state
+          resetGame();
+
+          // Clear taskbar
+          document.querySelector(".task-items").innerHTML = "";
+        }
+
+        // Toggle between fullscreen and windowed mode
+        function toggleFullscreen() {
+          if (isFullscreen) {
+            exitFullscreenMode();
+          } else {
+            enterFullscreen();
+          }
+        }
+
+        // Enter fullscreen mode
+        function enterFullscreen() {
+          isFullscreen = true;
+
+          // Add class to body
+          document.body.classList.add("game-active");
+
+          // Request fullscreen
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen();
+          } else if (document.documentElement.mozRequestFullScreen) {
+            document.documentElement.mozRequestFullScreen();
+          } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+          } else if (document.documentElement.msRequestFullscreen) {
+            document.documentElement.msRequestFullscreen();
+          }
+
+          // Update button text
+          toggleFullscreenButton.textContent = "EXIT FULLSCREEN";
+        }
+
+        // Exit fullscreen mode
+        function exitFullscreenMode() {
+          isFullscreen = false;
+
+          // Remove class from body
+          document.body.classList.remove("game-active");
+
+          // Exit fullscreen mode
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+
+          // Update button text
+          toggleFullscreenButton.textContent = "ENTER FULLSCREEN";
+        }
+
+        // Listen for ESC key to detect manual exit from fullscreen
+        document.addEventListener("fullscreenchange", handleFullscreenChange);
+        document.addEventListener(
+          "webkitfullscreenchange",
+          handleFullscreenChange
+        );
+        document.addEventListener(
+          "mozfullscreenchange",
+          handleFullscreenChange
+        );
+        document.addEventListener("MSFullscreenChange", handleFullscreenChange);
+
+        function handleFullscreenChange() {
+          if (
+            !document.fullscreenElement &&
+            !document.webkitFullscreenElement &&
+            !document.mozFullScreenElement &&
+            !document.msFullscreenElement
+          ) {
+            // Update our state
+            isFullscreen = false;
+            toggleFullscreenButton.textContent = "ENTER FULLSCREEN";
+            document.body.classList.remove("game-active");
+          }
+        }
+
+        // Initialize VPN functionality
+        function initVPN() {
+          const vpnConnectButton =
+            document.getElementById("vpn-connect-button");
+          const connectionCircle = document.getElementById("connection-circle");
+          const pulseRing = document.getElementById("pulse-ring");
+          const connectionIcon = document.getElementById("connection-icon");
+          const vpnMainStatusText = document.getElementById(
+            "vpn-main-status-text"
+          );
+          const vpnStatusDescription = document.getElementById(
+            "vpn-status-description"
+          );
+          const currentIp = document.getElementById("current-ip");
+          const currentLocation = document.getElementById("current-location");
+          const connectionSpeed = document.getElementById("connection-speed");
+          const locationItems = document.querySelectorAll(".location-item");
+          const vpnLocationInput = document.getElementById("vpn-location");
+
+          // No location selection needed anymore
+          if (vpnLocationInput) {
+            vpnLocationInput.value = "secure-server-1";
+          }
+
+          // Connection circle click handler
+          if (connectionCircle) {
+            connectionCircle.addEventListener("click", function () {
+              playClickSound();
+              vpnConnectButton.click();
+            });
+          }
+
+          if (vpnConnectButton) {
+            vpnConnectButton.addEventListener("click", function () {
+              playClickSound();
+
+              if (gameState.vpnActive) {
+                // Disconnect VPN
+              }
+            });
+          }
+
+              // Update connection circle
+              connectionCircle.classList.add("connected");
+              pulseRing.classList.add("active");
+              connectionIcon.textContent = "🔒";
+
+              // Update status
+              vpnMainStatusText.textContent = "Connected";
+              vpnStatusDescription.textContent =
+                "Your connection is secure and private";
+
+              // Update button
+              vpnConnectButton.classList.remove("connecting");
+              vpnConnectButton.classList.add("disconnect");
+              vpnConnectButton.querySelector(".button-text").textContent =
+                "Disconnect";
+              vpnConnectButton.querySelector(".button-icon").textContent = "🔒";
+
+              // Update stats
+              document.getElementById("connection-status").textContent =
+                "Protected";
+              currentIp.textContent =
+                "10." +
+                Math.floor(Math.random() * 255) +
+                "." +
+                Math.floor(Math.random() * 255) +
+                "." +
+                Math.floor(Math.random() * 255);
+              document.getElementById("encryption-type").textContent =
+                "AES-256 (Active)";
+              document.getElementById("protocol-type").textContent =
+                "OpenVPN (UDP)";
+              connectionSpeed.textContent =
+                Math.floor(40 + Math.random() * 20) + " Mbps";
+
+              // Legacy compatibility
+              const vpnStatusIndicator = document.getElementById(
+                "vpn-status-indicator"
+              );
+              const vpnStatusText = document.getElementById("vpn-status-text");
+              if (vpnStatusIndicator) {
+                vpnStatusIndicator.classList.remove("disconnected");
+                /* VPN logic moved to app.js */
+            vpnConnectButton.classList.remove("disconnect", "connecting");
+            vpnConnectButton.querySelector(".button-text").textContent =
+              "Connect";
+            vpnConnectButton.querySelector(".button-icon").textContent = "⚡";
+
+            // Update stats
+            document.getElementById("connection-status").textContent =
+              "Not Protected";
+            currentIp.textContent = "192.168.1.1";
+            document.getElementById("encryption-type").textContent = "AES-256";
+            document.getElementById("protocol-type").textContent = "OpenVPN";
+            connectionSpeed.textContent = "--";
+
+            // Legacy compatibility
+            const vpnStatusIndicator = document.getElementById(
+              "vpn-status-indicator"
+            );
+            const vpnStatusText = document.getElementById("vpn-status-text");
+            if (vpnStatusIndicator) {
+              vpnStatusIndicator.classList.remove("connected");
+              vpnStatusIndicator.classList.add("disconnected");
+            }
+            if (vpnStatusText) {
+              vpnStatusText.textContent = "Disconnected";
+            }
+          }
+
+          // Initialize quick action buttons
+          const killSwitchBtn = document.getElementById("kill-switch-btn");
+          const autoConnectBtn = document.getElementById("auto-connect-btn");
+
+          if (killSwitchBtn) {
+            killSwitchBtn.addEventListener("click", function () {
+              playClickSound();
+              this.classList.toggle("active");
+
+              if (this.classList.contains("active")) {
+                this.innerHTML = "<span>🛑</span> Kill Switch: ON";
+              } else {
+                this.innerHTML = "<span>🛑</span> Kill Switch";
+              }
+            });
+          }
+
+          if (autoConnectBtn) {
+            autoConnectBtn.addEventListener("click", function () {
+              playClickSound();
+              this.classList.toggle("active");
+
+              if (this.classList.contains("active")) {
+                this.innerHTML = "<span>🔄</span> Auto: ON";
+              } else {
+                this.innerHTML = "<span>🔄</span> Auto-Connect";
+              }
+            });
+          }
+        }
+
+        // Initialize Stealth functionality
+        function initStealth() {
+          const stealthActivateButton = document.getElementById(
+            "stealth-activate-button"
+          );
+          const stealthCircle = document.getElementById("stealth-circle");
+          const stealthPulseRing =
+            document.getElementById("stealth-pulse-ring");
+          const stealthMainIcon = document.getElementById("stealth-main-icon");
+          const stealthMainStatusText = document.getElementById(
+            "stealth-main-status-text"
+          );
+          const stealthDescriptionText = document.getElementById(
+            "stealth-description-text"
+          );
+          const blockingStatus = document.getElementById("blocking-status");
+          const actionInfo = document.getElementById("action-info");
+          const stealthTimer = document.getElementById("stealth-timer");
+          const timerBar = document.getElementById("timer-bar");
+          const timerValue = document.getElementById("timer-value");
+
+          function updateInterface(isActive) {
+            const buttonText =
+              stealthActivateButton.querySelector(".button-text");
+            const buttonIcon =
+              stealthActivateButton.querySelector(".button-icon");
+
+            if (isActive) {
+              stealthCircle.classList.add("active");
+              stealthPulseRing.classList.add("active");
+              stealthMainIcon.textContent = "🔕";
+              stealthMainStatusText.textContent = "Stealth Mode Active";
+              stealthDescriptionText.textContent =
+                "All system notifications are blocked";
+              blockingStatus.textContent = "Active";
+              blockingStatus.style.color = "#8e44ad";
+              buttonText.textContent = "Disable Stealth Mode";
+              buttonIcon.textContent = "🔓";
+              stealthActivateButton.classList.add("active");
+              actionInfo.textContent = "Click to restore system notifications";
+              stealthTimer.classList.remove("hidden");
+            } else {
+              stealthCircle.classList.remove("active");
+              stealthPulseRing.classList.remove("active");
+              stealthMainIcon.textContent = "🔔";
+              stealthMainStatusText.textContent = "Notifications Enabled";
+              stealthDescriptionText.textContent =
+                "System notifications are currently active";
+              blockingStatus.textContent = "Disabled";
+              blockingStatus.style.color = "#64748b";
+              buttonText.textContent = "Enable Stealth Mode";
+              buttonIcon.textContent = "🔒";
+              stealthActivateButton.classList.remove("active");
+              actionInfo.textContent =
+                "Click to temporarily disable system notifications";
+              stealthTimer.classList.add("hidden");
+            }
+          }
+
+          // Initialize with inactive state
+          updateInterface(false);
+
+          if (stealthActivateButton) {
+            stealthActivateButton.addEventListener("click", function () {
+              playClickSound();
+
+              if (gameState.stealthActive) {
+                // Already active, show feedback
+                stealthCircle.style.transform = "scale(0.95)";
+                setTimeout(() => {
+                  stealthCircle.style.transform = "";
+                }, 200);
+                return;
+              }
+
+              // Activate Stealth with animation
+              stealthActivateButton.classList.add("activating");
+              stealthMainStatusText.textContent = "Activating Stealth Mode...";
+              stealthDescriptionText.textContent =
+                "Disabling system notifications...";
+              stealthCircle.classList.add("initializing");
+
+              setTimeout(() => {
+                // Activate Stealth
+                gameState.stealthActive = true;
+                stealthCircle.classList.remove("initializing");
+                updateInterface(true);
+
+                // Reset timer
+                gameState.stealthTimeLeft = 300;
+                updateStealthTimer();
+
+                // Enable forgot password button
+                const forgotPasswordButton = document.getElementById(
+                  "forgot-password-button"
+                );
+                if (forgotPasswordButton) {
+                  forgotPasswordButton.classList.remove("disabled");
+                }
+              }, 1500);
+
+              // Start timer countdown
+              gameState.stealthTimer = setInterval(function () {
+                gameState.stealthTimeLeft--;
+                updateStealthTimer();
+
+                if (gameState.stealthTimeLeft <= 0) {
+                  clearInterval(gameState.stealthTimer);
+                  deactivateStealth();
+                }
+              }, 1000);
+
+              function updateStealthTimer() {
+                const minutes = Math.floor(gameState.stealthTimeLeft / 60);
+                const seconds = gameState.stealthTimeLeft % 60;
+                timerValue.textContent = `${minutes}:${seconds
+                  .toString()
+                  .padStart(2, "0")}`;
+
+                // Update timer bar
+                const percentage = (gameState.stealthTimeLeft / 300) * 100;
+                timerBar.style.width = `${percentage}%`;
+
+                // Change gradient colors as time runs out
+                if (percentage < 20) {
+                  timerBar.style.background =
+                    "linear-gradient(90deg, #ff3333, #ff6666)";
+                } else if (percentage < 50) {
+                  timerBar.style.background =
+                    "linear-gradient(90deg, #ffcc00, #ffd633)";
+                } else {
+                  timerBar.style.background =
+                    "linear-gradient(90deg, #8e44ad, #9b59b6)";
+                }
+              }
+
+              function deactivateStealth() {
+                gameState.stealthActive = false;
+                updateInterface(false);
+
+                // Disable forgot password button
+                const forgotPasswordButton = document.getElementById(
+                  "forgot-password-button"
+                );
+                if (forgotPasswordButton) {
+                  forgotPasswordButton.classList.add("disabled");
+                }
+
+                // Show timeout message if in recovery
+                const recoveryPage = document.getElementById(
+                  "password-recovery-page"
+                );
+                if (
+                  recoveryPage &&
+                  !recoveryPage.classList.contains("hidden")
+                ) {
+                  showFailure(
+                    "Stealth mode expired! System notifications have been restored."
+                  );
+                }
+              }
+            });
+          }
+        }
+
+        // Start clock with current time
+        function startClock() {
+          // Set to the specified date and time
+          gameState.currentDate = new Date("2025-08-09T19:27:01Z");
+
+          // Update immediately
+          updateClock();
+
+          // Then update every second
+          setInterval(updateClock, 1000);
+        }
+
+        // Update clock
+        function updateClock() {
+          const hours = gameState.currentDate
+            .getHours()
+            .toString()
+            .padStart(2, "0");
+          const minutes = gameState.currentDate
+            .getMinutes()
+            .toString()
+            .padStart(2, "0");
+          const seconds = gameState.currentDate
+            .getSeconds()
+            .toString()
+            .padStart(2, "0");
+
+          const clockElement = document.getElementById("desktop-clock");
+          if (clockElement) {
+            clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+          }
+
+          // Add 1 second for next update
+          gameState.currentDate.setSeconds(
+            gameState.currentDate.getSeconds() + 1
+          );
+        }
+
+        // Google search functionality
+        if (googleSearchInput) {
+          googleSearchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              playClickSound();
+              handleGoogleSearch();
+            }
+          });
+        }
+
+        googleSearchButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            playClickSound();
+            handleGoogleSearch();
+          });
+        });
+
+        function handleGoogleSearch() {
+          const query = googleSearchInput.value.trim().toLowerCase();
+
+          if (query.includes("bill baits")) {
+            // Create search results for Bill Baits
+            const searchResults = `
+              <div class="google-search-results" style="padding: 20px; font-family: Arial, sans-serif;">
+                <div class="search-stats" style="color: #70757a; font-size: 14px; margin-bottom: 12px;">
+                  About 4 results (0.45 seconds)
+                </div>
+                <div class="search-result" style="margin-bottom: 28px;">
+                  <a href="#" class="result-title" style="color: #1a0dab; font-size: 20px; text-decoration: none; display: block; margin-bottom: 6px;">Bill Baits - Wikipedia</a>
+                  <div class="result-url" style="color: #006621; font-size: 14px; margin-bottom: 6px;">https://wikipedia.org/wiki/Bill_Baits</div>
+                  <div class="result-description" style="color: #4d5156; font-size: 14px; line-height: 1.58;">Bill Baits is a renowned tech entrepreneur and philanthropist. Known for founding MaxSoft Corporation in 1995, he has been a driving force in the technology industry for over three decades...</div>
+                </div>
+                <div class="search-result" style="margin-bottom: 28px;">
+                  <a href="#" class="result-title social-link" data-platform="twitter" style="color: #1a0dab; font-size: 20px; text-decoration: none; display: block; margin-bottom: 6px;">Bill Baits (@billbaits) | Twitter</a>
+                  <div class="result-url" style="color: #006621; font-size: 14px; margin-bottom: 6px;">https://twitter.com/billbaits</div>
+                  <div class="result-description" style="color: #4d5156; font-size: 14px; line-height: 1.58;">Official Twitter account of Bill Baits. Tech enthusiast, entrepreneur, and founder of MaxSoft. Sharing thoughts on technology, innovation, and global impact. 2.1M followers...</div>
+                </div>
+                <div class="search-result" style="margin-bottom: 28px;">
+                  <a href="#" class="result-title social-link" data-platform="facebook" style="color: #1a0dab; font-size: 20px; text-decoration: none; display: block; margin-bottom: 6px;">Bill Baits - Facebook</a>
+                  <div class="result-url" style="color: #006621; font-size: 14px; margin-bottom: 6px;">https://facebook.com/BillBaits</div>
+                  <div class="result-description" style="color: #4d5156; font-size: 14px; line-height: 1.58;">Bill Baits's official Facebook page. 5.3M followers. Follow for updates on technology, philanthropy, and insights into the future of computing. Verified account ✓...</div>
+                </div>
+                <div class="search-result" style="margin-bottom: 28px;">
+                  <a href="#" class="result-title social-link" data-platform="instagram" style="color: #1a0dab; font-size: 20px; text-decoration: none; display: block; margin-bottom: 6px;">@billbaits • Instagram photos and videos</a>
+                  <div class="result-url" style="color: #006621; font-size: 14px; margin-bottom: 6px;">https://instagram.com/billbaits</div>
+                  <div class="result-description" style="color: #4d5156; font-size: 14px; line-height: 1.58;">Bill Baits (@billbaits) • 1.2M followers, 245 following • Tech visionary sharing moments from conferences, charity events, and personal life. Verified ✓...</div>
+                </div>
+              </div>`;
+            
+            document.querySelector('.browser-content').innerHTML = searchResults;
+          } else if (
+            query.includes("socialconnect") ||
+            query.includes("social connect") ||
+            query.includes("target_user")
+          ) {
+            // Navigate to SocialConnect login page
+            navigateToSocialConnect();
+          } else if (query.includes("twitter") || query.includes("tweet")) {
+            // Navigate to Twitter if VPN is active
+            if (gameState.vpnActive) {
+              navigateToTwitter();
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else if (query.includes("instagram") || query.includes("insta")) {
+            // Navigate to Instagram if VPN is active
+            if (gameState.vpnActive) {
+              navigateToInstagram();
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else if (query.includes("facebook") || query.includes("fb")) {
+            // Navigate to Facebook if VPN is active
+            if (gameState.vpnActive) {
+              navigateToFacebook();
+            } else {
+              showBrowserNotification(
+                "Error: VPN must be activated to access social media sites"
+              );
+            }
+          } else {
+            // Show a message that the search doesn't lead anywhere useful
+            showBrowserNotification(
+              "No useful results found for this search query."
+            );
+          }
+        }
+
+        // Show browser notification
+        function showBrowserNotification(message) {
+          const notification = document.createElement("div");
+          notification.className = "browser-notification";
+          notification.textContent = message;
+          notification.style.position = "absolute";
+          notification.style.bottom = "20px";
+          notification.style.left = "50%";
+          notification.style.transform = "translateX(-50%)";
+          notification.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+          notification.style.color = "white";
+          notification.style.padding = "10px 20px";
+          notification.style.borderRadius = "5px";
+          notification.style.zIndex = "1000";
+
+          document.querySelector(".browser-content").appendChild(notification);
+
+          // Remove after 3 seconds
+          setTimeout(() => {
+            notification.remove();
+          }, 3000);
+        }
+
+        // Show success modal
+        function showSuccess() {
+          document.getElementById("success-modal").classList.add("active");
+          playClickSound();
+
+          const closeBtn = document.getElementById("success-close");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+              playClickSound();
+              document
+                .getElementById("success-modal")
+                .classList.remove("active");
+              exitSimulation();
+            });
+          }
+        }
+
+        // Show failure modal
+        function showFailure(reason) {
+          document.getElementById("failure-reason").textContent = reason;
+          document.getElementById("failure-modal").classList.add("active");
+          playClickSound();
+
+          const closeBtn = document.getElementById("failure-close");
+          if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+              playClickSound();
+              document
+                .getElementById("failure-modal")
+                .classList.remove("active");
+              resetGame();
+            });
+          }
+        }
+
+        // Reset game state
+        function resetGame() {
+          // Reset game state
+          gameState.vpnActive = false;
+          gameState.stealthActive = false;
+          gameState.attempts = 0;
+
+          // Clear any timers
+          if (gameState.stealthTimer) {
+            clearInterval(gameState.stealthTimer);
+          }
+
+          // Reset VPN
+          const vpnStatusIndicator = document.getElementById(
+            "vpn-status-indicator"
+          );
+          const vpnStatusText = document.getElementById("vpn-status-text");
+          const vpnConnectButton =
+            document.getElementById("vpn-connect-button");
+          const connectionCircle = document.getElementById("connection-circle");
+          const pulseRing = document.getElementById("pulse-ring");
+          const connectionIcon = document.getElementById("connection-icon");
+          const vpnMainStatusText = document.getElementById(
+            "vpn-main-status-text"
+          );
+          const vpnStatusDescription = document.getElementById(
+            "vpn-status-description"
+          );
+          const currentIp = document.getElementById("current-ip");
+          const currentLocation = document.getElementById("current-location");
+          const connectionSpeed = document.getElementById("connection-speed");
+
+          // Reset new VPN interface
+          if (connectionCircle) connectionCircle.classList.remove("connected");
+          if (pulseRing) pulseRing.classList.remove("active");
+          if (connectionIcon) connectionIcon.textContent = "🔓";
+          if (vpnMainStatusText) vpnMainStatusText.textContent = "Disconnected";
+          if (vpnStatusDescription)
+            vpnStatusDescription.textContent = "Your connection is not secure";
+          if (currentIp) currentIp.textContent = "192.168.1.1";
+          if (currentLocation) currentLocation.textContent = "United States";
+          if (connectionSpeed) connectionSpeed.textContent = "--";
+
+          if (vpnConnectButton) {
+            vpnConnectButton.classList.remove("disconnect", "connecting");
+            const buttonText = vpnConnectButton.querySelector(".button-text");
+            const buttonIcon = vpnConnectButton.querySelector(".button-icon");
+            if (buttonText) buttonText.textContent = "Connect";
+            if (buttonIcon) buttonIcon.textContent = "⚡";
+          }
+
+          // Reset legacy VPN elements
+          if (vpnStatusIndicator)
+            vpnStatusIndicator.className = "status-indicator disconnected";
+          if (vpnStatusText) vpnStatusText.textContent = "Disconnected";
+
+          // Reset location selection
+          const locationItems = document.querySelectorAll(".location-item");
+          locationItems.forEach((item) => item.classList.remove("selected"));
+          const defaultLocation = document.querySelector(
+            '.location-item[data-location="netherlands"]'
+          );
+          if (defaultLocation) defaultLocation.classList.add("selected");
+
+          // Reset quick action buttons
+          const killSwitchBtn = document.getElementById("kill-switch-btn");
+          const autoConnectBtn = document.getElementById("auto-connect-btn");
+          if (killSwitchBtn) {
+            killSwitchBtn.classList.remove("active");
+            killSwitchBtn.innerHTML = "<span>🛑</span> Kill Switch";
+          }
+          if (autoConnectBtn) {
+            autoConnectBtn.classList.remove("active");
+            autoConnectBtn.innerHTML = "<span>🔄</span> Auto-Connect";
+          }
+
+          // Reset Stealth
+          const stealthStatusIndicator = document.getElementById(
+            "stealth-status-indicator"
+          );
+          const stealthStatusText = document.getElementById(
+            "stealth-status-text"
+          );
+          const stealthActivateButton = document.getElementById(
+            "stealth-activate-button"
+          );
+          const stealthTimer = document.getElementById("stealth-timer");
+
+          if (stealthStatusIndicator)
+            stealthStatusIndicator.className = "status-indicator disconnected";
+          if (stealthStatusText) stealthStatusText.textContent = "Inactive";
+          if (stealthActivateButton) stealthActivateButton.disabled = false;
+          if (stealthTimer) stealthTimer.classList.add("hidden");
+
+          // Reset browser
+          const forgotPasswordButton = document.getElementById(
+            "forgot-password-button"
+          );
+          if (forgotPasswordButton) {
+            forgotPasswordButton.classList.add("disabled");
+          }
+
+          // Reset tabs to only show Google
+          const tabs = document.querySelectorAll(
+            '.browser-tabs .tab:not([data-page="google"])'
+          );
+          tabs.forEach((tab) => {
+            if (tab.parentNode) {
+              tab.parentNode.removeChild(tab);
+            }
+          });
+
+          // Show Google page and activate Google tab
+          hideAllBrowserPages();
+          document.getElementById("google-page").classList.remove("hidden");
+
+          deactivateAllTabs();
+          const googleTab = document.querySelector('.tab[data-page="google"]');
+          if (googleTab) {
+            googleTab.classList.add("active-tab");
+          }
+
+          document.getElementById("address-input").value =
+            "https://www.google.com/";
+          document.querySelector(".window-title").textContent =
+            "Google - Google Chrome";
+
+          // Reset password input if exists
+          const passwordInput = document.getElementById("password-input");
+          if (passwordInput) {
+            passwordInput.value = "";
+          }
+
+          // Reset login message
+          const loginMessage = document.getElementById("login-message");
+          if (loginMessage) {
+            loginMessage.textContent = "";
+          }
+
+          // Reset notes to show main view
+          const mainNotes = document.getElementById("main-notes");
+          const missionDetails = document.getElementById("mission-details");
+          const guideDetails = document.getElementById("guide-details");
+
+          if (mainNotes) mainNotes.classList.remove("hidden");
+          if (missionDetails) missionDetails.classList.add("hidden");
+          if (guideDetails) guideDetails.classList.add("hidden");
+
+          // Close any open windows except Chrome
+          const windows = document.querySelectorAll(".window.active");
+          windows.forEach((window) => {
+            if (window.id !== "chrome-window") {
+              window.classList.remove("active");
+            }
+          });
+        }
+
+        // Open a window
+        function openWindow(windowId) {
+          const window = document.getElementById(windowId);
+          if (!window) return;
+
+          // Play click sound
+          playClickSound();
+
+          // Make this window active
+          document.querySelectorAll(".window").forEach((w) => {
+            w.classList.remove("active");
+          });
+
+          window.classList.add("active");
+
+          // Get window title
+          const title = window
+            .querySelector(".window-title")
+            .textContent.split(" - ")[0];
+
+          // Find icon path based on window ID
+          let iconPath = "../../assets/icons/default.png";
+          switch (windowId) {
+            case "chrome-window":
+              iconPath = "../../assets/icons/chrome.png";
+              break;
+            case "notes-window":
+              iconPath = "../../assets/icons/notes.png";
+              break;
+            case "vpn-window":
+              iconPath = "../../assets/icons/vpn.png";
+              break;
+            case "stealth-window":
+              iconPath = "../../assets/icons/stealth.png";
+              break;
+            case "recycle-window":
+              iconPath = "../../assets/icons/recycle.png";
+              break;
+          }
+
+          // Check if already in taskbar
+          const existingTaskItem = document.querySelector(
+            `.task-item[data-title="${title}"]`
+          );
+          if (!existingTaskItem) {
+            // Only add to taskbar if first time opening
+            addToTaskbar(title, iconPath);
+          } else {
+            // Just highlight the existing task item
+            document.querySelectorAll(".task-item").forEach((item) => {
+              item.classList.remove("active");
+            });
+            existingTaskItem.classList.add("active");
+          }
+        }
+
+        // Initialize window management
+        function initializeWindows() {
+          const icons = document.querySelectorAll(".icon");
+          const minimizeButtons = document.querySelectorAll(".minimize");
+          const closeButtons = document.querySelectorAll(".close");
+
+          // Desktop icon click event
+          icons.forEach((icon) => {
+            icon.addEventListener("dblclick", function () {
+              playClickSound();
+              const windowId = this.id.replace("icon", "window");
+              openWindow(windowId);
+            });
+          });
+
+          // Minimize button click event
+          minimizeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              playClickSound();
+              const window = this.closest(".window");
+              window.classList.remove("active");
+
+              // Update taskbar
+              const title = window
+                .querySelector(".window-title")
+                .textContent.split(" - ")[0];
+              const taskItem = document.querySelector(
+                `.task-item[data-title="${title}"]`
+              );
+              if (taskItem) {
+                taskItem.classList.remove("active");
+              }
+            });
+          });
+
+          // Close button click event
+          closeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              playClickSound();
+              const window = this.closest(".window");
+              window.classList.remove("active");
+
+              // Remove from taskbar
+              const title = window
+                .querySelector(".window-title")
+                .textContent.split(" - ")[0];
+              const taskItem = document.querySelector(
+                `.task-item[data-title="${title}"]`
+              );
+              if (taskItem && taskItem.parentNode) {
+                taskItem.parentNode.removeChild(taskItem);
+              }
+            });
+          });
+        }
+
+        // Call initialization functions
+        initializeWindows();
+      });
+    </script>
+  </body>
+</html>

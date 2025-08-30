@@ -1,0 +1,483 @@
+/* Desktop Environment Styles */
+.desktop {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url("../../assets/images/desktop-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.desktop-icons {
+  display: grid;
+  grid-template-columns: repeat(1, 100px);
+  gap: 15px;
+  padding: 20px;
+  justify-content: start;
+  align-content: start;
+}
+
+.icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  border-radius: 5px;
+}
+
+.icon:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.icon.selected {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.icon img {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 8px;
+}
+
+.icon span {
+  font-size: 12px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Window Styles */
+.window {
+  position: absolute;
+  width: 800px;
+  height: 600px;
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  border: 1px solid #999;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  resize: both;
+  overflow: hidden;
+}
+
+.window.active {
+  display: flex;
+  z-index: 20;
+}
+
+.window-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  height: 30px;
+  background: linear-gradient(to bottom, #e1e1e1, #c1c1c1);
+  border-radius: 5px 5px 0 0;
+  cursor: move;
+  color: #333;
+  user-select: none;
+}
+
+.window-title {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.window-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.window-controls span {
+  cursor: pointer;
+  font-size: 14px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  transition: all 0.15s ease;
+}
+
+.window-controls .minimize {
+  background-color: #fff;
+  border: 1px solid #aaa;
+}
+
+.window-controls .maximize {
+  background-color: #fff;
+  border: 1px solid #aaa;
+}
+
+.window-controls .close {
+  background-color: #e81123;
+  color: white;
+  border: 1px solid #d8000c;
+}
+
+.window-controls .minimize:hover,
+.window-controls .maximize:hover {
+  background-color: #e5e5e5;
+}
+
+.window-controls .close:hover {
+  background-color: #f1707a;
+}
+
+/* Taskbar */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to bottom, #225588, #333844);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.start-button {
+  width: 50px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #3c5f8a, #2c4a6e);
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.start-button img {
+  width: 24px;
+  height: 24px;
+}
+
+.start-button:hover {
+  background: linear-gradient(to bottom, #4a6c97, #3a5a7c);
+}
+
+.start-button:active {
+  background: linear-gradient(to bottom, #2a4a6c, #1a3a5c);
+}
+
+.task-items {
+  display: flex;
+  height: 100%;
+  flex-grow: 1;
+  padding: 0 5px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.task-items::-webkit-scrollbar {
+  height: 3px;
+}
+
+.task-items::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.task-item {
+  padding: 0 10px;
+  height: 80%;
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+  background: linear-gradient(to bottom, #3c5f8a, #2c4a6e);
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 120px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.task-item.active {
+  background: linear-gradient(to bottom, #4a6c97, #3a5a7c);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.task-item:hover:not(.active) {
+  background: linear-gradient(to bottom, #456b95, #375678);
+}
+
+.task-item img {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.task-item span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskbar-right {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  color: white;
+  font-size: 11px;
+  padding: 0 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 8px;
+}
+
+.clock {
+  color: white;
+  font-size: 11px;
+  padding: 0 8px;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 25px;
+  width: 400px;
+  max-width: 80%;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid #999;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.modal-content button {
+  margin-top: 20px;
+  padding: 8px 20px;
+  background: linear-gradient(to bottom, #3c5f8a, #2c4a6e);
+  color: white;
+  border: 1px solid #224466;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-content button:hover {
+  background: linear-gradient(to bottom, #4a6c97, #3a5a7c);
+}
+
+.modal-content button:active {
+  background: linear-gradient(to bottom, #2a4a6c, #1a3a5c);
+  transform: translateY(1px);
+}
+
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+/* User selection styles */
+::selection {
+  background: rgba(0, 120, 215, 0.4);
+  color: inherit;
+}
+
+/* Window dragging state */
+.window.dragging {
+  opacity: 0.8;
+  user-select: none;
+}
+
+/* Animation for window open/close */
+@keyframes windowOpen {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes windowClose {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+}
+
+.window.active {
+  animation: windowOpen 0.15s ease-out;
+}
+
+/* Draggable windows */
+.window.resizing {
+  transition: none;
+}
+
+/* Window dimensions when maximized */
+.window.maximized {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 40px); /* Subtract taskbar height */
+  transform: none;
+  border-radius: 0;
+  resize: none;
+}
+
+/* Notes styles */
+.notes-content {
+  padding: 15px;
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.note-content {
+  padding: 15px;
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.note-header h3 {
+  font-size: 18px;
+  color: #333;
+}
+
+.back-button {
+  padding: 5px 10px;
+  background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #333;
+  font-size: 12px;
+}
+
+.back-button:hover {
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+}
+
+.note-body {
+  line-height: 1.5;
+}
+
+.note-body h4 {
+  margin: 15px 0 10px;
+  color: #444;
+}
+
+.note-body ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.note-body ul li {
+  margin-bottom: 5px;
+}
+
+.note-body p {
+  margin-bottom: 10px;
+}
+
+/* Status indicators */
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.status-indicator.connected {
+  background-color: #2ecc40;
+  box-shadow: 0 0 5px #2ecc40;
+}
+
+.status-indicator.disconnected {
+  background-color: #ff4136;
+  box-shadow: 0 0 5px #ff4136;
+}
+
+.timer-bar-container {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.timer-bar {
+  height: 100%;
+  width: 100%;
+  background-color: #2ecc40;
+  transition: width 1s linear;
+}

@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatTrap: Social Engineering Challenge - Project Lyra</title>
+    <link rel="stylesheet" href="../../style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* General layout styles */
+      body.desktop-mode {
+        overflow: hidden;
+        background-color: #f5f5f5;
+        color: #333;
+      }
+
+      body.desktop-mode .navbar,
+      body.desktop-mode .challenges-header,
+      body.desktop-mode canvas#matrix-canvas {
+        display: none;
+      }
+
+      body.desktop-mode .container {
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        height: 100vh;
+      }
+
+      .desktop-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        background-color: #f5f5f5;
+      }
+
+      /* Desktop taskbar */
+      .desktop-taskbar {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        background-color: #0078d7;
+        color: white;
+        padding: 0 10px;
+        z-index: 100;
+      }
+
+      .start-menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        width: 40px;
+        margin-right: 10px;
+        cursor: pointer;
+      }
+
+      .taskbar-app {
+        height: 30px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+        margin-right: 8px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .taskbar-app i {
+        margin-right: 5px;
+      }
+
+      .taskbar-app.active {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .taskbar-right {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+
+      .taskbar-time {
+        font-size: 12px;
+        margin-left: 15px;
+      }
+
+      /* Desktop workspace */
+      .desktop-workspace {
+        display: flex;
+        flex-grow: 1;
+        position: relative;
+      }
+
+      /* App window styling */
+      .app-window {
+        position: absolute;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        width: 90%;
+        height: 90%;
+        top: 5%;
+        left: 5%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: transform 0.3s;
+        transform-origin: center;
+      }
+
+      .app-window.minimized {
+        transform: scale(0.8);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .window-titlebar {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        background-color: #f1f1f1;
+        border-bottom: 1px solid #ddd;
+        padding: 0 10px;
+      }
+
+      .window-title {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+        flex-grow: 1;
+      }
+
+      .window-controls {
+        display: flex;
+      }
+
+      .window-control {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 5px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+
+      .window-control:hover {
+        background-color: #ddd;
+      }
+
+      .window-control.close:hover {
+        background-color: #e81123;
+        color: white;
+      }
+
+      .window-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Realistic Chat Interface - Light Theme */
+      .chat-interface {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: #fff;
+        border-radius: 3px;
+        color: #333;
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .chat-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #eaeaea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        color: #0078d7;
+        font-size: 18px;
+      }
+
+      .chat-contact-info {
+        flex-grow: 1;
+      }
+
+      .chat-contact-name {
+        font-weight: 600;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .chat-status {
+        font-size: 12px;
+        color: #888;
+      }
+
+      .chat-status.online {
+        color: #2ecc71;
+      }
+
+      .chat-header-actions {
+        display: flex;
+      }
+
+      .chat-action-btn {
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 16px;
+        margin-left: 15px;
+        cursor: pointer;
+      }
+
+      .chat-window {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background-color: #f5f5f5;
+      }
+
+      .message-group {
+        margin-bottom: 15px;
+      }
+
+      .message-time {
+        text-align: center;
+        color: #999;
+        font-size: 12px;
+        margin: 20px 0;
+      }
+
+      .chat-message {
+        padding: 10px 15px;
+        border-radius: 18px;
+        max-width: 70%;
+        margin-bottom: 5px;
+        position: relative;
+        word-wrap: break-word;
+        line-height: 1.4;
+        overflow-wrap: break-word; /* Added to prevent text overflow */
+        white-space: normal; /* Ensures text wraps properly */
+        overflow: hidden; /* Prevents content from spilling out */
+        text-overflow: ellipsis; /* Shows ellipsis for overflowing text */
+      }
+
+      .user-message {
+        background-color: #0078d7;
+        color: #fff;
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+      }
+
+      .bot-message {
+        background-color: #e9e9e9;
+        color: #333;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      .message-status {
+        font-size: 10px;
+        color: #999;
+        text-align: right;
+        margin-top: 2px;
+        margin-right: 5px;
+      }
+
+      .chat-input-area {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background-color: #fff;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      .chat-input-actions {
+        color: #666;
+        margin-right: 10px;
+        cursor: pointer;
+        font-size: 18px;
+      }
+
+      #message-input {
+        flex-grow: 1;
+        padding: 12px 15px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        background-color: #f8f8f8;
+        color: #333;
+        font-size: 14px;
+      }
+
+      #send-btn {
+        background-color: #0078d7;
+        color: #fff;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+
+      /* Gmail-style Email Interface - Full Screen */
+      .email-interface {
+        height: 100%;
+        background-color: #fff;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .email-toolbar {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: #f8f8f8;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .email-logo {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+      }
+
+      .email-logo img {
+        height: 30px;
+      }
+
+      .email-action-btn {
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 14px;
+        margin-right: 15px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+      }
+
+      .email-action-btn:hover {
+        background-color: #eee;
+      }
+
+      .email-search {
+        flex-grow: 1;
+        position: relative;
+        margin: 0 15px;
+      }
+
+      .email-search input {
+        width: 100%;
+        padding: 8px 10px 8px 35px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: #f1f1f1;
+        color: #333;
+      }
+
+      .email-search i {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+      }
+
+      .email-user-profile {
+        display: flex;
+        align-items: center;
+      }
+
+      .email-user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #0078d7;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        margin-left: 10px;
+      }
+
+      .email-container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      .email-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        background-color: #f8f8f8;
+      }
+
+      .email-subject {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .email-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .email-action {
+        padding: 5px 10px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .email-details {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .sender-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        color: #666;
+        font-weight: bold;
+      }
+
+      .email-sender-info {
+        flex-grow: 1;
+      }
+
+      .email-sender {
+        font-weight: bold;
+      }
+
+      .email-address {
+        color: #666;
+        font-size: 12px;
+      }
+
+      .email-recipients {
+        color: #666;
+        font-size: 12px;
+      }
+
+      .email-date {
+        color: #666;
+        font-size: 12px;
+      }
+
+      .email-body {
+        padding: 20px;
+        line-height: 1.6;
+        flex-grow: 1;
+        overflow: auto;
+      }
+
+      .email-attachment {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f8f8f8;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        margin: 15px 20px;
+        cursor: pointer;
+      }
+
+      .email-attachment i {
+        font-size: 24px;
+        margin-right: 10px;
+        color: #1a73e8;
+      }
+
+      .email-attachment-info {
+        flex-grow: 1;
+      }
+
+      .email-attachment-name {
+        font-weight: bold;
+      }
+
+      .email-attachment-meta {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .email-attachment-action {
+        color: #1a73e8;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      /* Email list for inbox view */
+      .email-list-container {
+        flex-grow: 1;
+        overflow: auto;
+      }
+
+      .email-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .email-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+      }
+
+      .email-item:hover {
+        background-color: #f5f5f5;
+      }
+
+      .email-item.unread {
+        background-color: #f2f6fc;
+        font-weight: 500;
+      }
+
+      .email-checkbox {
+        margin-right: 15px;
+      }
+
+      .email-star {
+        color: #ccc;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+
+      .email-star:hover {
+        color: #f5c518;
+      }
+
+      .email-from {
+        width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .email-snippet {
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-right: 20px;
+      }
+
+      .email-time {
+        width: 100px;
+        text-align: right;
+        color: #666;
+        font-size: 12px;
+      }
+
+      /* Timer styles */
+      .timer-container {
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        z-index: 1000;
+      }
+
+      .timer {
+        background-color: #f8f8f8;
+        border: 2px solid #0078d7;
+        color: #333;
+        padding: 10px 15px;
+        border-radius: 30px;
+        font-size: 24px;
+        font-weight: bold;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .timer.danger {
+        color: #ff0000;
+        border-color: #ff0000;
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Decision modal */
+      .decision-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .decision-container {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .decision-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .decision-question {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #555;
+      }
+
+      .decision-buttons {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .decision-btn {
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        transition: transform 0.2s;
+      }
+
+      .decision-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .genuine-btn {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      .imposter-btn {
+        background-color: #f44336;
+        color: white;
+      }
+
+      /* Crack effect overlay */
+      .crack-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1500;
+        pointer-events: none;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000"><path d="M500,250 L520,100 L480,180 L500,250 L450,300 L500,400 L480,500 L520,550 L500,600 L550,650 L450,700 L500,800 L480,900" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="2"/><path d="M500,250 L600,200 L650,250 L700,200 L750,300 L800,350 L850,320" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="2"/><path d="M500,250 L400,200 L350,250 L300,200 L250,300 L200,350 L150,320" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="2"/><path d="M500,250 L470,330 L530,380 L450,420 L520,480 L470,520 L550,580 L480,630 L520,700" stroke="rgba(255,255,255,0.5)" fill="none" stroke-width="2"/></svg>')
+          center/cover no-repeat;
+      }
+
+      .imposter-reveal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1600;
+        text-align: center;
+      }
+
+      .imposter-icon {
+        font-size: 80px;
+        color: #ff0000;
+        margin-bottom: 20px;
+        animation: laugh 2s infinite;
+      }
+
+      .imposter-message {
+        font-size: 24px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      }
+
+      @keyframes laugh {
+        0% {
+          transform: scale(1);
+        }
+        10% {
+          transform: scale(1.1);
+        }
+        20% {
+          transform: scale(1);
+        }
+        30% {
+          transform: scale(1.1);
+        }
+        40% {
+          transform: scale(1);
+        }
+        50% {
+          transform: rotate(-5deg);
+        }
+        60% {
+          transform: rotate(5deg);
+        }
+        70% {
+          transform: rotate(-5deg);
+        }
+        80% {
+          transform: rotate(5deg);
+        }
+        90% {
+          transform: rotate(0);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      /* Back to normal mode button */
+      .exit-desktop-btn {
+        position: fixed;
+        top: 50px;
+        right: 20px;
+        z-index: 1000;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .exit-desktop-btn:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+
+      /* Character selection */
+      .character-selection {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        padding: 40px;
+        height: 100%;
+        align-items: center;
+        background-color: #121212;
+        background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+
+      .character-card {
+        background-color: rgba(30, 30, 30, 0.95);
+        border: 1px solid #333;
+        border-radius: 15px;
+        padding: 30px;
+        width: 280px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .character-card:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 15px 30px rgba(0, 255, 0, 0.2);
+        border-color: #00ff00;
+      }
+
+      .character-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        border: 3px solid #333;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        background-color: #252525;
+        color: #00ff00;
+        transition: all 0.3s ease;
+      }
+
+      .character-card:hover .character-avatar {
+        border-color: #00ff00;
+        background-color: rgba(0, 255, 0, 0.1);
+      }
+
+      .character-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #00ff00;
+        margin-bottom: 5px;
+      }
+
+      .character-role {
+        color: #aaa;
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+
+      .character-description {
+        color: #ddd;
+        margin-bottom: 20px;
+        line-height: 1.4;
+      }
+
+      /******************************************************************/
+      /* --- THIS NEW, SPECIFIC RULE FIXES THE ALEX CHEN TEXT BOX --- */
+      /******************************************************************/
+      .character-card[data-character="it-support"] .character-description {
+        text-align: left;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+      }
+
+      .character-status {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        background-color: rgba(0, 255, 0, 0.1);
+        color: #00ff00;
+      }
+
+      .character-card.completed {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+
+      .character-card.completed:hover {
+        transform: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        border-color: #333;
+      }
+
+      .character-card.completed .character-status {
+        background-color: rgba(128, 128, 128, 0.2);
+        color: #888;
+      }
+
+      /* Game screens - these remain dark themed */
+      .game-container {
+        max-width: 1100px;
+        margin: 20px auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        padding: 0;
+        position: relative;
+        height: 700px;
+        overflow: hidden;
+      }
+
+      .game-screen {
+        display: none;
+        height: 100%;
+      }
+
+      .game-screen.active {
+        display: block;
+      }
+
+      /* Intro screen */
+      .intro-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 40px;
+        background-color: rgba(0, 0, 0, 0.8);
+        background-image: linear-gradient(
+            rgba(0, 255, 0, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+        background-size: 50px 50px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .intro-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at center,
+          transparent 0%,
+          rgba(0, 0, 0, 0.8) 70%
+        );
+        z-index: 0;
+      }
+
+      .intro-content {
+        position: relative;
+        z-index: 1;
+      }
+
+      .intro-title {
+        font-size: 32px;
+        color: #00ff00;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+
+      .intro-description {
+        max-width: 700px;
+        margin: 0 auto 30px;
+        line-height: 1.6;
+        color: #ddd;
+      }
+
+      .intro-role {
+        background-color: rgba(0, 255, 0, 0.1);
+        border: 1px solid rgba(0, 255, 0, 0.3);
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 700px;
+        margin: 0 auto 30px;
+      }
+
+      .intro-role h3 {
+        color: #00ff00;
+        margin-bottom: 10px;
+      }
+
+      .start-btn {
+        display: inline-block;
+        background-color: #00ff00;
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+      }
+
+      .start-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+      }
+
+      /* Feedback screens */
+      .feedback-screen {
+        display: none;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 40px;
+        text-align: center;
+      }
+
+      .feedback-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .result-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+      }
+
+      .success .result-icon {
+        color: #00ff00;
+      }
+
+      .failure .result-icon {
+        color: #ff0000;
+      }
+
+      .result-title {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+
+      .result-description {
+        font-size: 18px;
+        margin-bottom: 30px;
+        color: #aaa;
+      }
+
+      .tactics-container {
+        background-color: rgba(30, 30, 30, 0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: left;
+      }
+
+      .tactics-title {
+        color: #00ff00;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+
+      .tactics-list {
+        color: #ddd;
+      }
+
+      .tactics-list li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 25px;
+      }
+
+      .tactics-list li::before {
+        content: "\f071";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        position: absolute;
+        left: 0;
+        color: #ff0000;
+      }
+
+      .success .tactics-list li::before {
+        content: "\f00c";
+        color: #00ff00;
+      }
+
+      .continue-btn {
+        display: inline-block;
+        background-color: #00ff00;
+        color: #000;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .continue-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+      }
+
+      /* Results screen */
+      .results-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background-color: #121212;
+      }
+
+      .results-header {
+        margin-bottom: 30px;
+      }
+
+      .results-title {
+        font-size: 32px;
+        color: #00ff00;
+        margin-bottom: 10px;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+
+      .results-summary {
+        max-width: 700px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .results-data {
+        font-size: 24px;
+        color: #fff;
+        margin-bottom: 20px;
+      }
+
+      .progress-container {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 40px;
+      }
+
+      .progress-bar {
+        height: 20px;
+        background-color: #252525;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background-color: #00ff00;
+        border-radius: 10px;
+        transition: width 1s ease;
+      }
+
+      .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        font-size: 12px;
+      }
+
+      .educational-content {
+        background-color: rgba(30, 30, 30, 0.9);
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 800px;
+        margin-bottom: 30px;
+        text-align: left;
+      }
+
+      .educational-content h3 {
+        color: #00ff00;
+        margin-bottom: 15px;
+        font-size: 20px;
+      }
+
+      .educational-content p {
+        margin-bottom: 15px;
+        color: #ddd;
+        line-height: 1.5;
+      }
+
+      .educational-content ul {
+        margin-bottom: 15px;
+        padding-left: 20px;
+      }
+
+      .educational-content li {
+        margin-bottom: 10px;
+        color: #ddd;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 20px;
+      }
+
+      /* Typing animation */
+      .typing-indicator {
+        display: flex;
+        padding: 10px 15px;
+        border-radius: 18px;
+        max-width: 70%;
+        margin-bottom: 10px;
+        background-color: #e9e9e9;
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      .typing-dot {
+        background-color: #888;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin: 0 3px;
+        animation: typing-animation 1.5s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing-animation {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-5px);
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .game-container {
+          height: 600px;
+        }
+
+        .character-selection {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        .character-card {
+          width: 100%;
+          max-width: 300px;
+        }
+
+        .decision-container {
+          width: 95%;
+          padding: 15px;
+        }
+
+        .decision-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <nav class="navbar">
+      <div class="nav-brand">
+        <a href="../../index.html" class="glitch-text" data-text="PROJECT LYRA"
+          >PROJECT LYRA</a
+        >
+      </div>
+      <div class="nav-links">
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="challenges.html" class="nav-link">Challenges</a>
+        <a href="profile.html" class="nav-link">Profile</a>
+        <a href="../../index.html" class="nav-link">Logout</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="challenges-header">
+        <h1 class="page-title">CHATTRAP: SOCIAL ENGINEERING SIMULATOR</h1>
+        <p class="page-subtitle">
+          Can you identify the imposter before it's too late?
+        </p>
+      </div>
+
+      <div class="game-screen active" id="intro-screen">
+        <div class="game-container">
+          <div class="intro-container">
+            <div class="intro-content">
+              <h2 class="intro-title">MISSION BRIEFING</h2>
+              <div class="intro-description">
+                <p>
+                  Welcome, agent. Your mission is to identify social engineering
+                  attackers who are targeting TechCorp employees.
+                </p>
+                <p>
+                  You'll be having conversations with three different
+                  individuals. Two are genuine company personnel, but one is an
+                  imposter trying to extract sensitive information from you.
+                </p>
+                <p>
+                  You have <strong>1 minute</strong> for each conversation to
+                  determine if you're talking to a genuine person or an
+                  imposter.
+                </p>
+              </div>
+
+              <div class="intro-role">
+                <h3>YOUR ROLE</h3>
+                <p>
+                  You are a new employee at TechCorp with limited access to
+                  company systems. Your email is newemployee@techcorp.com and
+                  you work in the Marketing department.
+                </p>
+                <p>
+                  Be careful what information you share! Attackers may try to
+                  trick you into revealing passwords, clicking suspicious links,
+                  or following unusual procedures.
+                </p>
+              </div>
+
+              <button id="start-game-btn" class="start-btn">
+                START MISSION
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-screen" id="character-select-screen">
+        <div class="game-container">
+          <div class="character-selection">
+            <div class="character-card" data-character="it-support">
+              <div class="character-avatar">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div class="character-name">Alex Chen</div>
+              <div class="character-role">IT Support Specialist</div>
+              <p class="character-description">
+                Has reached out regarding unusual login attempts detected on
+                your account. Needs to verify your information to secure your
+                access.
+              </p>
+              <div class="character-status">New Message</div>
+            </div>
+
+            <div class="character-card" data-character="hr-rep">
+              <div class="character-avatar">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="character-name">Morgan Taylor</div>
+              <div class="character-role">HR Representative</div>
+              <p class="character-description">
+                Needs to update your employee information in the company
+                database. Requires confirmation of some basic details.
+              </p>
+              <div class="character-status">New Message</div>
+            </div>
+
+            <div class="character-card" data-character="colleague">
+              <div class="character-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="character-name">Jamie Wilson</div>
+              <div class="character-role">Software Developer</div>
+              <p class="character-description">
+                Working on the new project dashboard and needs your input on
+                user permission levels for your department.
+              </p>
+              <div class="character-status">New Message</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-screen" id="desktop-screen">
+        <div class="desktop-container">
+          <div class="desktop-taskbar">
+            <div class="start-menu-button">
+              <i class="fab fa-windows"></i>
+            </div>
+            <div class="taskbar-app active" id="chat-app-btn">
+              <i class="fas fa-comments"></i> TechCorp Chat
+            </div>
+            <div class="taskbar-app" id="email-app-btn">
+              <i class="fas fa-envelope"></i> TechCorp Mail
+            </div>
+            <div class="taskbar-right">
+              <i class="fas fa-wifi"></i>
+              <div class="taskbar-time" id="desktop-time">3:56 PM</div>
+            </div>
+          </div>
+
+          <div class="desktop-workspace">
+            <div class="app-window" id="chat-app-window">
+              <div class="window-titlebar">
+                <div class="window-title">TechCorp Chat</div>
+                <div class="window-controls">
+                  <div class="window-control minimize">
+                    <i class="fas fa-minus"></i>
+                  </div>
+                  <div class="window-control maximize">
+                    <i class="fas fa-square"></i>
+                  </div>
+                  <div class="window-control close">
+                    <i class="fas fa-times"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="window-content">
+                <div class="chat-interface">
+                  <div class="chat-header">
+                    <div class="chat-avatar" id="chat-avatar">
+                      <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="chat-contact-info">
+                      <div class="chat-contact-name" id="chat-contact-name">
+                        Alex Chen
+                      </div>
+                      <div class="chat-status online">Online</div>
+                    </div>
+                    <div class="chat-header-actions">
+                      <button class="chat-action-btn">
+                        <i class="fas fa-phone"></i>
+                      </button>
+                      <button class="chat-action-btn">
+                        <i class="fas fa-video"></i>
+                      </button>
+                      <button class="chat-action-btn">
+                        <i class="fas fa-info-circle"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="chat-window" id="chat-window">
+                    <div class="message-time">
+                      Today, <span id="chat-date">August 2, 2025</span>
+                    </div>
+                  </div>
+
+                  <div class="chat-input-area">
+                    <div class="chat-input-actions">
+                      <i class="far fa-smile"></i>
+                    </div>
+                    <input
+                      type="text"
+                      id="message-input"
+                      placeholder="Type your message..."
+                    />
+                    <button id="send-btn">
+                      <i class="fas fa-paper-plane"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="app-window minimized" id="email-app-window">
+              <div class="window-titlebar">
+                <div class="window-title">
+                  TechCorp Mail - newemployee@techcorp.com
+                </div>
+                <div class="window-controls">
+                  <div class="window-control minimize">
+                    <i class="fas fa-minus"></i>
+                  </div>
+                  <div class="window-control maximize">
+                    <i class="fas fa-square"></i>
+                  </div>
+                  <div class="window-control close">
+                    <i class="fas fa-times"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="window-content">
+                <div class="email-interface">
+                  <div class="email-toolbar">
+                    <div class="email-logo">
+                      <span
+                        style="
+                          color: #1a73e8;
+                          font-weight: bold;
+                          font-size: 18px;
+                        "
+                      >
+                        <i class="fas fa-envelope"></i> TechMail
+                      </span>
+                    </div>
+
+                    <div class="email-search">
+                      <i class="fas fa-search"></i>
+                      <input type="text" placeholder="Search mail" />
+                    </div>
+
+                    <div class="email-user-profile">
+                      <div class="email-user-avatar">NE</div>
+                    </div>
+                  </div>
+
+                  <div id="email-content"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timer-container">
+            <div class="timer" id="timer">01:00</div>
+          </div>
+
+          <button class="exit-desktop-btn" id="exit-desktop-btn">
+            <i class="fas fa-sign-out-alt"></i> Exit Simulation
+          </button>
+        </div>
+      </div>
+
+      <div class="decision-modal" id="decision-modal">
+        <div class="decision-container">
+          <div class="decision-title">Time's Up!</div>
+          <div class="decision-question">
+            Was this person genuine or an imposter?
+          </div>
+          <div class="decision-buttons">
+            <button class="decision-btn genuine-btn" id="genuine-btn">
+              <i class="fas fa-user-check"></i> Genuine
+            </button>
+            <button class="decision-btn imposter-btn" id="imposter-btn">
+              <i class="fas fa-user-secret"></i> Imposter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="crack-overlay" id="crack-overlay"></div>
+      <div class="imposter-reveal" id="imposter-reveal">
+        <div class="imposter-icon">
+          <i class="fas fa-user-secret"></i>
+        </div>
+        <div class="imposter-message">You've Been Deceived!</div>
+      </div>
+
+      <div class="feedback-screen success" id="success-feedback">
+        <div class="feedback-container">
+          <div class="result-icon"><i class="fas fa-check-circle"></i></div>
+          <div class="result-title">
+            Good job, agent! You correctly identified the persona.
+          </div>
+          <div class="result-description" id="success-description"></div>
+
+          <div class="tactics-container">
+            <h3 class="tactics-title" id="success-tactics-title">
+              Social Engineering Tactics Used:
+            </h3>
+            <ul class="tactics-list" id="tactics-list"></ul>
+          </div>
+
+          <button class="continue-btn" id="continue-btn">
+            Continue to Next Target
+          </button>
+        </div>
+      </div>
+
+      <div class="feedback-screen failure" id="failure-feedback">
+        <div class="feedback-container">
+          <div class="result-icon"><i class="fas fa-times-circle"></i></div>
+          <div class="result-title">
+            Mission Failed! You didn't correctly identify the persona.
+          </div>
+          <div class="result-description" id="failure-description"></div>
+
+          <div class="tactics-container">
+            <h3 class="tactics-title" id="failure-tactics-title">
+              Red Flags You Missed:
+            </h3>
+            <ul class="tactics-list" id="missed-flags-list"></ul>
+          </div>
+
+          <button class="continue-btn" id="continue-failed-btn">
+            Continue to Next Target
+          </button>
+        </div>
+      </div>
+
+      <div class="game-screen" id="results-screen">
+        <div class="game-container">
+          <div class="results-container">
+            <div class="results-header">
+              <h2 class="results-title">MISSION COMPLETE</h2>
+            </div>
+
+            <div class="results-summary" id="final-results">
+              <div class="results-data">
+                Mission Results: <span id="score">0/3</span> Personas Correctly
+                Identified
+              </div>
+
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    id="progress-fill"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <div class="progress-labels">
+                  <div>Beginner</div>
+                  <div>Intermediate</div>
+                  <div>Expert</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="educational-content">
+              <h3>SOCIAL ENGINEERING AWARENESS</h3>
+              <p>
+                Social engineering attacks target human psychology rather than
+                technical vulnerabilities. They're often the first step in a
+                broader cyber attack.
+              </p>
+
+              <p>Always be cautious when:</p>
+              <ul>
+                <li>Someone creates a sense of urgency or fear</li>
+                <li>
+                  You're asked for sensitive information like passwords or
+                  personal details
+                </li>
+                <li>
+                  You receive unexpected communications with suspicious links or
+                  attachments
+                </li>
+                <li>Someone uses excessive authority or pressure tactics</li>
+                <li>Email addresses don't match official company domains</li>
+                <li>You're asked to bypass normal security procedures</li>
+              </ul>
+
+              <p>
+                Remember: Legitimate company representatives will never ask for
+                your password or pressure you into immediate action that
+                bypasses security protocols.
+              </p>
+            </div>
+
+            <div class="action-buttons">
+              <button id="retry-btn" class="start-btn">Try Again</button>
+              <a href="challenges.html" class="start-btn">Back to Challenges</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../../matrix.js"></script>
+    <script src="../js/social-engineering-game.js"></script>
+  </body>
+</html>
