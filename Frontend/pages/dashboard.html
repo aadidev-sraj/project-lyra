@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Project Lyra</title>
+    <link rel="stylesheet" href="../styles/dashboard-style.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Pixel Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="../../index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link active">Dashboard</a>
+            <a href="challenges.html" class="nav-link">Challenges</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="../../index.html" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        
+        <!-- Left Container (60%) -->
+        <div class="left-container">
+            
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <h1 class="glitch-text pixel-font" data-text="CYBER DEFENSE HUB">CYBER DEFENSE HUB</h1>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="number pixel-font">0</span>
+                        <span class="label">Modules</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number pixel-font">0%</span>
+                        <span class="label">Progress</span>
+                    </div>
+                    <div class="stat">
+                        <span class="number pixel-font">0</span>
+                        <span class="label">Score</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modules Container -->
+            <section class="modules-container">
+                
+                <a href="phishing-model.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-fish"></i>
+                    </div>
+                    <h3 class="pixel-font">PHISHING DEFENSE</h3>
+                </div></a>
+
+                <a href="malware-module.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-virus"></i>
+                    </div>
+                    <h3 class="pixel-font">MALWARE ANALYSIS</h3>
+                </div></a>
+
+                <a href="social-engineering-module.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="pixel-font">SOCIAL ENGINEERING</h3>
+                </div></a>
+
+                <a href="network-security-module.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3 class="pixel-font">NETWORK SECURITY</h3>
+                </div></a>
+
+                <a href="zero-day-exploits-module.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-bug"></i>
+                    </div>
+                    <h3 class="pixel-font">ZERO-DAY EXPLOITS</h3>
+                </div></a>
+
+                <a href="advanced-threats-module.html" class="module-link"><div class="module" data-status="active">
+                    <div class="module-icon">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <h3 class="pixel-font">ADVANCED THREATS</h3>
+                </div></a>
+
+            </section>
+
+        </div>
+
+        <!-- Partition Line -->
+        <div class="partition-line"></div>
+
+        <!-- Right Container (40%) -->
+        <div class="right-container">
+            
+            <section class="threats-section">
+                <h2 class="pixel-font"><i class="fas fa-exclamation-triangle"></i> TOP 10 THREATS</h2>
+                
+                <!-- Threat Counter -->
+                <div class="threat-counter">
+                    <div class="counter-info">
+                        <span class="counter-label">Threats detected in last 20 minutes:</span>
+                        <span class="counter-number pixel-font" id="threat-counter">247</span>
+                    </div>
+                    <div class="counter-status">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Live Monitoring</span>
+                    </div>
+                </div>
+                
+                <div class="threats-list">
+                    
+                    <div class="threat-item" data-rank="1">
+                        <div class="threat-rank pixel-font">01</div>
+                        <div class="threat-info">
+                            <h4>Ransomware Attacks</h4>
+                            <span class="threat-level critical">Critical</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="2">
+                        <div class="threat-rank pixel-font">02</div>
+                        <div class="threat-info">
+                            <h4>AI-Powered Phishing</h4>
+                            <span class="threat-level high">High</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="3">
+                        <div class="threat-rank pixel-font">03</div>
+                        <div class="threat-info">
+                            <h4>Supply Chain Attacks</h4>
+                            <span class="threat-level critical">Critical</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="4">
+                        <div class="threat-rank pixel-font">04</div>
+                        <div class="threat-info">
+                            <h4>Zero-Day Exploits</h4>
+                            <span class="threat-level critical">Critical</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="5">
+                        <div class="threat-rank pixel-font">05</div>
+                        <div class="threat-info">
+                            <h4>Cloud Misconfigurations</h4>
+                            <span class="threat-level high">High</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="6">
+                        <div class="threat-rank pixel-font">06</div>
+                        <div class="threat-info">
+                            <h4>Deepfake Attacks</h4>
+                            <span class="threat-level medium">Medium</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="7">
+                        <div class="threat-rank pixel-font">07</div>
+                        <div class="threat-info">
+                            <h4>IoT Botnets</h4>
+                            <span class="threat-level high">High</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="8">
+                        <div class="threat-rank pixel-font">08</div>
+                        <div class="threat-info">
+                            <h4>Business Email Compromise</h4>
+                            <span class="threat-level high">High</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="9">
+                        <div class="threat-rank pixel-font">09</div>
+                        <div class="threat-info">
+                            <h4>Cryptojacking</h4>
+                            <span class="threat-level medium">Medium</span>
+                        </div>
+                    </div>
+
+                    <div class="threat-item" data-rank="10">
+                        <div class="threat-rank pixel-font">10</div>
+                        <div class="threat-info">
+                            <h4>Insider Threats</h4>
+                            <span class="threat-level high">High</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+
+    <script src="../../matrix.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

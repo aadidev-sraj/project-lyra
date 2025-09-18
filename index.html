@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Lyra - Cybersecurity Education</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen active">
+        <div class="splash-content">
+            <h1 class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</h1>
+            <div class="typewriter">
+                <p id="welcome-text">Welcome, Cyber Explorer...</p>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+        <!-- Centered Glitching Heading -->
+        <div class="centered-heading">
+            <h1 class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</h1>
+            <p class="subtitle">Cybersecurity Education Platform</p>
+        </div>
+
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <button class="auth-tab active" data-tab="login">LOGIN</button>
+                        <button class="auth-tab" data-tab="signup">SIGNUP</button>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form id="login-form" class="auth-form active">
+                        <h2 class="form-title">ACCESS TERMINAL</h2>
+                        <div class="input-group">
+                            <label for="login-email">EMAIL</label>
+                            <input type="email" id="login-email" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">PASSWORD</label>
+                            <input type="password" id="login-password" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <button type="submit" class="auth-btn">INITIALIZE CONNECTION</button>
+                        <div class="form-footer">
+                            <a href="#" class="forgot-link">Forgot credentials?</a>
+                        </div>
+                    </form>
+
+                    <!-- Signup Form -->
+                    <form id="signup-form" class="auth-form">
+                        <h2 class="form-title">CREATE PROFILE</h2>
+                        <div class="input-group">
+                            <label for="signup-username">USERNAME</label>
+                            <input type="text" id="signup-username" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-email">EMAIL</label>
+                            <input type="email" id="signup-email" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-password">PASSWORD</label>
+                            <input type="password" id="signup-password" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <div class="input-group">
+                            <label for="signup-confirm">CONFIRM PASSWORD</label>
+                            <input type="password" id="signup-confirm" required>
+                            <span class="input-cursor"></span>
+                        </div>
+                        <button type="submit" class="auth-btn">ESTABLISH PROFILE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="matrix.js"></script>
+    <script src="auth-ui.js"></script>
+</body>
+</html>

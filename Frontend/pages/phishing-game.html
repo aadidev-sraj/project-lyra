@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Awareness Game - Project Lyra</title>
+    <link rel="stylesheet" href="../styles/game-style.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Game Container -->
+    <div class="game-container">
+        
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="game-screen active">
+            <div class="screen-content">
+                <h1 class="glitch-text" data-text="PHISHING AWARENESS">PHISHING AWARENESS</h1>
+                <h2 class="subtitle">CYBER DEFENSE TRAINING</h2>
+                <div class="game-description">
+                    <p>Welcome to the ultimate phishing detection challenge.</p>
+                    <p>Complete 8 levels to master cyber threat identification.</p>
+                    <p>Your mission: Protect the digital realm from phishing attacks.</p>
+                </div>
+                <button class="game-btn primary" onclick="startGame()">INITIALIZE TRAINING</button>
+            </div>
+        </div>
+
+        <!-- Level 1: Phish or Legit -->
+        <div id="level-1" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 1: PHISH OR LEGIT?</h2>
+                    <div class="level-progress">1/8</div>
+                </div>
+                <div class="level-description">
+                    <p>Analyze the following email and determine if it's legitimate or a phishing attempt.</p>
+                </div>
+                <div class="email-container">
+                    <div class="email-header">
+                        <div class="email-field"><strong>From:</strong> security@paypaI.com</div>
+                        <div class="email-field"><strong>Subject:</strong> Urgent: Verify Your Account</div>
+                        <div class="email-field"><strong>Date:</strong> Today, 2:34 PM</div>
+                    </div>
+                    <div class="email-body">
+                        <p>Dear Valued Customer,</p>
+                        <p>We have detected suspicious activity on your account. To ensure your security, please verify your account immediately by clicking the link below:</p>
+                        <p><a href="#" class="suspicious-link">Verify Account Now</a></p>
+                        <p>Failure to verify within 24 hours will result in account suspension.</p>
+                        <p>Best regards,<br>PayPal Security Team</p>
+                    </div>
+                </div>
+                <div class="choice-buttons">
+                    <button class="game-btn" onclick="makeChoice(1, 'legit')">LEGITIMATE</button>
+                    <button class="game-btn" onclick="makeChoice(1, 'phish')">PHISHING</button>
+                </div>
+                <div id="level-1-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Level 2: Phishing Detective -->
+        <div id="level-2" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 2: PHISHING DETECTIVE</h2>
+                    <div class="level-progress">2/8</div>
+                </div>
+                <div class="detective-scenario">
+                    <div class="scenario-text">
+                        <p>You're investigating a cyber attack at TechCorp. An employee received a suspicious email and clicked a link. What should be your first step?</p>
+                    </div>
+                    <div class="detective-choices">
+                        <button class="choice-btn" onclick="detectiveChoice(1, 'A')">
+                            <span class="choice-letter">A</span>
+                            <span class="choice-text">Immediately shut down the employee's computer</span>
+                        </button>
+                        <button class="choice-btn" onclick="detectiveChoice(1, 'B')">
+                            <span class="choice-letter">B</span>
+                            <span class="choice-text">Isolate the computer from the network and document the incident</span>
+                        </button>
+                        <button class="choice-btn" onclick="detectiveChoice(1, 'C')">
+                            <span class="choice-letter">C</span>
+                            <span class="choice-text">Ask the employee to continue working normally</span>
+                        </button>
+                        <button class="choice-btn" onclick="detectiveChoice(1, 'D')">
+                            <span class="choice-letter">D</span>
+                            <span class="choice-text">Delete the email and ignore the incident</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="level-2-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Level 3: Inbox Intruders -->
+        <div id="level-3" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 3: INBOX INTRUDERS</h2>
+                    <div class="level-progress">3/8</div>
+                </div>
+                <div class="level-description">
+                    <p>Sort the incoming messages. Drag phishing emails to the QUARANTINE zone and legitimate emails to SAFE zone.</p>
+                </div>
+                <div class="inbox-game">
+                    <div class="email-queue">
+                        <div class="email-item" draggable="true" data-type="phish" data-id="1">
+                            <div class="email-preview">
+                                <strong>From:</strong> admin@g00gle.com<br>
+                                <strong>Subject:</strong> Account Suspended - Verify Now
+                            </div>
+                        </div>
+                        <div class="email-item" draggable="true" data-type="safe" data-id="2">
+                            <div class="email-preview">
+                                <strong>From:</strong> newsletter@techcrunch.com<br>
+                                <strong>Subject:</strong> Weekly Tech News Digest
+                            </div>
+                        </div>
+                        <div class="email-item" draggable="true" data-type="phish" data-id="3">
+                            <div class="email-preview">
+                                <strong>From:</strong> security@bank-0f-america.com<br>
+                                <strong>Subject:</strong> Urgent: Update Your Banking Info
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sorting-zones">
+                        <div class="drop-zone safe-zone" data-zone="safe">
+                            <h3>SAFE ZONE</h3>
+                            <p>Legitimate emails</p>
+                        </div>
+                        <div class="drop-zone quarantine-zone" data-zone="quarantine">
+                            <h3>QUARANTINE</h3>
+                            <p>Phishing attempts</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="level-3-feedback" class="feedback hidden"></div>
+                <button id="level-3-check" class="game-btn hidden" onclick="checkInboxSorting()">CHECK RESULTS</button>
+            </div>
+        </div>
+
+        <!-- Level 4: Spot the Hook -->
+        <div id="level-4" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 4: SPOT THE HOOK</h2>
+                    <div class="level-progress">4/8</div>
+                </div>
+                <div class="level-description">
+                    <p>Examine this fake banking website. Click on the suspicious elements you can identify.</p>
+                </div>
+                <div class="fake-website">
+                    <div class="website-header">
+                        <div class="logo">🏦 SecureBank</div>
+                        <div class="url-bar">
+                            <span class="suspicious-url" data-hook="url">https://secur3-bank-login.tk/signin</span>
+                        </div>
+                    </div>
+                    <div class="website-content">
+                        <h2>Welcome to SecureBank</h2>
+                        <div class="login-form">
+                            <h3>Sign In to Your Account</h3>
+                            <input type="text" placeholder="Username" readonly>
+                            <input type="password" placeholder="Password" readonly>
+                            <button class="suspicious-button" data-hook="button">Login Now - Limited Time!</button>
+                        </div>
+                        <div class="security-notice">
+                            <p class="suspicious-text" data-hook="urgency">⚠️ Your account will be suspended in 2 hours if you don't verify!</p>
+                        </div>
+                        <div class="footer">
+                            <p class="suspicious-text" data-hook="contact">Contact us: support@secur3bank.tk</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="level-4-feedback" class="feedback hidden"></div>
+                <div class="hooks-found">
+                    <p>Suspicious elements found: <span id="hooks-count">0</span>/4</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 5: Corporate Cyber Challenge -->
+        <div id="level-5" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 5: CORPORATE CYBER CHALLENGE</h2>
+                    <div class="level-progress">5/8</div>
+                </div>
+                <div class="corporate-scenario">
+                    <div class="scenario-header">
+                        <h3>SCENARIO: Executive Impersonation Attack</h3>
+                    </div>
+                    <div class="email-container">
+                        <div class="email-header">
+                            <div class="email-field"><strong>From:</strong> CEO@yourcompany.com</div>
+                            <div class="email-field"><strong>Subject:</strong> URGENT: Confidential Wire Transfer</div>
+                            <div class="email-field"><strong>To:</strong> finance@yourcompany.com</div>
+                        </div>
+                        <div class="email-body">
+                            <p>Hi Sarah,</p>
+                            <p>I need you to process an urgent wire transfer for a confidential acquisition. Please transfer $50,000 to the following account immediately:</p>
+                            <p><strong>Account:</strong> 1234567890<br><strong>Routing:</strong> 987654321<br><strong>Bank:</strong> International Trust Bank</p>
+                            <p>This is time-sensitive and confidential. Do not discuss with anyone.</p>
+                            <p>Thanks,<br>John Smith, CEO</p>
+                        </div>
+                    </div>
+                    <div class="corporate-question">
+                        <p>As the finance manager, what should you do?</p>
+                        <div class="corporate-choices">
+                            <button class="choice-btn" onclick="corporateChoice('A')">
+                                <span class="choice-text">Process the transfer immediately as requested</span>
+                            </button>
+                            <button class="choice-btn" onclick="corporateChoice('B')">
+                                <span class="choice-text">Call the CEO directly to verify the request</span>
+                            </button>
+                            <button class="choice-btn" onclick="corporateChoice('C')">
+                                <span class="choice-text">Forward the email to IT security for verification</span>
+                            </button>
+                            <button class="choice-btn" onclick="corporateChoice('D')">
+                                <span class="choice-text">Both B and C - verify through multiple channels</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="level-5-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Level 6: Phishing IQ Test -->
+        <div id="level-6" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 6: PHISHING IQ TEST</h2>
+                    <div class="level-progress">6/8</div>
+                </div>
+                <div class="quiz-container">
+                    <div class="question-counter">
+                        <span>Question <span id="current-question">1</span> of <span id="total-questions">5</span></span>
+                    </div>
+                    <div id="quiz-question" class="quiz-question">
+                        <h3>What is the most common type of phishing attack?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-option" onclick="answerQuiz('A')">A) Spear phishing targeting specific individuals</button>
+                            <button class="quiz-option" onclick="answerQuiz('B')">B) Mass email phishing campaigns</button>
+                            <button class="quiz-option" onclick="answerQuiz('C')">C) SMS phishing (smishing)</button>
+                            <button class="quiz-option" onclick="answerQuiz('D')">D) Voice phishing (vishing)</button>
+                        </div>
+                    </div>
+                    <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+                    <div class="quiz-score">
+                        <span>Score: <span id="quiz-score-value">0</span>/5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Level 7: URL Hunter -->
+        <div id="level-7" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 7: URL HUNTER</h2>
+                    <div class="level-progress">7/8</div>
+                </div>
+                <div class="level-description">
+                    <p>Analyze these URLs and identify which ones are potentially malicious.</p>
+                </div>
+                <div class="url-hunter">
+                    <div class="url-list">
+                        <div class="url-item" data-safe="false">
+                            <div class="url-display">https://paypaI-security.com/verify</div>
+                            <div class="url-actions">
+                                <button class="url-btn safe" onclick="classifyUrl(this, 'safe')">SAFE</button>
+                                <button class="url-btn malicious" onclick="classifyUrl(this, 'malicious')">MALICIOUS</button>
+                            </div>
+                        </div>
+                        <div class="url-item" data-safe="true">
+                            <div class="url-display">https://www.github.com/security</div>
+                            <div class="url-actions">
+                                <button class="url-btn safe" onclick="classifyUrl(this, 'safe')">SAFE</button>
+                                <button class="url-btn malicious" onclick="classifyUrl(this, 'malicious')">MALICIOUS</button>
+                            </div>
+                        </div>
+                        <div class="url-item" data-safe="false">
+                            <div class="url-display">http://g00gle-drive-share.tk/document</div>
+                            <div class="url-actions">
+                                <button class="url-btn safe" onclick="classifyUrl(this, 'safe')">SAFE</button>
+                                <button class="url-btn malicious" onclick="classifyUrl(this, 'malicious')">MALICIOUS</button>
+                            </div>
+                        </div>
+                        <div class="url-item" data-safe="true">
+                            <div class="url-display">https://support.microsoft.com/help</div>
+                            <div class="url-actions">
+                                <button class="url-btn safe" onclick="classifyUrl(this, 'safe')">SAFE</button>
+                                <button class="url-btn malicious" onclick="classifyUrl(this, 'malicious')">MALICIOUS</button>
+                            </div>
+                        </div>
+                        <div class="url-item" data-safe="false">
+                            <div class="url-display">https://amazon-security-alert.net/signin</div>
+                            <div class="url-actions">
+                                <button class="url-btn safe" onclick="classifyUrl(this, 'safe')">SAFE</button>
+                                <button class="url-btn malicious" onclick="classifyUrl(this, 'malicious')">MALICIOUS</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="url-score">
+                        <p>URLs classified: <span id="urls-classified">0</span>/5</p>
+                        <p>Correct: <span id="urls-correct">0</span></p>
+                    </div>
+                </div>
+                <div id="level-7-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Level 8: Phish Invaders -->
+        <div id="level-8" class="game-screen">
+            <div class="screen-content">
+                <div class="level-header">
+                    <h2 class="level-title">LEVEL 8: PHISH INVADERS</h2>
+                    <div class="level-progress">8/8</div>
+                </div>
+                <div class="level-description">
+                    <p>Phishing emails are falling from the sky! Click on them to intercept before they reach the bottom.</p>
+                </div>
+                <div class="invaders-game">
+                    <div class="game-stats">
+                        <div class="stat">Score: <span id="invaders-score">0</span></div>
+                        <div class="stat">Lives: <span id="invaders-lives">3</span></div>
+                        <div class="stat">Time: <span id="invaders-time">60</span>s</div>
+                    </div>
+                    <div id="game-area" class="game-area">
+                        <div class="player-zone">
+                            <div class="firewall">🛡️ FIREWALL PROTECTION 🛡️</div>
+                        </div>
+                    </div>
+                    <div class="game-controls">
+                        <button id="start-invaders" class="game-btn" onclick="startInvaders()">START DEFENSE</button>
+                        <button id="pause-invaders" class="game-btn hidden" onclick="pauseInvaders()">PAUSE</button>
+                    </div>
+                </div>
+                <div id="level-8-feedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="game-screen">
+            <div class="screen-content">
+                <h1 class="glitch-text" data-text="MISSION COMPLETE">MISSION COMPLETE</h1>
+                <div class="completion-stats">
+                    <h2>CYBER DEFENSE TRAINING COMPLETED</h2>
+                    <div class="final-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">LEVELS COMPLETED</span>
+                            <span class="stat-value">8/8</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">PHISHING THREATS NEUTRALIZED</span>
+                            <span class="stat-value" id="total-threats">47</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">SECURITY RATING</span>
+                            <span class="stat-value">EXPERT</span>
+                        </div>
+                    </div>
+                    <div class="achievement-badge">
+                        <div class="badge-icon">🏆</div>
+                        <div class="badge-text">
+                            <h3>PHISHING DEFENSE SPECIALIST</h3>
+                            <p>You have successfully completed all phishing awareness challenges</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="end-actions">
+                    <button class="game-btn primary" onclick="restartGame()">RESTART TRAINING</button>
+                    <button class="game-btn" onclick="returnToMenu()">RETURN TO CHALLENGES</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../../matrix.js"></script>
+    <script src="../js/phishing-game.js"></script>
+</body>
+</html>

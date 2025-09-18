@@ -1,0 +1,777 @@
+/* This file contains general styles for all training modules */
+
+/* Basic Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.9);
+  border-bottom: 2px solid #00ff00;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-brand a {
+  color: #00ff00;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  color: #00ff00;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+.nav-link:hover {
+  color: #00ff00;
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+}
+
+.nav-link.active {
+  color: #00ff00 !important;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 6px;
+  font-weight: bold;
+  text-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+  transition: all 0.3s ease;
+}
+
+/* Matrix Background */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+/* Base styles for module sections */
+body {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.main-container {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  padding-top: 100px; /* Account for fixed navbar */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-wrapper {
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.module-header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+}
+
+.module-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.module-header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  letter-spacing: 3px;
+}
+
+.module-description {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.module-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.stat-item {
+  padding: 15px 25px;
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-5px);
+}
+
+.stat-number {
+  font-size: 2.2rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.lesson-section {
+  border-radius: 8px;
+  padding: 30px;
+  margin-bottom: 50px;
+}
+
+.lesson-section h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.lesson-section h2 i {
+  font-size: 2.5rem;
+}
+
+/* Introduction Section */
+.intro-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.intro-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.concept-card {
+  padding: 25px;
+  text-align: center;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.concept-card:hover {
+  transform: translateY(-8px);
+}
+
+.concept-card i {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.concept-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.concept-card p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Attack Vectors Section */
+.vectors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.vector-card {
+  padding: 25px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.vector-card:hover {
+  transform: translateY(-8px);
+}
+
+.vector-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.vector-header i {
+  font-size: 2.5rem;
+}
+
+.vector-header h3 {
+  font-size: 1.6rem;
+  flex-grow: 1;
+}
+
+.threat-level {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.vector-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.red-flags h4 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.red-flags ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.red-flags li {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.red-flags li::before {
+  content: "•";
+  margin-right: 8px;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+/* Real-World Cases Section */
+.cases-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.cases-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+.case-item {
+  position: relative;
+  border-radius: 8px;
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-left: 40px; /* Space for the timeline line */
+}
+
+.case-item:hover {
+  transform: translateY(-8px);
+}
+
+.case-year {
+  position: absolute;
+  left: -60px;
+  top: 25px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.case-item::before {
+  content: "";
+  position: absolute;
+  left: -40px;
+  top: 35px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid #0a0a0a;
+}
+
+.case-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.case-header i {
+  font-size: 2.5rem;
+}
+
+.case-header h3 {
+  font-size: 1.6rem;
+  flex-grow: 1;
+}
+
+.impact-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.case-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.case-lessons strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.case-lessons ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.case-lessons li {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.case-lessons li::before {
+  content: "•";
+  margin-right: 8px;
+  font-size: 1.2em;
+  line-height: 1;
+}
+
+.case-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-top: 15px;
+  transition: color 0.3s ease;
+}
+
+/* Threat Analysis Lab */
+.analysis-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+}
+
+@media (min-width: 900px) {
+  .analysis-container {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.analysis-briefing {
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.analysis-briefing h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.analysis-briefing p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.mission-status {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.status-label {
+  font-weight: bold;
+}
+
+.status-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.intercepted-email {
+  border-radius: 8px;
+  padding: 25px;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.email-metadata,
+.email-body {
+  margin-bottom: 20px;
+}
+
+.metadata-row {
+  margin-bottom: 8px;
+}
+
+.metadata-row strong {
+  width: 70px;
+  display: inline-block;
+}
+
+.static-element {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.email-footer {
+  margin-top: 30px;
+  padding-top: 15px;
+  font-size: 0.85rem;
+}
+
+.threat-analysis {
+  border-radius: 8px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.threat-analysis h4 {
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.findings-list {
+  flex-grow: 1;
+  min-height: 150px;
+  max-height: 600px;
+  padding-right: 10px; /* For scrollbar */
+}
+
+.findings-list::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.findings-list {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.findings-list::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+.findings-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.8);
+}
+
+.no-findings {
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+.finding-item {
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.finding-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.finding-header i {
+  font-size: 1.2rem;
+}
+
+.threat-id {
+  font-size: 0.9rem;
+}
+
+.severity-badge {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.finding-description {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.analysis-score {
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.analysis-score .score-header {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+}
+
+.analysis-score .score-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.analysis-score .score-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.analysis-score .score-message {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.analysis-score .success-message,
+.analysis-score .warning-message {
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+
+/* Defense Strategies */
+.defense-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.defense-category {
+  border-radius: 8px;
+  padding: 30px;
+}
+
+.defense-category h3 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.defense-category h3 i {
+  font-size: 2rem;
+}
+
+.defense-items {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.defense-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  border-radius: 8px;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.defense-item:hover {
+  transform: translateY(-5px);
+}
+
+.defense-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.defense-content h4 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.defense-content p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Training Redirect Section */
+.redirect-description {
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.redirect-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.redirect-btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.redirect-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* Very subtle glitch effect */
+.glitch-text {
+  position: relative;
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  animation: glitch 4s linear infinite;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+.glitch-text::before {
+  color: #00ff00;
+  z-index: -1;
+  animation: glitch-1 4s infinite linear;
+}
+.glitch-text::after {
+  color: #fff;
+  z-index: -2;
+  animation: glitch-2 4s infinite linear;
+}
+@keyframes glitch {
+  0%, 100% { transform: none; }
+  5% { transform: translate(-0.5px, 0.5px); }
+  10% { transform: translate(0.5px, -0.5px); }
+  15% { transform: none; }
+}
+@keyframes glitch-1 {
+  0%, 100% { transform: none; }
+  5% { transform: translate(-0.5px, 0.5px); }
+  10% { transform: none; }
+}
+@keyframes glitch-2 {
+  0%, 100% { transform: none; }
+  5% { transform: translate(0.5px, -0.5px); }
+  10% { transform: none; }
+}
+
+.code-snippet-pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9em;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .lesson-section {
+    padding: 20px;
+  }
+
+  .lesson-section h2 {
+    font-size: 1.8rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lesson-section h2 i {
+    font-size: 2rem;
+  }
+
+  .concept-grid,
+  .vectors-grid,
+  .defense-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .redirect-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+}

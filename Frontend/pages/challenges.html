@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - Project Lyra</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .challenge-card {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .challenge-card:hover {
+            background: rgba(0, 255, 0, 0.15);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .challenge-card.locked {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #666;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .challenge-card.locked:hover {
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .challenge-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-card.locked .challenge-title {
+            color: #666;
+        }
+
+        .difficulty-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .difficulty-easy {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+        }
+
+        .difficulty-medium {
+            background: rgba(255, 255, 0, 0.2);
+            color: #ffff00;
+            border: 1px solid #ffff00;
+        }
+
+        .difficulty-hard {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+        }
+
+        .challenge-description {
+            color: #ccc;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .challenge-card.locked .challenge-description {
+            color: #666;
+        }
+
+        .challenge-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #aaa;
+        }
+
+        .challenge-card.locked .stat-item {
+            color: #666;
+        }
+
+        .challenge-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .start-challenge-btn {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .start-challenge-btn:hover {
+            background: linear-gradient(45deg, #00cc00, #009900);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .start-challenge-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .lock-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: #666;
+        }
+
+        .challenge-type {
+            color: #00ff00;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .challenge-card.locked .challenge-type {
+            color: #666;
+        }
+
+        .unlock-requirement {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #ffff00;
+        }
+
+        .progress-indicator {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="../../index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="challenges.html" class="nav-link active">Challenges</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="../../index.html" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="glitch-text" data-text="CYBERSECURITY CHALLENGES">CYBERSECURITY CHALLENGES</h1>
+            <p class="subtitle">Test your skills and advance through progressive security challenges</p>
+        </div>
+
+        <div class="challenges-grid" id="challenges-grid">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+
+    <script src="../../matrix.js"></script>
+    <script src="../../auth.js"></script>
+    <script>
+        let currentUser = null;
+        let userAttempts = [];
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            const token = window.LyraAuth.getToken();
+            if (!token) {
+                window.location.href = '../../index.html';
+                return;
+            }
+
+            await loadUserData();
+            await loadChallenges();
+        });
+
+        async function loadUserData() {
+            try {
+                const token = window.LyraAuth.getToken();
+                
+                // Load user profile
+                const profileResponse = await fetch(`${window.LyraAuth.API_BASE}/api/users/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (profileResponse.ok) {
+                    const profileData = await profileResponse.json();
+                    currentUser = profileData.user;
+                }
+
+                // Load user attempts
+                const attemptsResponse = await fetch(`${window.LyraAuth.API_BASE}/api/challenges/attempts/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (attemptsResponse.ok) {
+                    const attemptsData = await attemptsResponse.json();
+                    userAttempts = attemptsData.attempts;
+                }
+            } catch (error) {
+                console.error('Failed to load user data:', error);
+            }
+        }
+
+        async function loadChallenges() {
+            try {
+                const token = window.LyraAuth.getToken();
+                const response = await fetch(`${window.LyraAuth.API_BASE}/api/challenges`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    renderChallenges(data.challenges);
+                } else {
+                    throw new Error('Failed to load challenges');
+                }
+            } catch (error) {
+                console.error('Failed to load challenges:', error);
+                document.getElementById('challenges-grid').innerHTML = 
+                    '<div class="error-message">Failed to load challenges. Please try again later.</div>';
+            }
+        }
+
+        function renderChallenges(challenges) {
+            const challengesGrid = document.getElementById('challenges-grid');
+            challengesGrid.innerHTML = '';
+
+            // Define challenge progression order
+            const challengeOrder = [
+                'phishing-detection',
+                'password-strength', 
+                'network-analysis',
+                'malware-identification'
+            ];
+
+            // Sort challenges by type according to progression order
+            const sortedChallenges = challenges.sort((a, b) => {
+                const aIndex = challengeOrder.indexOf(a.type);
+                const bIndex = challengeOrder.indexOf(b.type);
+                return aIndex - bIndex;
+            });
+
+            sortedChallenges.forEach((challenge, index) => {
+                const isUnlocked = isChallengeUnlocked(challenge, index);
+                const userAttempt = userAttempts.find(attempt => 
+                    attempt.challenge._id === challenge._id && attempt.isSuccessful
+                );
+                const isCompleted = !!userAttempt;
+
+                const challengeCard = document.createElement('div');
+                challengeCard.className = `challenge-card ${!isUnlocked ? 'locked' : ''}`;
+                
+                challengeCard.innerHTML = `
+                    ${!isUnlocked ? '<div class="lock-icon">🔒</div>' : ''}
+                    <div class="challenge-header">
+                        <div>
+                            <div class="challenge-type">${formatChallengeType(challenge.type)}</div>
+                            <h3 class="challenge-title">${challenge.title}</h3>
+                        </div>
+                        <div class="difficulty-badge difficulty-${challenge.difficulty}">
+                            ${challenge.difficulty}
+                        </div>
+                    </div>
+                    
+                    <p class="challenge-description">${challenge.description}</p>
+                    
+                    <div class="challenge-stats">
+                        <div class="stat-item">
+                            <span>⚡</span>
+                            <span>${challenge.points} XP</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>⏱️</span>
+                            <span>${Math.floor(challenge.timeLimit / 60)} min</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>📊</span>
+                            <span>${challenge.stats.successRate || 0}% success</span>
+                        </div>
+                    </div>
+                    
+                    ${isCompleted ? 
+                        `<div class="progress-indicator">
+                            ✅ Completed! Score: ${userAttempt.score}/100
+                        </div>` : 
+                        ''
+                    }
+                    
+                    ${!isUnlocked ? 
+                        `<div class="unlock-requirement">
+                            🔒 Complete the previous challenge to unlock
+                        </div>` : 
+                        `<div class="challenge-actions">
+                            <button class="start-challenge-btn" 
+                                    onclick="startChallenge('${challenge._id}')"
+                                    ${!isUnlocked ? 'disabled' : ''}>
+                                ${isCompleted ? 'Retry Challenge' : 'Start Challenge'}
+                            </button>
+                        </div>`
+                    }
+                `;
+                
+                challengesGrid.appendChild(challengeCard);
+            });
+        }
+
+        function isChallengeUnlocked(challenge, index) {
+            // First challenge is always unlocked
+            if (index === 0) return true;
+            
+            // Define challenge progression order
+            const challengeOrder = [
+                'phishing-detection',
+                'password-strength', 
+                'network-analysis',
+                'malware-identification'
+            ];
+            
+            const currentTypeIndex = challengeOrder.indexOf(challenge.type);
+            if (currentTypeIndex <= 0) return true;
+            
+            // Check if ALL previous challenges have been completed successfully
+            for (let i = 0; i < currentTypeIndex; i++) {
+                const previousType = challengeOrder[i];
+                const hasCompletedPrevious = userAttempts.some(attempt => 
+                    attempt.challenge.type === previousType && attempt.isSuccessful
+                );
+                
+                if (!hasCompletedPrevious) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function formatChallengeType(type) {
+            const typeMap = {
+                'phishing-detection': 'Phishing Detection',
+                'password-strength': 'Password Security',
+                'network-analysis': 'Network Analysis',
+                'malware-identification': 'Malware Analysis'
+            };
+            return typeMap[type] || type;
+        }
+
+        function startChallenge(challengeId) {
+            const challengeCard = event.target.closest('.challenge-card');
+            if (challengeCard && challengeCard.classList.contains('locked')) {
+                alert('This challenge is locked. Complete the previous challenges first!');
+                return;
+            }
+            
+            // Store challenge ID and redirect to challenge interface
+            localStorage.setItem('currentChallengeId', challengeId);
+            window.location.href = `challenge.html?id=${challengeId}`;
+        }
+    </script>
+</body>
+</html>

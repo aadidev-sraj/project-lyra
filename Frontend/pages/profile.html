@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Project Lyra</title>
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+        }
+
+        .profile-avatar .avatar-container {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .pixel-avatar {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .pixel-row {
+            display: flex;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .pixel {
+            flex: 1;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        .pixel.active {
+            background: #00ff00;
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .username {
+            font-size: 2.5rem;
+            color: #00ff00;
+            margin: 0 0 1rem 0;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .user-level {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .level-badge {
+            background: linear-gradient(45deg, #00ff00, #00cc00);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .title {
+            color: #ffff00;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .stat-label {
+            display: block;
+            color: #ccc;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+
+        .profile-content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .profile-section {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .section-title {
+            color: #00ff00;
+            font-size: 1.5rem;
+            margin: 0 0 1.5rem 0;
+            text-transform: uppercase;
+            border-bottom: 1px solid #00ff00;
+            padding-bottom: 0.5rem;
+        }
+
+        .knowledge-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .knowledge-label {
+            min-width: 150px;
+            color: #ccc;
+            font-size: 0.875rem;
+        }
+
+        .knowledge-bar {
+            flex: 1;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .knowledge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00cc00);
+            transition: width 0.3s ease;
+        }
+
+        .knowledge-percent {
+            min-width: 40px;
+            text-align: right;
+            color: #00ff00;
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 3px solid #00ff00;
+            border-radius: 4px;
+        }
+
+        .activity-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            text-align: center;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            color: #999;
+            font-size: 0.875rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .achievement.earned {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+        }
+
+        .achievement.locked {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #666;
+            opacity: 0.6;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .achievement.locked .achievement-title {
+            color: #999;
+        }
+
+        .achievement-desc {
+            font-size: 0.875rem;
+            color: #ccc;
+        }
+
+        .achievement.locked .achievement-desc {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-stats {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="../../index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html" class="nav-link">Dashboard</a>
+            <a href="challenges.html" class="nav-link">Challenges</a>
+            <a href="profile.html" class="nav-link active">Profile</a>
+            <a href="../../index.html" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <div class="avatar-container">
+                    <div class="pixel-avatar">
+                        <div class="pixel-row">
+                            <div class="pixel"></div><div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div><div class="pixel"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel"></div><div class="pixel active"></div>
+                        </div>
+                        <div class="pixel-row">
+                            <div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div><div class="pixel active"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-info">
+                <h1 class="username" id="username">Loading...</h1>
+                <div class="user-level">
+                    <span class="level-badge" id="user-level">LEVEL 1</span>
+                    <span class="title" id="user-title">NOVICE</span>
+                </div>
+                <div class="user-stats">
+                    <div class="stat">
+                        <span class="stat-number" id="challenges-completed">0</span>
+                        <span class="stat-label">Challenges Completed</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="xp-points">0</span>
+                        <span class="stat-label">XP Points</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number" id="days-active">0</span>
+                        <span class="stat-label">Days Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <div class="profile-section">
+                <h2 class="section-title">KNOWLEDGE PROGRESS</h2>
+                <div class="knowledge-bars" id="knowledge-bars">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">RECENT ACTIVITY</h2>
+                <div class="activity-timeline" id="activity-timeline">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">ACHIEVEMENTS</h2>
+                <div class="achievements-grid" id="achievements-grid">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../matrix.js"></script>
+    <script src="../../auth.js"></script>
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            const token = window.LyraAuth.getToken();
+            if (!token) {
+                window.location.href = '../../index.html';
+                return;
+            }
+
+            await loadUserProfile();
+        });
+
+        async function loadUserProfile() {
+            try {
+                console.log("[v0] Loading user profile...");
+                const token = window.LyraAuth.getToken();
+                console.log("[v0] Token exists:", !!token);
+                
+                const response = await fetch(`${window.LyraAuth.API_BASE}/api/users/profile`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                console.log("[v0] Profile response status:", response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("[v0] Profile data received:", data);
+                    currentUser = data.user;
+                    console.log("[v0] Current user set:", currentUser);
+                    console.log("[v0] User name:", currentUser.name);
+                    
+                    updateProfileHeader();
+                    await loadUserProgress();
+                    await loadUserActivity();
+                    await loadUserAchievements();
+                } else {
+                    const errorData = await response.json();
+                    console.error("[v0] Profile fetch failed:", errorData);
+                    throw new Error('Failed to load profile');
+                }
+            } catch (error) {
+                console.error('[v0] Failed to load profile:', error);
+                document.getElementById('username').textContent = 'Error Loading Profile';
+            }
+        }
+
+        function updateProfileHeader() {
+            console.log("[v0] Updating profile header with user:", currentUser);
+            const displayName = currentUser.name || currentUser.username || currentUser.email?.split('@')[0] || 'Anonymous User';
+            console.log("[v0] Display name resolved to:", displayName);
+            document.getElementById('username').textContent = displayName;
+            
+            const xp = currentUser.stats?.totalPoints || 0;
+            const level = Math.floor(xp / 100) + 1;
+            const titles = ['NOVICE', 'APPRENTICE', 'SECURITY ANALYST', 'EXPERT', 'MASTER', 'CYBER GUARDIAN'];
+            const title = titles[Math.min(level - 1, titles.length - 1)];
+            
+            document.getElementById('user-level').textContent = `LEVEL ${level}`;
+            document.getElementById('user-title').textContent = title;
+            
+            document.getElementById('challenges-completed').textContent = currentUser.stats?.totalChallengesCompleted || 0;
+            document.getElementById('xp-points').textContent = currentUser.stats?.totalPoints || 0;
+            
+            // Calculate days active
+            const joinDate = new Date(currentUser.createdAt || Date.now());
+            const today = new Date();
+            const daysActive = Math.floor((today - joinDate) / (1000 * 60 * 60 * 24));
+            document.getElementById('days-active').textContent = daysActive;
+        }
+
+        async function loadUserProgress() {
+            try {
+                const token = window.LyraAuth.getToken();
+                const response = await fetch(`${window.LyraAuth.API_BASE}/api/challenges/attempts/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    updateKnowledgeBars(data.attempts);
+                }
+            } catch (error) {
+                console.error('Failed to load progress:', error);
+                updateKnowledgeBars([]);
+            }
+        }
+
+        function updateKnowledgeBars(attempts) {
+            const knowledgeAreas = [
+                { name: 'Phishing Detection', key: 'phishing-detection' },
+                { name: 'Password Security', key: 'password-strength' },
+                { name: 'Network Analysis', key: 'network-analysis' },
+                { name: 'Malware Analysis', key: 'malware-identification' }
+            ];
+
+            const knowledgeBarsContainer = document.getElementById('knowledge-bars');
+            knowledgeBarsContainer.innerHTML = '';
+
+            knowledgeAreas.forEach(area => {
+                const areaAttempts = attempts.filter(a => a.challenge?.type === area.key && a.isSuccessful);
+                const percentage = Math.min(100, areaAttempts.length * 25);
+
+                const knowledgeItem = document.createElement('div');
+                knowledgeItem.className = 'knowledge-item';
+                knowledgeItem.innerHTML = `
+                    <span class="knowledge-label">${area.name}</span>
+                    <div class="knowledge-bar">
+                        <div class="knowledge-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <span class="knowledge-percent">${percentage}%</span>
+                `;
+                knowledgeBarsContainer.appendChild(knowledgeItem);
+            });
+        }
+
+        async function loadUserActivity() {
+            try {
+                const token = window.LyraAuth.getToken();
+                const response = await fetch(`${window.LyraAuth.API_BASE}/api/users/activity?limit=4`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.ok) {
+                    const activities = await response.json();
+                    updateActivityTimeline(activities);
+                } else {
+                    updateActivityTimeline([]);
+                }
+            } catch (error) {
+                console.error('Failed to load activity:', error);
+                updateActivityTimeline([]);
+            }
+        }
+
+        function updateActivityTimeline(activities) {
+            const timelineContainer = document.getElementById('activity-timeline');
+            
+            if (activities.length === 0) {
+                timelineContainer.innerHTML = '<div class="activity-item"><div class="activity-content"><div class="activity-title">No recent activity</div></div></div>';
+                return;
+            }
+
+            timelineContainer.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                
+                const icon = getActivityIcon(activity.action);
+                const title = getActivityTitle(activity.action, activity.details);
+                const timeAgo = getTimeAgo(new Date(activity.timestamp));
+                
+                activityItem.innerHTML = `
+                    <div class="activity-icon">${icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-title">${title}</div>
+                        <div class="activity-time">${timeAgo}</div>
+                    </div>
+                `;
+                timelineContainer.appendChild(activityItem);
+            });
+        }
+
+        function getActivityIcon(action) {
+            const icons = {
+                'challenge_completed': '🏆',
+                'xp_earned': '⚡',
+                'challenge_unlocked': '🔓',
+                'module_completed': '🎯',
+                'login': '🔑',
+                'profile_updated': '👤'
+            };
+            return icons[action] || '📝';
+        }
+
+        function getActivityTitle(action, details) {
+            const titles = {
+                'challenge_completed': `Completed "${details?.challengeName || 'Challenge'}"`,
+                'xp_earned': `Earned ${details?.xp || 0} XP Points`,
+                'challenge_unlocked': `Unlocked "${details?.challengeName || 'Challenge'}"`,
+                'module_completed': `Completed "${details?.moduleName || 'Module'}"`,
+                'login': 'Logged into the system',
+                'profile_updated': 'Updated profile information'
+            };
+            return titles[action] || 'Unknown activity';
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 60) return `${diffMins} minutes ago`;
+            if (diffHours < 24) return `${diffHours} hours ago`;
+            return `${diffDays} days ago`;
+        }
+
+        async function loadUserAchievements() {
+            const challengesCompleted = currentUser.stats?.totalChallengesCompleted || 0;
+            const totalPoints = currentUser.stats?.totalPoints || 0;
+            const level = Math.floor(totalPoints / 100) + 1;
+            
+            const achievements = [
+                { id: 'first_steps', icon: '🥇', title: 'First Steps', desc: 'Complete your first challenge', earned: challengesCompleted > 0 },
+                { id: 'code_breaker', icon: '🔐', title: 'Code Breaker', desc: 'Master basic encryption', earned: totalPoints >= 100 },
+                { id: 'guardian', icon: '🛡️', title: 'Guardian', desc: 'Complete 5 challenges', earned: challengesCompleted >= 5 },
+                { id: 'cyber_master', icon: '👑', title: 'Cyber Master', desc: 'Reach level 10', earned: level >= 10 }
+            ];
+
+            updateAchievements(achievements);
+        }
+
+        function updateAchievements(achievements) {
+            const achievementsContainer = document.getElementById('achievements-grid');
+            achievementsContainer.innerHTML = '';
+
+            achievements.forEach(achievement => {
+                const achievementDiv = document.createElement('div');
+                achievementDiv.className = `achievement ${achievement.earned ? 'earned' : 'locked'}`;
+                achievementDiv.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-title">${achievement.title}</div>
+                    <div class="achievement-desc">${achievement.desc}</div>
+                `;
+                achievementsContainer.appendChild(achievementDiv);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Threats Module - Project Lyra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/module-styles.css">
+  <link rel="stylesheet" href="../styles/phishing-module.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    <div class="main-container">
+      <div class="content-wrapper">
+          <!-- Navigation -->
+          <header class="module-header">
+              <i class="fas fa-skull-crossbones module-icon"></i>
+              <h1 class="glitch-text" data-text="Advanced Threats">Advanced Threats</h1>
+              <p class="module-description">Dive into the most sophisticated and impactful threats in cybersecurity, from APTs to ransomware and beyond.</p>
+          </header>
+          <section id="introduction" class="lesson-section">
+              <h2><i class="fas fa-info-circle"></i> What are Advanced Threats?</h2>
+              <div class="intro-content">
+                  <div class="intro-text">
+                      <p>Advanced threats are highly sophisticated cyberattacks that often involve persistent, targeted campaigns against organizations or individuals. These threats leverage a combination of technical skill, stealth, and social engineering to achieve their objectives.</p>
+                  </div>
+                  <div class="concept-grid">
+                      <div class="concept-card">
+                          <i class="fas fa-user-ninja"></i>
+                          <h3>Advanced Persistent Threats (APTs)</h3>
+                          <p>Long-term, targeted attacks often conducted by nation-states or organized groups, aiming for espionage or sabotage.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-virus"></i>
+                          <h3>Ransomware</h3>
+                          <p>Malware that encrypts data and demands payment for decryption, often crippling organizations.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-industry"></i>
+                          <h3>Supply Chain Attacks</h3>
+                          <p>Compromising trusted software or hardware providers to infiltrate target organizations.</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <section id="major-threats" class="lesson-section">
+              <h2><i class="fas fa-bolt"></i> Major Advanced Threat Types</h2>
+              <div class="vectors-grid">
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-user-ninja"></i>
+                          <h3>Advanced Persistent Threats (APTs)</h3>
+                          <span class="threat-level critical">Critical</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>APTs are stealthy, continuous hacking processes, often orchestrated by nation-states, targeting specific entities for espionage or sabotage.</p>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-virus"></i>
+                          <h3>Ransomware</h3>
+                          <span class="threat-level high">High</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Ransomware encrypts files and demands payment, causing major disruptions in healthcare, government, and business sectors.</p>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-industry"></i>
+                          <h3>Supply Chain Attacks</h3>
+                          <span class="threat-level high">High</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Attackers compromise trusted third-party vendors to gain access to target organizations, as seen in the SolarWinds breach.</p>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-user-secret"></i>
+                          <h3>Insider Threats</h3>
+                          <span class="threat-level medium">Medium</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Malicious or negligent insiders can leak sensitive data or sabotage systems from within the organization.</p>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-bug"></i>
+                          <h3>Zero-Day Exploits</h3>
+                          <span class="threat-level high">High</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Attackers exploit unknown vulnerabilities before patches are available, often as part of larger campaigns.</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <section id="real-world-cases" class="lesson-section">
+              <h2><i class="fas fa-history"></i> Real-World Advanced Threat Cases</h2>
+              <div class="cases-timeline">
+                  <div class="case-item">
+                      <span class="case-year">2010</span>
+                      <div class="case-header">
+                          <i class="fas fa-microchip"></i>
+                          <h3>Stuxnet Worm</h3>
+                          <span class="impact-badge critical">Critical</span>
+                      </div>
+                      <div class="case-content">
+                          <p>Stuxnet was a sophisticated worm that targeted Iranian nuclear facilities, causing physical damage to centrifuges. It is widely believed to be a state-sponsored cyberweapon.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Cyberattacks can cause real-world physical damage.</li>
+                                  <li>Nation-state actors possess significant cyber capabilities.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/Stuxnet" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2021</span>
+                      <div class="case-header">
+                          <i class="fas fa-hospital"></i>
+                          <h3>Colonial Pipeline Ransomware</h3>
+                          <span class="impact-badge severe">Severe</span>
+                      </div>
+                      <div class="case-content">
+                          <p>The Colonial Pipeline ransomware attack disrupted fuel supplies across the U.S. East Coast, highlighting the vulnerability of critical infrastructure to cybercrime.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Critical infrastructure is a prime target for ransomware.</li>
+                                  <li>Incident response and backup strategies are essential.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/Colonial_Pipeline_ransomware_attack" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2020</span>
+                      <div class="case-header">
+                          <i class="fas fa-building"></i>
+                          <h3>SolarWinds Supply Chain Attack</h3>
+                          <span class="impact-badge critical">Critical</span>
+                      </div>
+                      <div class="case-content">
+                          <p>Russian state-sponsored hackers compromised SolarWinds' software update system, distributing malicious code to thousands of organizations worldwide.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Supply chain attacks can bypass traditional defenses.</li>
+                                  <li>Trusted software updates can be weaponized.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/2020_United_States_federal_government_data_breach" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <section id="analysis-lab" class="lesson-section">
+              <h2><i class="fas fa-flask"></i> Advanced Threat Analysis Lab</h2>
+              <p class="analysis-briefing">
+                  <strong>Mission Briefing:</strong> Your organization has detected unusual activity on a critical server. Analyze the logs and identify the type of advanced threat involved.
+              </p>
+              <div class="analysis-container">
+                  <div class="intercepted-email">
+                      <div class="email-metadata">
+                          <div class="metadata-row"><strong>Source IP:</strong> <span class="static-element">203.0.113.45</span></div>
+                          <div class="metadata-row"><strong>Destination IP:</strong> <span class="static-element">10.10.10.5</span></div>
+                          <div class="metadata-row"><strong>Protocol:</strong> <span class="static-element">HTTPS</span></div>
+                          <div class="metadata-row"><strong>Port:</strong> <span class="static-element">443</span></div>
+                          <div class="metadata-row"><strong>Timestamp:</strong> <span class="static-element">2024-05-12 03:22:10</span></div>
+                      </div>
+                      <hr style="border-color: #00cc00; margin: 20px 0;">
+                      <div class="email-body">
+                          <p><strong>Activity Observed:</strong></p>
+                          <p>• Multiple failed login attempts from external IP.</p>
+                          <p>• Successful login using privileged account.</p>
+                          <p>• Unusual outbound data transfer to foreign server.</p>
+                          <p>• Use of legitimate remote management tools.</p>
+                      </div>
+                      <div class="email-footer">
+                          <p>Potential APT or insider threat in progress.</p>
+                      </div>
+                  </div>
+                  <div class="threat-analysis">
+                      <h4>Threat Analysis Log</h4>
+                      <div class="findings-list">
+                          <p class="no-findings">Key security indicators:</p>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 1:</strong> Privileged account compromise.
+                          </div>
+                          <div class="finding-item severity-high">
+                              <strong>🚩 Red Flag 2:</strong> Unusual outbound data transfer.
+                          </div>
+                          <div class="finding-item severity-medium">
+                              <strong>🚩 Red Flag 3:</strong> Use of legitimate tools for malicious purposes.
+                          </div>
+                          <div class="finding-item severity-high">
+                              <strong>🚩 Red Flag 4:</strong> Persistent access from external IP.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <section id="defense-strategies" class="lesson-section">
+              <h2><i class="fas fa-shield-alt"></i> Defense Strategies</h2>
+              <div class="defense-grid">
+                  <div class="defense-category">
+                      <h3><i class="fas fa-user-shield"></i> Identity & Access Management</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-key"></i>
+                              <div class="defense-content">
+                                  <h4>Least Privilege</h4>
+                                  <p>Restrict user and application privileges to the minimum necessary for their roles.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-user-lock"></i>
+                              <div class="defense-content">
+                                  <h4>Multi-Factor Authentication</h4>
+                                  <p>Require multiple forms of verification for access to sensitive systems.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="defense-category">
+                      <h3><i class="fas fa-network-wired"></i> Network Security</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-shield-virus"></i>
+                              <div class="defense-content">
+                                  <h4>Segmentation & Monitoring</h4>
+                                  <p>Segment networks and monitor for lateral movement and unusual activity.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-sync-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Regular Updates</h4>
+                                  <p>Keep all systems and software up to date to reduce vulnerabilities.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="defense-category">
+                      <h3><i class="fas fa-tools"></i> Monitoring & Response</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-eye"></i>
+                              <div class="defense-content">
+                                  <h4>Threat Hunting</h4>
+                                  <p>Proactively search for signs of compromise and advanced threats within your environment.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-file-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Incident Response Plan</h4>
+                                  <p>Develop and test a plan for responding to advanced threats and breaches.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+          <section id="training-redirect" class="lesson-section">
+              <h2><i class="fas fa-gamepad"></i> Ready for Action?</h2>
+              <p class="redirect-description">Test your advanced threat knowledge with our interactive challenges!</p>
+              <div class="redirect-actions">
+                  <a href="challenges.html" class="redirect-btn">Start Advanced Threat Challenges <i class="fas fa-arrow-right"></i></a>
+              </div>
+          </section>
+      </div>
+  </div>
+<script src="../../matrix.js"></script>
+</body>
+</html>

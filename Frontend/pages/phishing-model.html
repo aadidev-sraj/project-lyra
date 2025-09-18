@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Detection Module - Project Lyra</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/module-styles.css">
+  <link rel="stylesheet" href="../styles/phishing-module.css">
+</head>
+<body>
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="main-container">
+      <div class="content-wrapper">
+          <!-- Navigation -->
+          <nav class="navbar">
+              <div class="nav-brand">
+                  <a href="../../index.html" class="glitch-text" data-text="PROJECT LYRA">PROJECT LYRA</a>
+              </div>
+              <div class="nav-links">
+                  <a href="dashboard.html" class="nav-link">Dashboard</a>
+                  <a href="challenges.html" class="nav-link">Challenges</a>
+                  <a href="profile.html" class="nav-link">Profile</a>
+                  <a href="../../index.html" class="nav-link">Logout</a>
+              </div>
+          </nav>
+
+          <header class="module-header">
+              <i class="fas fa-fish module-icon"></i>
+              <h1 class="glitch-text" data-text="Phishing Detection">Phishing Detection</h1>
+              <p class="module-description">Master the art of identifying and defending against deceptive phishing attacks.</p>
+          </header>
+
+          <section id="introduction" class="lesson-section">
+              <h2><i class="fas fa-info-circle"></i> Understanding Phishing</h2>
+              <div class="intro-content">
+                  <div class="intro-text">
+                      <p>Phishing is a cybercrime in which a target or targets are contacted by email, telephone, or text message by someone posing as a legitimate institution to lure individuals into providing sensitive data such as personally identifiable information, banking and credit card details, and passwords. The information is then used to access important accounts and can result in identity theft and financial loss.</p>
+                  </div>
+                  <div class="concept-grid">
+                      <div class="concept-card">
+                          <i class="fas fa-user-secret"></i>
+                          <h3>Deception</h3>
+                          <p>Phishing relies on tricking victims into believing a communication is legitimate.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-lock-open"></i>
+                          <h3>Information Theft</h3>
+                          <p>The primary goal is to steal sensitive personal or financial data.</p>
+                      </div>
+                      <div class="concept-card">
+                          <i class="fas fa-exclamation-triangle"></i>
+                          <h3>Consequences</h3>
+                          <p>Can lead to identity theft, financial fraud, and system compromise.</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="attack-vectors" class="lesson-section">
+              <h2><i class="fas fa-bullseye"></i> Common Attack Vectors</h2>
+              <div class="vectors-grid">
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-envelope"></i>
+                          <h3>Email Phishing</h3>
+                          <span class="threat-level critical">Critical</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>The most common form, using fake emails to impersonate trusted entities like banks, social media, or government agencies.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Suspicious sender address</li>
+                                  <li>Generic greetings</li>
+                                  <li>Urgent or threatening language</li>
+                                  <li>Links to fake websites</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-sms"></i>
+                          <h3>Smishing (SMS Phishing)</h3>
+                          <span class="threat-level high">High</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Phishing attempts delivered via text messages, often containing malicious links or requests for personal information.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Unexpected messages</li>
+                                  <li>Links to unknown sites</li>
+                                  <li>Requests for immediate action</li>
+                                  <li>Grammatical errors</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="vector-card">
+                      <div class="vector-header">
+                          <i class="fas fa-phone-alt"></i>
+                          <h3>Vishing (Voice Phishing)</h3>
+                          <span class="threat-level medium">Medium</span>
+                      </div>
+                      <div class="vector-content">
+                          <p>Using phone calls to trick victims into revealing sensitive information, often impersonating tech support or law enforcement.</p>
+                          <div class="red-flags">
+                              <h4>Red Flags:</h4>
+                              <ul>
+                                  <li>Unsolicited calls</li>
+                                  <li>Requests for remote access</li>
+                                  <li>Pressure to act quickly</li>
+                                  <li>Threats of legal action</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="real-world-cases" class="lesson-section">
+              <h2><i class="fas fa-history"></i> Real-World Case Studies</h2>
+              <div class="cases-timeline">
+                  <div class="case-item">
+                      <span class="case-year">2016</span>
+                      <div class="case-header">
+                          <i class="fas fa-envelope-open-text"></i>
+                          <h3>Democratic National Committee (DNC) Hack</h3>
+                          <span class="impact-badge political">Political</span>
+                      </div>
+                      <div class="case-content">
+                          <p>Russian state-sponsored hackers used spear-phishing emails to gain access to the DNC's computer networks. The emails contained malicious links that, when clicked, prompted users to change their passwords on a fake Google login page.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Even high-profile targets are vulnerable.</li>
+                                  <li>Spear-phishing is highly effective.</li>
+                                  <li>Importance of scrutinizing login pages.</li>
+                              </ul>
+                          </div>
+                          <a href="https://en.wikipedia.org/wiki/Democratic_National_Committee_cyber_attacks" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2017</span>
+                      <div class="case-header">
+                          <i class="fas fa-cloud"></i>
+                          <h3>Google & Facebook Phishing Scam</h3>
+                          <span class="impact-badge financial">Financial</span>
+                      </div>
+                      <div class="case-content">
+                          <p>A Lithuanian man defrauded Google and Facebook of over $100 million by sending fake invoices to employees, impersonating a legitimate Asian manufacturer. This was a sophisticated business email compromise (BEC) scam.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Verify payment requests through multiple channels.</li>
+                                  <li>Beware of subtle email address spoofing.</li>
+                                  <li>Financial departments are prime targets.</li>
+                              </ul>
+                          </div>
+                          <a href="https://www.justice.gov/usao-sdny/pr/lithuanian-man-sentenced-five-years-prison-orchestrating-120-million-phishing-scheme" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+                  <div class="case-item">
+                      <span class="case-year">2020</span>
+                      <div class="case-header">
+                          <i class="fas fa-hospital"></i>
+                          <h3>COVID-19 Themed Phishing Attacks</h3>
+                          <span class="impact-badge severe">Severe</span>
+                      </div>
+                      <div class="case-content">
+                          <p>Cybercriminals heavily leveraged the global pandemic, sending phishing emails disguised as official communications from health organizations (WHO, CDC) or government relief programs to distribute malware or steal credentials.</p>
+                          <div class="case-lessons">
+                              <strong>Lessons Learned:</strong>
+                              <ul>
+                                  <li>Attackers exploit current events and crises.</li>
+                                  <li>Always verify sources for sensitive information.</li>
+                                  <li>Be wary of unsolicited health or financial advice.</li>
+                              </ul>
+                          </div>
+                          <a href="https://www.interpol.int/Crimes/Cybercrime/COVID-19-cyberthreats" target="_blank" class="case-link">Read More <i class="fas fa-external-link-alt"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="analysis-lab" class="lesson-section">
+              <h2><i class="fas fa-flask"></i> Threat Analysis Lab</h2>
+              <p class="analysis-briefing">
+                  <strong>Mission Briefing:</strong> An intercepted email has been flagged as highly suspicious. Your task is to analyze the email content and identify all potential phishing indicators.
+              </p>
+              <div class="analysis-container">
+                  <div class="intercepted-email">
+                      <div class="email-metadata">
+                          <div class="metadata-row"><strong>From:</strong> <span class="static-element">"PayPal Service" &lt;service@paypalsupport.xyz&gt;</span></div>
+                          <div class="metadata-row"><strong>To:</strong> <span class="static-element">Customer</span></div>
+                          <div class="metadata-row"><strong>Subject:</strong> <span class="static-element">Urgent: Your Account Has Been Limited! Action Required Immediately</span></div>
+                          <div class="metadata-row"><strong>Date:</strong> Mon, 22 Apr 2024 10:35:12 +0000</div>
+                      </div>
+                      <hr style="border-color: #00cc00; margin: 20px 0;">
+                      <div class="email-body">
+                          <p>Dear <span class="static-element">Valued Customer</span>,</p>
+                          <p>We regret to inform you that there has been unusual activity detected on your PayPal account. For your security, we have temporarily limited access to certain features.</p>
+                          <p>To restore full access and ensure the safety of your funds, please <span class="static-element">verify your account details immediately</span> by clicking the link below:</p>
+                          <p><a href="http://www.paypal-security-update.com/login?id=user12345" target="_blank" class="static-element">http://www.paypal-security-update.com/login?id=user12345</a></p>
+                          <p>Failure to verify your account within 24 hours will result in permanent account suspension and loss of funds.</p>
+                          <p>Thank you for your prompt attention to this matter.</p>
+                          <p>Sincerely,</p>
+                          <p>The PayPal Security Team</p>
+                      </div>
+                      <div class="email-footer">
+                          <p>This email was sent from an unmonitored mailbox. Please do not reply to this message.</p>
+                      </div>
+                  </div>
+                  <div class="threat-analysis">
+                      <h4>Threat Findings Log</h4>
+                      <div class="findings-list">
+                          <p class="no-findings">Key phishing indicators:</p>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 1:</strong> Suspicious Sender Address: Generic and unrelated domain.
+                          </div>
+                          <div class="finding-item severity-medium">
+                              <strong>🚩 Red Flag 2:</strong> Generic Recipient: Not addressed to your specific name.
+                          </div>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 3:</strong> Urgent/Threatening Subject Line: Creates a sense of panic.
+                          </div>
+                          <div class="finding-item severity-medium">
+                              <strong>🚩 Red Flag 4:</strong> Generic Greeting: Legitimate services usually use your name.
+                          </div>
+                          <div class="finding-item severity-high">
+                              <strong>🚩 Red Flag 5:</strong> Suspicious Link Text: 'Verify' often leads to fake login pages.
+                          </div>
+                          <div class="finding-item severity-critical">
+                              <strong>🚩 Red Flag 6:</strong> Malicious URL: Mismatched domain, not official PayPal.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="defense-strategies" class="lesson-section">
+              <h2><i class="fas fa-shield-alt"></i> Defense Strategies</h2>
+              <div class="defense-grid">
+                  <div class="defense-category">
+                      <h3><i class="fas fa-eye"></i> Awareness & Verification</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-search"></i>
+                              <div class="defense-content">
+                                  <h4>Inspect Sender Details</h4>
+                                  <p>Always check the sender's full email address, not just the display name. Look for misspellings or unusual domains.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-link"></i>
+                              <div class="defense-content">
+                                  <h4>Hover Over Links</h4>
+                                  <p>Before clicking, hover your mouse over any links to see the actual URL. If it doesn't match the expected domain, it's likely malicious.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-phone-square-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Verify Independently</h4>
+                                  <p>If an email or message seems urgent, contact the organization directly using official contact information (not from the suspicious message).</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="defense-category">
+                      <h3><i class="fas fa-tools"></i> Technical Safeguards</h3>
+                      <div class="defense-items">
+                          <div class="defense-item">
+                              <i class="fas fa-key"></i>
+                              <div class="defense-content">
+                                  <h4>Enable Multi-Factor Authentication (MFA)</h4>
+                                  <p>MFA adds an extra layer of security, making it much harder for attackers to access your accounts even if they steal your password.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-cloud-upload-alt"></i>
+                              <div class="defense-content">
+                                  <h4>Regular Data Backups</h4>
+                                  <p>In case of a successful attack (e.g., ransomware), having recent backups can help restore your data without paying a ransom.</p>
+                              </div>
+                          </div>
+                          <div class="defense-item">
+                              <i class="fas fa-shield-virus"></i>
+                              <div class="defense-content">
+                                  <h4>Use Antivirus & Firewalls</h4>
+                                  <p>Keep your security software updated. These tools can detect and block malicious software often delivered via phishing.</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          <section id="training-redirect" class="lesson-section">
+              <h2><i class="fas fa-gamepad"></i> Ready for Action?</h2>
+              <p class="redirect-description">Apply your knowledge in our interactive Phishing Training Module!</p>
+              <div class="redirect-actions">
+                  <a href="phishing-game.html" class="redirect-btn">Start Phishing Training <i class="fas fa-arrow-right"></i></a>
+              </div>
+          </section>
+      </div>
+  </div>
+<script src="../../matrix.js"></script>
+</body>
+</html>
